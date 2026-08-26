@@ -1,0 +1,15 @@
+{
+  "name": "rockmouse-site",
+  "main": "worker/index.js",
+  "compatibility_date": "2026-08-26",
+  "assets": {
+    "directory": "./public",
+    "binding": "ASSETS",
+    "not_found_handling": "404-page"
+  },
+  "vars": {
+    "ALLOWED_ORIGIN": "https://rockmouse.live",
+    "DEFAULT_MODEL": "claude-sonnet-4-6",
+    "MAX_TOKENS": "1024"
+  }
+}

@@ -1,0 +1,6 @@
+# Copy to .dev.vars for local `wrangler dev` testing. Never committed (see .gitignore).
+ANTHROPIC_API_KEY=sk-ant-...
+DEMO_SHARED_TOKEN=replace-with-a-long-random-string
+RESEND_API_KEY=
+NOTIFY_TO=
+NOTIFY_FROM=

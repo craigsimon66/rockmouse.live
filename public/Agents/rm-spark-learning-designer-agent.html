@@ -1,0 +1,2288 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SPARK Learning Designer | RockMouse AI Agents</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+<style>
+/* ===== TAFE GIPPSLAND BRAND TOKENS ===== */
+:root {
+  --tg-primary:   #003d2b;
+  --tg-secondary: #005838;
+  --tg-accent:    #007a4c;
+  --tg-hover:     #00a05a;
+  --tg-light:     #e8f5ee;
+  --tg-lighter:   #f4faf7;
+  --tg-white:     #ffffff;
+  --tg-text:      #1a2e25;
+  --tg-muted:     #5c7a6e;
+  --tg-border:    #c5ddd3;
+  --tg-error:     #c0392b;
+  --tg-warning:   #d4790a;
+  --tg-success:   #1e8a48;
+  --tg-covered-bg:  #d4edda;
+  --tg-covered-txt: #1e5e34;
+  --tg-partial-bg:  #fff3cd;
+  --tg-partial-txt: #856404;
+  --tg-gap-bg:      #f8d7da;
+  --tg-gap-txt:     #721c24;
+  --radius: 8px;
+  --shadow: 0 2px 12px rgba(0,61,43,.12);
+}
+
+/* ===== RESET & BASE ===== */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: 'Segoe UI', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 15px;
+  line-height: 1.6;
+  color: var(--tg-text);
+  background: #f0f5f2;
+  min-height: 100vh;
+}
+
+/* ===== HEADER ===== */
+header {
+  background: var(--tg-primary);
+  color: var(--tg-white);
+  padding: 0;
+  box-shadow: 0 3px 16px rgba(0,0,0,.3);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+.header-inner {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 14px 24px;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+.tafe-logo {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.05;
+  font-weight: 900;
+  font-size: 16px;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--tg-white);
+  border-right: 2px solid rgba(255,255,255,.3);
+  padding-right: 18px;
+}
+.tafe-logo img {
+  height: 42px;
+  width: auto;
+  display: block;
+}
+.spark-brand {
+  display: flex;
+  flex-direction: column;
+}
+.spark-name {
+  font-size: 22px;
+  font-weight: 700;
+  letter-spacing: .5px;
+  color: var(--tg-white);
+}
+.spark-sub {
+  font-size: 12px;
+  color: rgba(255,255,255,.7);
+  font-weight: 400;
+  letter-spacing: .3px;
+}
+.header-badge {
+  margin-left: auto;
+  background: rgba(255,255,255,.12);
+  border: 1px solid rgba(255,255,255,.25);
+  border-radius: 20px;
+  padding: 4px 14px;
+  font-size: 11px;
+  color: rgba(255,255,255,.8);
+  white-space: nowrap;
+}
+
+/* ===== STEP INDICATOR ===== */
+.steps-bar {
+  background: var(--tg-secondary);
+  padding: 0 24px;
+}
+.steps-inner {
+  max-width: 1100px;
+  margin: 0 auto;
+  display: flex;
+  gap: 0;
+}
+.step-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 16px 10px 12px;
+  font-size: 12px;
+  color: rgba(255,255,255,.5);
+  position: relative;
+  cursor: default;
+  border-bottom: 3px solid transparent;
+  transition: all .2s;
+}
+.step-item.active {
+  color: var(--tg-white);
+  border-bottom-color: #7de8b0;
+}
+.step-item.done {
+  color: rgba(255,255,255,.75);
+}
+.step-num {
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: rgba(255,255,255,.15);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+.step-item.active .step-num { background: #7de8b0; color: var(--tg-primary); }
+.step-item.done .step-num { background: rgba(255,255,255,.3); }
+.step-label { white-space: nowrap; }
+
+/* ===== MAIN CONTAINER ===== */
+main {
+  max-width: 900px;
+  margin: 32px auto 60px;
+  padding: 0 16px;
+}
+
+/* ===== SCREENS ===== */
+.screen { display: none; }
+.screen.active { display: block; }
+
+/* ===== CARD ===== */
+.card {
+  background: var(--tg-white);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 32px;
+  margin-bottom: 20px;
+}
+.card-title {
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--tg-primary);
+  margin-bottom: 6px;
+}
+.card-sub {
+  color: var(--tg-muted);
+  font-size: 14px;
+  margin-bottom: 24px;
+}
+.section-divider {
+  border: none;
+  border-top: 1px solid var(--tg-border);
+  margin: 24px 0;
+}
+
+/* ===== FORM ELEMENTS ===== */
+.form-group { margin-bottom: 20px; }
+.form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+label {
+  display: block;
+  font-weight: 600;
+  font-size: 13px;
+  color: var(--tg-text);
+  margin-bottom: 6px;
+}
+label span.req { color: var(--tg-error); margin-left: 2px; }
+label .hint {
+  font-weight: 400;
+  color: var(--tg-muted);
+  font-size: 12px;
+  margin-left: 4px;
+}
+input[type="text"],
+input[type="password"],
+input[type="number"],
+textarea,
+select {
+  width: 100%;
+  padding: 10px 14px;
+  border: 1.5px solid var(--tg-border);
+  border-radius: 6px;
+  font-size: 14px;
+  color: var(--tg-text);
+  background: var(--tg-white);
+  transition: border-color .2s, box-shadow .2s;
+  font-family: inherit;
+}
+input:focus, textarea:focus, select:focus {
+  outline: none;
+  border-color: var(--tg-accent);
+  box-shadow: 0 0 0 3px rgba(0,122,76,.12);
+}
+textarea { resize: vertical; min-height: 80px; }
+
+/* ===== FILE UPLOAD ===== */
+.upload-zone {
+  border: 2px dashed var(--tg-border);
+  border-radius: var(--radius);
+  padding: 28px 20px;
+  text-align: center;
+  cursor: pointer;
+  transition: all .2s;
+  background: var(--tg-lighter);
+  position: relative;
+}
+.upload-zone:hover, .upload-zone.drag-over {
+  border-color: var(--tg-accent);
+  background: var(--tg-light);
+}
+.upload-zone input[type="file"] {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  cursor: pointer;
+  width: 100%;
+  height: 100%;
+}
+.upload-icon { font-size: 32px; margin-bottom: 8px; }
+.upload-title { font-weight: 600; color: var(--tg-primary); font-size: 14px; }
+.upload-hint { font-size: 12px; color: var(--tg-muted); margin-top: 4px; }
+.upload-filename {
+  margin-top: 10px;
+  padding: 6px 14px;
+  background: var(--tg-light);
+  border-radius: 20px;
+  font-size: 12px;
+  color: var(--tg-secondary);
+  font-weight: 600;
+  display: inline-block;
+}
+
+/* ===== MODE SELECTION ===== */
+.mode-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+.mode-card {
+  border: 2px solid var(--tg-border);
+  border-radius: var(--radius);
+  padding: 18px 16px;
+  cursor: pointer;
+  transition: all .2s;
+  text-align: center;
+  background: var(--tg-lighter);
+}
+.mode-card:hover { border-color: var(--tg-accent); background: var(--tg-light); }
+.mode-card.selected {
+  border-color: var(--tg-primary);
+  background: var(--tg-light);
+  box-shadow: 0 0 0 3px rgba(0,61,43,.1);
+}
+.mode-icon { font-size: 28px; margin-bottom: 8px; }
+.mode-title { font-weight: 700; font-size: 14px; color: var(--tg-primary); }
+.mode-desc { font-size: 12px; color: var(--tg-muted); margin-top: 4px; }
+
+/* ===== BUTTONS ===== */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 11px 24px;
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  border: none;
+  transition: all .2s;
+  text-decoration: none;
+  font-family: inherit;
+}
+.btn-primary {
+  background: var(--tg-primary);
+  color: var(--tg-white);
+}
+.btn-primary:hover { background: var(--tg-secondary); transform: translateY(-1px); }
+.btn-primary:active { transform: translateY(0); }
+.btn-secondary {
+  background: var(--tg-white);
+  color: var(--tg-primary);
+  border: 1.5px solid var(--tg-primary);
+}
+.btn-secondary:hover { background: var(--tg-light); }
+.btn-success {
+  background: var(--tg-success);
+  color: var(--tg-white);
+}
+.btn-success:hover { background: #186c39; }
+.btn-sm { padding: 7px 16px; font-size: 13px; }
+.btn:disabled { opacity: .5; cursor: not-allowed; transform: none !important; }
+.btn-row {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  margin-top: 28px;
+  flex-wrap: wrap;
+}
+
+/* ===== PROCESSING SCREEN ===== */
+.processing-wrap {
+  text-align: center;
+  padding: 60px 40px;
+}
+.spinner {
+  width: 56px;
+  height: 56px;
+  border: 5px solid var(--tg-light);
+  border-top-color: var(--tg-primary);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin: 0 auto 24px;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+.processing-title {
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--tg-primary);
+  margin-bottom: 8px;
+}
+.processing-status {
+  color: var(--tg-muted);
+  font-size: 14px;
+  min-height: 22px;
+}
+.processing-log {
+  margin-top: 24px;
+  text-align: left;
+  background: var(--tg-lighter);
+  border: 1px solid var(--tg-border);
+  border-radius: var(--radius);
+  padding: 16px;
+  font-size: 13px;
+  color: var(--tg-muted);
+  max-height: 200px;
+  overflow-y: auto;
+}
+.log-item { padding: 3px 0; }
+.log-item.done { color: var(--tg-success); }
+.log-item.active { color: var(--tg-primary); font-weight: 600; }
+.progress-bar-wrap {
+  background: var(--tg-light);
+  border-radius: 20px;
+  height: 8px;
+  margin: 20px 0 8px;
+  overflow: hidden;
+}
+.progress-bar {
+  height: 100%;
+  background: var(--tg-accent);
+  border-radius: 20px;
+  transition: width .5s ease;
+  width: 0%;
+}
+
+/* ===== RESULTS ===== */
+.results-tabs {
+  display: flex;
+  gap: 0;
+  border-bottom: 2px solid var(--tg-border);
+  margin-bottom: 24px;
+  overflow-x: auto;
+  flex-wrap: nowrap;
+}
+.tab-btn {
+  padding: 10px 18px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--tg-muted);
+  background: none;
+  border: none;
+  border-bottom: 3px solid transparent;
+  cursor: pointer;
+  white-space: nowrap;
+  margin-bottom: -2px;
+  transition: all .15s;
+  font-family: inherit;
+}
+.tab-btn:hover { color: var(--tg-primary); }
+.tab-btn.active {
+  color: var(--tg-primary);
+  border-bottom-color: var(--tg-primary);
+}
+.tab-pane { display: none; }
+.tab-pane.active { display: block; }
+
+/* ===== RESULT SECTIONS ===== */
+.result-section { margin-bottom: 32px; }
+.result-section-title {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--tg-primary);
+  margin-bottom: 12px;
+  padding-bottom: 8px;
+  border-bottom: 2px solid var(--tg-light);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.doc-header {
+  background: var(--tg-primary);
+  color: var(--tg-white);
+  border-radius: var(--radius) var(--radius) 0 0;
+  padding: 20px 24px;
+  margin: -32px -32px 24px;
+}
+.doc-header-title { font-size: 18px; font-weight: 700; letter-spacing: .3px; }
+.doc-header-meta { font-size: 12px; color: rgba(255,255,255,.75); margin-top: 6px; line-height: 1.8; }
+
+/* ===== TASK CARD ===== */
+.task-card {
+  border: 1.5px solid var(--tg-border);
+  border-radius: var(--radius);
+  margin-bottom: 18px;
+  overflow: hidden;
+}
+.task-header {
+  background: var(--tg-light);
+  padding: 12px 18px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.task-id {
+  background: var(--tg-primary);
+  color: var(--tg-white);
+  border-radius: 4px;
+  padding: 3px 10px;
+  font-size: 13px;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+.task-name { font-weight: 700; color: var(--tg-primary); font-size: 15px; }
+.task-method {
+  margin-left: auto;
+  font-size: 11px;
+  color: var(--tg-muted);
+  background: var(--tg-white);
+  border: 1px solid var(--tg-border);
+  padding: 2px 10px;
+  border-radius: 20px;
+  flex-shrink: 0;
+}
+.task-body { padding: 18px; }
+.task-field { margin-bottom: 14px; }
+.task-field-label {
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: .8px;
+  color: var(--tg-muted);
+  margin-bottom: 4px;
+}
+.task-field-value { font-size: 14px; color: var(--tg-text); }
+.task-field-value ul { padding-left: 20px; }
+.task-field-value li { margin-bottom: 3px; }
+.mapping-tags { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 4px; }
+.mapping-tag {
+  background: var(--tg-light);
+  color: var(--tg-secondary);
+  font-size: 11px;
+  font-weight: 600;
+  padding: 2px 10px;
+  border-radius: 20px;
+  border: 1px solid var(--tg-border);
+}
+
+/* ===== TABLES ===== */
+.data-table-wrap { overflow-x: auto; }
+table.data-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+  min-width: 500px;
+}
+table.data-table th {
+  background: var(--tg-primary);
+  color: var(--tg-white);
+  padding: 10px 12px;
+  text-align: left;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: .3px;
+  white-space: nowrap;
+}
+table.data-table td {
+  padding: 9px 12px;
+  border-bottom: 1px solid var(--tg-border);
+  vertical-align: top;
+  line-height: 1.5;
+}
+table.data-table tr:last-child td { border-bottom: none; }
+table.data-table tr:nth-child(even) td { background: var(--tg-lighter); }
+table.data-table .col-narrow { width: 80px; }
+table.data-table .col-med { width: 130px; }
+table.data-table .col-wide { min-width: 220px; }
+
+/* ===== STATUS BADGES ===== */
+.badge {
+  display: inline-block;
+  padding: 2px 10px;
+  border-radius: 20px;
+  font-size: 11px;
+  font-weight: 700;
+}
+.badge-covered  { background: var(--tg-covered-bg);  color: var(--tg-covered-txt); }
+.badge-partial  { background: var(--tg-partial-bg);  color: var(--tg-partial-txt); }
+.badge-gap      { background: var(--tg-gap-bg);      color: var(--tg-gap-txt); }
+.badge-compliant{ background: var(--tg-covered-bg);  color: var(--tg-covered-txt); }
+.badge-attention{ background: var(--tg-partial-bg);  color: var(--tg-partial-txt); }
+
+/* ===== COMPLIANCE PANEL ===== */
+.compliance-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 14px; margin-bottom: 20px; }
+.compliance-box {
+  border: 1.5px solid var(--tg-border);
+  border-radius: var(--radius);
+  padding: 14px 16px;
+}
+.compliance-box-title { font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: .6px; color: var(--tg-muted); margin-bottom: 8px; }
+.compliance-item {
+  font-size: 12px;
+  padding: 2px 0;
+  display: flex;
+  align-items: flex-start;
+  gap: 6px;
+}
+.ci-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; margin-top: 5px; }
+.ci-dot.covered  { background: var(--tg-success); }
+.ci-dot.partial  { background: var(--tg-warning); }
+.ci-dot.gap      { background: var(--tg-error); }
+
+/* ===== OUTCOME TABLE ===== */
+.outcome-row { padding: 12px 0; border-bottom: 1px solid var(--tg-border); }
+.outcome-row:last-child { border-bottom: none; }
+.outcome-id {
+  display: inline-block;
+  background: var(--tg-primary);
+  color: var(--tg-white);
+  border-radius: 4px;
+  padding: 1px 8px;
+  font-size: 11px;
+  font-weight: 700;
+  margin-right: 8px;
+}
+.outcome-text { font-size: 14px; color: var(--tg-text); display: inline; }
+.outcome-meta { font-size: 12px; color: var(--tg-muted); margin-top: 4px; }
+
+/* ===== MODULE CARD ===== */
+.module-card {
+  border-left: 4px solid var(--tg-accent);
+  background: var(--tg-lighter);
+  border-radius: 0 var(--radius) var(--radius) 0;
+  padding: 14px 18px;
+  margin-bottom: 12px;
+}
+.module-card-header { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; }
+.module-id {
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--tg-accent);
+  text-transform: uppercase;
+  letter-spacing: .5px;
+}
+.module-title { font-size: 15px; font-weight: 700; color: var(--tg-primary); }
+.module-meta { font-size: 12px; color: var(--tg-muted); }
+
+/* ===== DISCLAIMER ===== */
+.disclaimer {
+  background: #fffbea;
+  border: 1px solid #f5d66e;
+  border-radius: var(--radius);
+  padding: 14px 18px;
+  font-size: 12px;
+  color: #665c00;
+  margin-bottom: 20px;
+  line-height: 1.6;
+}
+
+/* ===== ALERTS ===== */
+.alert {
+  padding: 12px 16px;
+  border-radius: var(--radius);
+  font-size: 13px;
+  margin-bottom: 16px;
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+}
+.alert-error { background: #fdf2f2; border: 1px solid #e8a4a4; color: #6b1a1a; }
+.alert-info  { background: var(--tg-light); border: 1px solid var(--tg-border); color: var(--tg-secondary); }
+.alert-icon  { font-size: 16px; flex-shrink: 0; margin-top: 1px; }
+
+/* ===== FOOTER ===== */
+footer {
+  background: var(--tg-primary);
+  color: rgba(255,255,255,.6);
+  text-align: center;
+  font-size: 11px;
+  padding: 16px;
+  margin-top: auto;
+}
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 600px) {
+  .form-row { grid-template-columns: 1fr; }
+  .mode-grid { grid-template-columns: 1fr; }
+  .compliance-grid { grid-template-columns: 1fr; }
+  main { padding: 0 12px; }
+  .card { padding: 20px 16px; }
+}
+
+/* ===== PRINT STYLES ===== */
+@media print {
+  @page {
+    margin: 2.54cm 2.54cm 2.54cm 2.54cm;
+  }
+  body { margin: 0; }
+  header, .steps-bar, .btn-row, .results-tabs, footer { display: none !important; }
+  .tab-pane { display: block !important; }
+  .card { box-shadow: none; border: 1px solid #ccc; }
+}
+</style>
+</head>
+<body>
+
+<!-- ===== HEADER ===== -->
+<header>
+  <div class="header-inner">
+    <div class="tafe-logo">
+      <img src="https://rockmouse.live/assets/rockmouse-logo-wide.svg" alt="RockMouse" style="height:38px;width:auto;filter:brightness(0) invert(1);">
+    </div>
+    <div class="spark-brand">
+      <span class="spark-name">SPARK</span>
+      <span class="spark-sub">Learning Designer</span>
+    </div>
+    <span class="header-badge" id="userGreeting">RockMouse VET Design Tool</span>
+  </div>
+</header>
+
+<!-- ===== STEPS BAR ===== -->
+<div class="steps-bar">
+  <div class="steps-inner">
+    <div class="step-item active" id="step-indicator-1"><span class="step-num">1</span><span class="step-label">Start</span></div>
+    <div class="step-item" id="step-indicator-2"><span class="step-num">2</span><span class="step-label">Upload</span></div>
+    <div class="step-item" id="step-indicator-3"><span class="step-num">3</span><span class="step-label">Context</span></div>
+    <div class="step-item" id="step-indicator-4"><span class="step-num">4</span><span class="step-label">Design</span></div>
+    <div class="step-item" id="step-indicator-5"><span class="step-num">5</span><span class="step-label">Results</span></div>
+  </div>
+</div>
+
+<!-- ===== MAIN ===== -->
+<main>
+
+  <!-- ============ STEP 1: SETUP ============ -->
+  <div class="screen active" id="screen-1">
+    <div class="card">
+      <div class="card-title">👋 Hello, I'm SPARK</div>
+      <div class="card-sub">Your next generation Learning Resource Design Assistant</div>
+      <p style="margin-bottom:20px;font-size:14px;color:var(--tg-muted);">
+        SPARK helps educators design learning resources for Units of Competency, aligned with TGA, ASQA, and TAFE Gippsland requirements.
+      </p>
+      <hr class="section-divider">
+      <div class="form-group">
+        <label for="educatorName">Your first name <span class="req">*</span></label>
+        <input type="text" id="educatorName" placeholder="e.g. Sarah" maxlength="50">
+      </div>
+      <!-- API key handled server-side via proxy -->
+      <div id="setupError" class="alert alert-error" style="display:none;">
+        <span class="alert-icon">⚠️</span>
+        <span id="setupErrorMsg"></span>
+      </div>
+      <div class="btn-row">
+        <button class="btn btn-primary" onclick="validateSetup()">Get Started →</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ STEP 2: UPLOAD ============ -->
+  <div class="screen" id="screen-2">
+    <div class="card">
+      <div class="card-title" id="uploadGreeting">Upload Unit Documents</div>
+      <div class="card-sub">Provide the TGA unit details, upload the training.gov.au PDF, and upload the latest TAS from the Toolbox.</div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label for="unitCode">Unit Code <span class="req">*</span></label>
+          <input type="text" id="unitCode" placeholder="e.g. BSBWHS211" style="text-transform:uppercase;">
+        </div>
+        <div class="form-group">
+          <label for="unitName">Unit Name <span class="req">*</span></label>
+          <input type="text" id="unitName" placeholder="e.g. Contribute to the health and safety of self and others">
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label>TGA Unit PDF <span class="req">*</span> <span class="hint">— Upload the TGA unit PDF from training.gov.au</span></label>
+        <div class="upload-zone" id="tgaDropZone">
+          <input type="file" id="tgaFile" accept=".pdf" onchange="handleFileSelect('tga', this)">
+          <div class="upload-icon">📄</div>
+          <div class="upload-title">Click to upload or drag and drop</div>
+          <div class="upload-hint">TGA unit PDF from training.gov.au</div>
+          <div id="tgaFileName" class="upload-filename" style="display:none;"></div>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label>Training and Assessment Strategy (TAS) <span class="req">*</span> <span class="hint">— Upload the TAS for this qualification from the Toolbox. ACSF levels will be read from this document.</span></label>
+        <div class="upload-zone" id="tasDropZone">
+          <input type="file" id="tasFile" accept=".pdf,.doc,.docx" onchange="handleFileSelect('tas', this)">
+          <div class="upload-icon">📋</div>
+          <div class="upload-title">Click to upload or drag and drop</div>
+          <div class="upload-hint">TAS PDF or Word document</div>
+          <div id="tasFileName" class="upload-filename" style="display:none;"></div>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label>Additional Documents <span class="hint">— Optional: existing assessment documents, AMG, mapping, or learning resources</span></label>
+        <div class="upload-zone" id="extraDropZone">
+          <input type="file" id="extraFile" accept=".pdf,.doc,.docx,.txt" onchange="handleFileSelect('extra', this)">
+          <div class="upload-icon">📎</div>
+          <div class="upload-title">Click to upload additional document (optional)</div>
+          <div class="upload-hint">PDF, Word, or text file</div>
+          <div id="extraFileName" class="upload-filename" style="display:none;"></div>
+        </div>
+      </div>
+
+      <div id="uploadError" class="alert alert-error" style="display:none;">
+        <span class="alert-icon">⚠️</span>
+        <span id="uploadErrorMsg"></span>
+      </div>
+      <div class="btn-row">
+        <button class="btn btn-secondary" onclick="goTo(1)">← Back</button>
+        <button class="btn btn-primary" onclick="validateUpload()">Next Step →</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ STEP 3: CONTEXT ============ -->
+  <div class="screen" id="screen-3">
+    <div class="card">
+      <div class="card-title">Delivery Context</div>
+      <div class="card-sub">Help SPARK understand how this unit will be delivered so the learning design fits your context</div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label for="deliveryMode">Delivery Mode</label>
+          <select id="deliveryMode">
+            <option value="">Select...</option>
+            <option value="Face-to-Face (F2F)">Face-to-Face (F2F)</option>
+            <option value="Online">Online</option>
+            <option value="Blended (F2F + Online)">Blended (F2F + Online)</option>
+            <option value="Work-based / Workplace">Work-based / Workplace</option>
+            <option value="Not yet determined">Not yet determined</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="cohortMakeup">Cohort Makeup <span class="hint">e.g. apprentices, new starters</span></label>
+          <input type="text" id="cohortMakeup" placeholder="Describe your learner cohort">
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label for="numSessions">Number of Sessions / Lessons</label>
+          <input type="number" id="numSessions" placeholder="e.g. 8" min="1" max="60">
+        </div>
+        <div class="form-group">
+          <label for="sessionLength">Length of Each Session</label>
+          <input type="text" id="sessionLength" placeholder="e.g. 3 hours, half-day">
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="sequenceConstraints">Sequencing Constraints <span class="hint">optional</span></label>
+        <input type="text" id="sequenceConstraints" placeholder="e.g. Must complete before BSBWHS311, industry placement in week 6">
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label for="equipmentTools">Equipment / Tools Required <span class="hint">optional</span></label>
+          <textarea id="equipmentTools" rows="2" placeholder="e.g. Safety PPE, workshop equipment, simulation software"></textarea>
+        </div>
+        <div class="form-group">
+          <label for="learningResources">Learning Resources to be Provided <span class="hint">optional</span></label>
+          <textarea id="learningResources" rows="2" placeholder="e.g. Learner guide, industry handbooks, video demonstrations"></textarea>
+        </div>
+      </div>
+
+      <div class="btn-row">
+        <button class="btn btn-secondary" onclick="goTo(2)">← Back</button>
+        <button class="btn btn-primary" onclick="startProcessing()">Generate Learning Design →</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ STEP 4: PROCESSING ============ -->
+  <div class="screen" id="screen-4">
+    <div class="card">
+      <div class="processing-wrap">
+        <div class="spinner" id="processingSpinner"></div>
+        <div class="processing-title" id="processingTitle">Analysing Unit...</div>
+        <div class="processing-status" id="processingStatus">Extracting PDF content</div>
+        <div class="progress-bar-wrap">
+          <div class="progress-bar" id="progressBar"></div>
+        </div>
+        <div class="processing-log" id="processingLog"></div>
+      </div>
+      <div id="processingError" class="alert alert-error" style="display:none;margin-top:16px;">
+        <span class="alert-icon">⚠️</span>
+        <div>
+          <strong>Something went wrong</strong><br>
+          <span id="processingErrorMsg"></span><br>
+          <button class="btn btn-secondary btn-sm" style="margin-top:10px;" onclick="goTo(2)">← Go Back &amp; Try Again</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ STEP 5: RESULTS ============ -->
+  <div class="screen" id="screen-5">
+    <div class="card">
+      <div class="doc-header">
+        <div class="doc-header-title">SPARK Design Output</div>
+        <div class="doc-header-meta" id="resultsHeaderMeta"></div>
+      </div>
+
+      <div class="disclaimer">
+        ⚠️ <strong>SPARK AI Disclaimer:</strong> This document was generated with AI assistance and may contain errors or omissions. The educator/assessor must validate all content against current TGA unit requirements, your organisation's policies, and applicable legislation before use.
+      </div>
+
+      <div class="results-tabs" id="resultsTabs"></div>
+      <div id="resultsContent"></div>
+
+      <hr class="section-divider">
+      <div class="btn-row" id="downloadButtons">
+        <button class="btn btn-secondary" onclick="goTo(2)">← New Unit</button>
+      </div>
+    </div>
+  </div>
+
+</main>
+
+<!-- ===== FOOTER ===== -->
+<footer>
+  SPARK — Learning Designer | RockMouse AI Agents &nbsp;|&nbsp; Always validate AI output against current requirements
+</footer>
+
+<!-- ===== JAVASCRIPT ===== -->
+<script>
+// ===== PDF.JS WORKER =====
+pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+
+// ===== STATE =====
+const state = {
+  apiKey: '',
+  educatorName: '',
+  unitCode: '',
+  unitName: '',
+  mode: 'learning',
+  tgaText: '',
+  tasText: '',
+  extraText: '',
+  deliveryContext: {},
+  assessmentResult: null,
+  learningResult: null,
+  currentStep: 1
+};
+
+// ===== NAVIGATION =====
+function goTo(step) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById('screen-' + step).classList.add('active');
+  document.querySelectorAll('.step-item').forEach((el, i) => {
+    el.classList.remove('active', 'done');
+    if (i + 1 < step) el.classList.add('done');
+    if (i + 1 === step) el.classList.add('active');
+  });
+  state.currentStep = step;
+  window.scrollTo(0, 0);
+}
+
+// ===== STEP 1: VALIDATE SETUP =====
+function validateSetup() {
+  const name = document.getElementById('educatorName').value.trim();
+  const err  = document.getElementById('setupError');
+  const msg  = document.getElementById('setupErrorMsg');
+
+  if (!name) { err.style.display='flex'; msg.textContent='Please enter your first name.'; return; }
+
+  err.style.display = 'none';
+  state.educatorName = name;
+  document.getElementById('userGreeting').textContent = 'Hello, ' + name + ' 👋';
+  document.getElementById('uploadGreeting').textContent = 'Upload Unit Documents, ' + name;
+  goTo(2);
+}
+
+// ===== FILE UPLOAD HANDLING =====
+function handleFileSelect(type, input) {
+  const file = input.files[0];
+  if (!file) return;
+  const labelMap = { tga: 'tgaFileName', tas: 'tasFileName', extra: 'extraFileName' };
+  const el = document.getElementById(labelMap[type]);
+  el.textContent = '📄 ' + file.name;
+  el.style.display = 'inline-block';
+  if (type === 'tga') state._tgaFile = file;
+  else if (type === 'tas') state._tasFile = file;
+  else state._extraFile = file;
+}
+
+// Drag & drop
+[
+  { id: 'tgaDropZone',   type: 'tga',   inputId: 'tgaFile' },
+  { id: 'tasDropZone',   type: 'tas',   inputId: 'tasFile' },
+  { id: 'extraDropZone', type: 'extra', inputId: 'extraFile' }
+].forEach(({ id, type, inputId }) => {
+  const zone = document.getElementById(id);
+  if (!zone) return;
+  zone.addEventListener('dragover', e => { e.preventDefault(); zone.classList.add('drag-over'); });
+  zone.addEventListener('dragleave', () => zone.classList.remove('drag-over'));
+  zone.addEventListener('drop', e => {
+    e.preventDefault();
+    zone.classList.remove('drag-over');
+    const file = e.dataTransfer.files[0];
+    if (!file) return;
+    const dt = new DataTransfer();
+    dt.items.add(file);
+    document.getElementById(inputId).files = dt.files;
+    handleFileSelect(type, document.getElementById(inputId));
+  });
+});
+
+// ===== STEP 2: VALIDATE UPLOAD =====
+function validateUpload() {
+  const code = document.getElementById('unitCode').value.trim().toUpperCase();
+  const name = document.getElementById('unitName').value.trim();
+  const err  = document.getElementById('uploadError');
+  const msg  = document.getElementById('uploadErrorMsg');
+
+  if (!code) { err.style.display='flex'; msg.textContent='Please enter the Unit Code.'; return; }
+  if (!name) { err.style.display='flex'; msg.textContent='Please enter the Unit Name.'; return; }
+  if (!state._tgaFile) { err.style.display='flex'; msg.textContent='Please upload the TGA Unit PDF.'; return; }
+  if (!state._tasFile) { err.style.display='flex'; msg.textContent='Please upload the Training and Assessment Strategy (TAS).'; return; }
+
+  err.style.display = 'none';
+  state.unitCode = code;
+  state.unitName = name;
+  state.mode = 'learning'; // Always learning design mode
+
+  goTo(3);
+}
+
+// ===== PDF EXTRACTION =====
+async function extractPDFText(file) {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = async (e) => {
+      try {
+        const typedArray = new Uint8Array(e.target.result);
+        const pdf = await pdfjsLib.getDocument({ data: typedArray }).promise;
+        let text = '';
+        for (let i = 1; i <= pdf.numPages; i++) {
+          const page = await pdf.getPage(i);
+          const content = await page.getTextContent();
+          text += content.items.map(item => item.str).join(' ') + '\n';
+        }
+        resolve(text.trim());
+      } catch (err) {
+        reject(err);
+      }
+    };
+    reader.onerror = reject;
+    reader.readAsArrayBuffer(file);
+  });
+}
+
+// ===== LOGGING =====
+function addLog(msg, status) {
+  const log = document.getElementById('processingLog');
+  const item = document.createElement('div');
+  item.className = 'log-item ' + (status || '');
+  item.textContent = (status === 'done' ? '✓ ' : status === 'active' ? '⟳ ' : '  ') + msg;
+  log.appendChild(item);
+  log.scrollTop = log.scrollHeight;
+}
+function setProgress(pct, title, status) {
+  document.getElementById('progressBar').style.width = pct + '%';
+  if (title) document.getElementById('processingTitle').textContent = title;
+  if (status) document.getElementById('processingStatus').textContent = status;
+}
+
+// ===== ROBUST JSON REPAIR =====
+// Closes any unclosed arrays/objects left by a truncated response
+function repairJSON(str) {
+  let s = str.trim();
+
+  // Strip fenced block markers
+  s = s.replace(/^```(?:json)?\s*/i, '').replace(/\s*```\s*$/, '');
+
+  // Find where the JSON object/array starts
+  const start = Math.min(
+    s.indexOf('{') === -1 ? Infinity : s.indexOf('{'),
+    s.indexOf('[') === -1 ? Infinity : s.indexOf('[')
+  );
+  if (start === Infinity) throw new Error('No JSON found');
+  s = s.slice(start);
+
+  // Remove trailing incomplete string value  e.g.  "key": "unfinished
+  s = s.replace(/:\s*"([^"\\]|\\.)*$/, ': ""');
+  // Remove trailing incomplete key  e.g.  , "unfinishe
+  s = s.replace(/,\s*"[^"]*$/, '');
+  // Remove trailing comma before we close
+  s = s.replace(/,\s*$/, '');
+
+  // Walk the string tracking nesting, ignoring content inside strings
+  const stack = [];
+  let inStr = false, esc = false;
+  for (let i = 0; i < s.length; i++) {
+    const c = s[i];
+    if (esc)           { esc = false; continue; }
+    if (c === '\\' && inStr) { esc = true; continue; }
+    if (c === '"')     { inStr = !inStr; continue; }
+    if (inStr)         continue;
+    if (c === '{' || c === '[') stack.push(c);
+    else if (c === '}' || c === ']') { if (stack.length) stack.pop(); }
+  }
+
+  // Close any still-open string
+  if (inStr) s += '"';
+  // Remove trailing comma again after possible string close
+  s = s.replace(/,\s*$/, '');
+  // Append closing brackets in reverse order
+  s += stack.reverse().map(c => c === '{' ? '}' : ']').join('');
+  return s;
+}
+
+// ===== CLAUDE API CALL =====
+// ── Proxy config ──
+// PROXY_URL  : your Cloudflare Worker URL
+// PROXY_TOKEN: must match the PROXY_TOKEN secret set in the Worker
+const PROXY_URL   = 'https://spark-proxy.craig-3c4.workers.dev';
+const PROXY_TOKEN = 'spark-gippsland-2026';   // change to match your Worker secret
+
+async function callClaude(systemPrompt, userMessage, maxTok) {
+  const response = await fetch(PROXY_URL, {
+    method: 'POST',
+    headers: {
+      'content-type': 'application/json',
+      'X-Proxy-Token': PROXY_TOKEN
+    },
+    body: JSON.stringify({
+      model: 'claude-sonnet-4-6',
+      max_tokens: maxTok || 16000,
+      system: systemPrompt,
+      messages: [{ role: 'user', content: userMessage }]
+    })
+  });
+
+  if (!response.ok) {
+    const errBody = await response.json().catch(() => ({}));
+    throw new Error(errBody.error?.message || 'API error ' + response.status);
+  }
+
+  const data = await response.json();
+  const stopReason = data.stop_reason;
+  const raw = data.content[0].text.trim();
+
+  // Warn in log if truncated
+  if (stopReason === 'max_tokens') {
+    addLog('⚠️ Response hit token limit — attempting repair...', '');
+  }
+
+  // ── Strategy 1: valid JSON as-is ──
+  try { return JSON.parse(raw); } catch (_) {}
+
+  // ── Strategy 2: extract from fenced block ──
+  const fenced = raw.match(/```(?:json)?\s*([\s\S]*?)```/);
+  if (fenced) { try { return JSON.parse(fenced[1].trim()); } catch (_) {} }
+
+  // ── Strategy 3: extract from first { to last } ──
+  const f = raw.indexOf('{'), l = raw.lastIndexOf('}');
+  if (f !== -1 && l > f) { try { return JSON.parse(raw.slice(f, l + 1)); } catch (_) {} }
+
+  // ── Strategy 4: bracket-counting repair ──
+  const fragment = (fenced ? fenced[1] : null) || (f !== -1 ? raw.slice(f) : raw);
+  try { return JSON.parse(repairJSON(fragment)); } catch (_) {}
+
+  // ── Strategy 5: retry with explicit short-form prompt ──
+  addLog('⚠️ Repair failed — retrying with compact output request...', '');
+  const retrySystem = systemPrompt + '\n\nCRITICAL: Your previous response was truncated. Retry with complete, valid JSON. To reduce size: limit contentOutline to 2 sub-headings with 2–3 sentences each; limit learningActivities to 2 items with concise descriptions; keep all other fields but write briefly. Maintain every JSON key. Do NOT truncate the JSON itself.';
+  const retry = await fetch(PROXY_URL, {
+    method: 'POST',
+    headers: {
+      'content-type': 'application/json',
+      'X-Proxy-Token': PROXY_TOKEN
+    },
+    body: JSON.stringify({
+      model: 'claude-sonnet-4-6',
+      max_tokens: maxTok || 16000,
+      system: retrySystem,
+      messages: [{ role: 'user', content: userMessage }]
+    })
+  });
+  if (retry.ok) {
+    const retryData = await retry.json();
+    const retryRaw = retryData.content[0].text.trim();
+    try { return JSON.parse(retryRaw); } catch (_) {}
+    const rf = retryRaw.indexOf('{'), rl = retryRaw.lastIndexOf('}');
+    if (rf !== -1 && rl > rf) { try { return JSON.parse(retryRaw.slice(rf, rl + 1)); } catch (_) {} }
+    try { return JSON.parse(repairJSON(rf !== -1 ? retryRaw.slice(rf) : retryRaw)); } catch (_) {}
+  }
+
+  // Final: show the first 400 chars of raw response in error so user can report it
+  throw new Error(
+    'Could not parse the AI response after repair + retry. ' +
+    (stopReason === 'max_tokens' ? '(Response was cut off at the token limit.) ' : '') +
+    'Raw preview: ' + raw.substring(0, 400)
+  );
+}
+
+// ===== PROMPTS (split into focused calls to avoid token overflow) =====
+
+// -- Assessment Phase 1: Extract unit structure verbatim --
+const ASSESS_EXTRACT_SYSTEM = `You are SPARK, a VET assessment expert at TAFE Gippsland, Australia.
+Your only job here is to extract key sections from a TGA unit of competency document VERBATIM.
+
+RULES:
+- Copy ALL Performance Evidence items EXACTLY as written — no paraphrasing, no summarising
+- Copy ALL Knowledge Evidence items EXACTLY as written
+- Copy Assessment Conditions EXACTLY as written
+- If any section is absent write: "Not specified in unit document"
+- Use Australian English spelling
+- Be concise in non-verbatim fields (descriptor, foundationSkillsNote)
+
+RESPOND ONLY WITH VALID JSON — no markdown, no code fences, no other text.
+
+Return exactly:
+{
+  "unitCode": "string",
+  "unitName": "string",
+  "release": "string or Not specified",
+  "descriptor": "1-2 sentence unit descriptor/application",
+  "performanceEvidence": [{"id":"PE1","text":"verbatim exact text"}],
+  "knowledgeEvidence": [{"id":"KE1","text":"verbatim exact text"}],
+  "assessmentConditions": "full verbatim conditions text",
+  "foundationSkillsNote": "brief summary only — 1-2 sentences"
+}`;
+
+// -- Assessment Phase 2: Design tasks + mapping + compliance using extracted structure --
+const ASSESS_DESIGN_SYSTEM = `You are SPARK, a VET assessment designer at TAFE Gippsland, Australia.
+You have been given a pre-extracted unit structure. Design the assessment strategy, tasks, mapping, and compliance check.
+
+RULES:
+1. Design 2–6 tasks using a balanced mix of methods
+2. Every PE item must be assessable through at least one task (use the exact IDs provided)
+3. Every KE item must be addressed through at least one task
+4. All Assessment Conditions must be embedded in task conditions
+5. NEVER invent evidence — use only PE/KE items provided in the input
+6. Keep learnerActions to 3–4 bullet points per task (concise but specific)
+7. Keep evidenceProduced to 2–3 items per task
+8. Use Australian English spelling
+9. Task IDs: AT1, AT2, AT3 etc.
+
+RESPOND ONLY WITH VALID JSON — no markdown, no code fences, no other text.
+
+Return exactly:
+{
+  "strategy": {
+    "rationale": "2 sentences explaining the chosen assessment approach",
+    "contextSummary": "1 sentence overview of assessment context"
+  },
+  "tasks": [
+    {
+      "id": "AT1",
+      "name": "Task Name",
+      "method": "Assessment method",
+      "description": "2-sentence overview",
+      "learnerActions": ["Action 1","Action 2","Action 3"],
+      "evidenceProduced": ["Evidence item 1","Evidence item 2"],
+      "conditions": "Concise description of environment, equipment, supervision, timeframes",
+      "llnConsiderations": "LLN and reasonable adjustment notes",
+      "riskNotes": "Regulatory or risk notes",
+      "peMapping": ["PE1","PE2"],
+      "keMapping": ["KE1"],
+      "acCovered": "How assessment conditions are embedded"
+    }
+  ],
+  "mappingTable": {
+    "performance": [
+      {"taskId":"AT1","taskName":"string","method":"string","evidenceType":"PE","evidenceItems":"1. [verbatim PE text]\n2. [verbatim PE text]"}
+    ],
+    "knowledge": [
+      {"taskId":"AT1","taskName":"string","method":"string","evidenceType":"KE","evidenceItems":"1. [verbatim KE text]"}
+    ],
+    "conditions": [
+      {"taskId":"AT1","taskName":"string","method":"string","evidenceType":"AC","evidenceItems":"How AC is met in this task"}
+    ]
+  },
+  "compliance": {
+    "peCoverage": {"covered":["PE1"],"partial":[],"uncovered":[]},
+    "keCoverage": {"covered":["KE1"],"partial":[],"uncovered":[]},
+    "acStatus": "Fully addressed",
+    "acNotes": "1 sentence on conditions coverage",
+    "overallStatus": "Compliant",
+    "gaps": [],
+    "recommendations": ["Recommendation if needed"]
+  }
+}`;
+
+// -- Learning Phase 3a: Structure only (outcomes + module list, NO activity content) --
+const LEARNING_STRUCTURE_SYSTEM = `You are SPARK, a VET learning designer at TAFE Gippsland, Australia.
+Analyse the unit and delivery context. Produce the LEARNING STRUCTURE ONLY — do NOT write any activity content.
+
+RULES:
+1. learningOutcomes: 4–6 outcomes, active verbs aligned to TGA elements
+2. modules: 4–6 logical session blocks — title and purpose sentence only
+3. unitOverview and unitApplication: verbatim from TGA
+4. Australian English spelling. NEVER invent assessment evidence.
+
+RESPOND WITH VALID JSON ONLY — no markdown, no code fences:
+{
+  "unitCode": "string",
+  "unitName": "string",
+  "unitOverview": "Verbatim TGA descriptor",
+  "unitApplication": "Verbatim TGA application",
+  "deliveryContextSummary": "2–3 sentences on delivery context",
+  "learningOutcomes": [{"id":"LO1","outcome":"Active verb outcome","relatedElements":"E1","relatedKE":"KE1","assessmentTasks":"AT1"}],
+  "modules": [{"id":"M1","title":"Module Title","purpose":"One sentence purpose","relatedOutcomes":"LO1","assessmentAlignment":"AT1","estimatedDuration":"3 hours"}],
+  "citations": ["Source Name — https://verified-url"]
+}`;
+
+// -- Learning Phase 3b: One activity per module (called once per module in a loop) --
+const LEARNING_ACTIVITY_SYSTEM = `You are SPARK, a VET learning designer at TAFE Gippsland, Australia.
+Design teacher-ready session content for ONE module of a Unit of Competency.
+
+FORMATTING RULES — follow exactly:
+- contentOutline: use **Sub-heading:** markers to separate every distinct topic (e.g. **What is taught:**, **Why it matters:**, **Practical examples:**). Each marker starts a new paragraph. Max 3–4 sentences per paragraph. Never run topics together.
+- learningActivities: each item MUST start with ***Activity Name:*** (triple stars = bold + italic). Use **Sub-heading:** markers within the item for structure (e.g. **Discussion questions:**, **Exemplar answers:**, **Station 1:**, **Station 2:**). Write COMPLETE content for ALL stations — never omit any.
+- Legal document references: include as live hyperlinks inline (e.g. see https://legislation.gov.au/...)
+- Australian English spelling. NEVER invent assessment evidence.
+
+RESPOND WITH VALID JSON ONLY — a single activity object, no markdown, no code fences:
+{
+  "moduleId": "M1",
+  "moduleTitle": "**Module Title**",
+  "sessionNumber": "1",
+  "focus": "Session focus in one sentence",
+  "contentOutline": "**What is taught:** 3–4 sentences. **Why it matters:** 3–4 sentences. **Practical examples:** 3–4 sentences.",
+  "learningActivities": [
+    "***Activity Name:*** Description of facilitation and learner actions. **Discussion questions:** Q1. Q2. **Exemplar answers:** A1. A2.",
+    "***Activity Name:*** Description. **Station 1:** Full content. **Station 2:** Full content. **Station 3:** Full content."
+  ],
+  "resources": ["Resource Name — Description — https://verified-url"],
+  "linksToAssessments": "How this session generates evidence for AT1/AT2",
+  "contentRecommendations": ["Topic or concept 1", "Topic or concept 2", "Topic or concept 3"],
+  "teacherNote": "Practical guidance for the educator delivering this session",
+  "foundationSkills": "Foundation skills addressed, with ACSF levels"
+}`;
+
+// -- Learning Phase 2: Session Plan + Learning-Assessment Mapping --
+const LEARNING_MAP_SYSTEM = `You are SPARK, a VET learning designer at TAFE Gippsland, Australia.
+Given a completed learning design and assessment design, produce the session plan and learning-assessment mapping.
+
+RULES:
+1. Activity names in the mapping MUST exactly match names used in the learning design provided
+2. Evidence item text in the mapping MUST be verbatim from the assessment design provided
+3. Map from assessment requirement TO learning (start with the evidence, find which activity prepares for it)
+4. Coverage Status: "Covered", "Partial", or "Gap" only
+5. Session plan: one row per session, covering all modules in logical order
+6. Use Australian English spelling
+
+RESPOND ONLY WITH VALID JSON — no markdown, no code fences, no other text.
+
+Return exactly:
+{
+  "sessionPlan": [
+    {"session":"1","module":"M1 — Title","focus":"Session focus","activities":"Key learning activities","linksToAssessments":"How this session prepares for AT1, AT2 etc.","notes":""}
+  ],
+  "learningMapping": [
+    {
+      "taskId":"AT1",
+      "taskName":"Task name",
+      "evidenceType":"PE",
+      "evidenceItem":"verbatim evidence text",
+      "learningModule":"M1 — Module Title",
+      "learningActivity":"Activity Name (exact match from learningActivities)",
+      "howPrepares":"Specific explanation",
+      "coverageStatus":"Covered"
+    }
+  ],
+  "complianceCheck": {
+    "covered":["AT1/PE1"],
+    "partial":[],
+    "gaps":[],
+    "notes":"Overall compliance note"
+  }
+}`;
+
+// -- Learning Phase 1b: Recommended Resources (separate focused call) --
+const RECOMMENDED_RESOURCES_SYSTEM = `You are SPARK, a VET learning resource specialist at TAFE Gippsland, Australia.
+For each module provided, suggest real, freely available media-rich teaching resources relevant to the module topic and the Australian VET context.
+
+RULES:
+1. Videos: Use real YouTube URLs. Provide title, 1–2 sentence relevance description, and approximate duration. Prefer Australian content where available.
+2. Images: Source ONLY from Unsplash (unsplash.com) or Pexels (pexels.com). Provide a real image URL, a description of what the image shows and why it is relevant, the licence type, and photographer name for attribution.
+3. Diagrams/Infographics: Provide a real public URL where available. If none exists, describe the diagram clearly so an educator can source or commission it. Name the recommended source.
+4. Minimum per module: 2 videos, 2 images, 1 diagram.
+5. Australian English spelling throughout.
+6. Provide 2 resources of each type (videos, images) and 1 diagram per module.
+
+RESPOND WITH VALID JSON ONLY — no markdown, no code fences:
+{
+  "modules": [
+    {
+      "moduleId": "M1",
+      "recommendedResources": {
+        "videos": [
+          {"title": "Video Title", "url": "https://youtube.com/watch?v=...", "description": "Why this video is relevant to this module", "duration": "~10 min"},
+          {"title": "Video Title", "url": "https://youtube.com/watch?v=...", "description": "Why this video is relevant to this module", "duration": "~8 min"}
+        ],
+        "images": [
+          {"description": "What the image shows and why it is relevant", "url": "https://unsplash.com/photos/...", "source": "Unsplash", "licence": "Unsplash Licence — free for commercial and non-commercial use, no attribution required", "photographer": "Photographer Name"},
+          {"description": "What the image shows and why it is relevant", "url": "https://www.pexels.com/photo/...", "source": "Pexels", "licence": "Pexels Licence — free to use, no attribution required", "photographer": "Photographer Name"}
+        ],
+        "diagrams": [
+          {"description": "What the diagram or infographic shows and how it supports the module", "url": "https://... or empty string", "source": "Source name or Recommend creating"}
+        ]
+      }
+    }
+  ]
+}`;
+
+// ===== START PROCESSING =====
+async function startProcessing() {
+  // Capture context if on step 3
+  state.deliveryContext = {
+    mode: document.getElementById('deliveryMode').value,
+    cohort: document.getElementById('cohortMakeup').value,
+    sessions: document.getElementById('numSessions').value,
+    sessionLength: document.getElementById('sessionLength').value,
+    constraints: document.getElementById('sequenceConstraints').value,
+    equipment: document.getElementById('equipmentTools').value,
+    resources: document.getElementById('learningResources').value
+  };
+
+  goTo(4);
+  document.getElementById('processingError').style.display = 'none';
+  document.getElementById('processingLog').innerHTML = '';
+  setProgress(5, 'Getting Started...', 'Reading PDF');
+
+  try {
+    // 1. Extract TGA PDF
+    addLog('Extracting TGA unit PDF...', 'active');
+    const tgaText = await extractPDFText(state._tgaFile);
+    if (!tgaText || tgaText.length < 200) throw new Error('The PDF appears to be empty or could not be read. Ensure it is a text-based PDF from training.gov.au.');
+    state.tgaText = tgaText.substring(0, 48000); // Limit for API
+    addLog('TGA PDF extracted (' + Math.round(tgaText.length/1000) + 'k characters)', 'done');
+    setProgress(15, 'PDF Ready', 'Preparing analysis...');
+
+    // 2. Extract TAS if provided
+    if (state._tasFile && state._tasFile.name.endsWith('.pdf')) {
+      addLog('Extracting TAS (Training and Assessment Strategy)...', 'active');
+      try {
+        const tasText = await extractPDFText(state._tasFile);
+        state.tasText = tasText.substring(0, 16000);
+        addLog('TAS extracted (' + Math.round(tasText.length/1000) + 'k characters — ACSF levels included)', 'done');
+      } catch(e) {
+        addLog('Note: Could not read TAS as text PDF', '');
+      }
+    }
+
+    // 3. Extract extra doc if provided
+    if (state._extraFile && state._extraFile.name.endsWith('.pdf')) {
+      addLog('Extracting additional document...', 'active');
+      try {
+        const extraText = await extractPDFText(state._extraFile);
+        state.extraText = extraText.substring(0, 8000);
+        addLog('Additional document extracted', 'done');
+      } catch(e) {
+        addLog('Note: Could not read additional document (not a text PDF)', '');
+      }
+    }
+
+    // Trim PDF to a safe size — keep the assessment requirements section as priority
+    // Most TGA PDFs are 30–80k chars; we send up to 30k
+    const tgaSafe = state.tgaText.substring(0, 30000);
+    const baseMsg = 'Unit Code: ' + state.unitCode + '\nUnit Name: ' + state.unitName +
+      '\n\nTGA UNIT TEXT:\n' + tgaSafe +
+      (state.tasText ? '\n\nTRAINING AND ASSESSMENT STRATEGY (TAS) — including ACSF levels for learner cohort:\n' + state.tasText.substring(0, 14000) : '') +
+      (state.extraText ? '\n\nADDITIONAL DOCUMENT:\n' + state.extraText.substring(0, 4000) : '');
+
+    // 3a. Assessment — Phase 1: Extract PE / KE / AC verbatim (small focused output)
+    if (state.mode === 'assessment' || state.mode === 'both') {
+      setProgress(20, 'Extracting Unit Structure...', 'Reading Performance Evidence, Knowledge Evidence, and Conditions verbatim');
+      addLog('Phase 1 — Extracting unit structure verbatim...', 'active');
+      // Phase 1 output is small — 6000 tokens is plenty for PE/KE/AC extraction
+      const extracted = await callClaude(ASSESS_EXTRACT_SYSTEM, baseMsg, 6000);
+      addLog('Extracted: ' + (extracted.performanceEvidence?.length||0) + ' PE, ' + (extracted.knowledgeEvidence?.length||0) + ' KE items', 'done');
+      setProgress(38, 'Designing Assessment Tasks...', 'Claude is designing tasks and mapping evidence');
+
+      // 3b. Assessment — Phase 2: Design tasks + mapping (medium output)
+      addLog('Phase 2 — Designing assessment tasks and mapping...', 'active');
+      const designMsg = 'Unit Code: ' + (extracted.unitCode||state.unitCode) +
+        '\nUnit Name: ' + (extracted.unitName||state.unitName) +
+        '\n\nEXTRACTED UNIT STRUCTURE (use these PE/KE IDs exactly):\n' +
+        JSON.stringify(extracted, null, 2).substring(0, 12000);
+      const designed = await callClaude(ASSESS_DESIGN_SYSTEM, designMsg, 12000);
+      addLog('Assessment design complete — ' + (designed.tasks?.length||0) + ' tasks designed', 'done');
+
+      state.assessmentResult = Object.assign({}, extracted, designed);
+      setProgress(58, 'Assessment Complete', 'Assessment design and mapping done');
+    }
+
+    // 4. Learning Design
+    if (state.mode === 'learning' || state.mode === 'both') {
+      const ctxStr = Object.entries(state.deliveryContext).filter(([,v])=>v).map(([k,v])=>k+': '+v).join('\n');
+
+      // Compact assessment summary to keep Phase 3 message small
+      const assessCompact = state.assessmentResult ? JSON.stringify({
+        tasks: (state.assessmentResult.tasks||[]).map(t=>({
+          id:t.id, name:t.name, method:t.method, peMapping:t.peMapping, keMapping:t.keMapping
+        })),
+        performanceEvidence: state.assessmentResult.performanceEvidence,
+        knowledgeEvidence: state.assessmentResult.knowledgeEvidence
+      }) : '';
+
+      // 4a. Phase 3a — Structure only: outcomes + module list (small focused call)
+      setProgress(58, 'Designing Learning Structure...', 'Creating outcomes and module plan');
+      addLog('Phase 3a — Designing learning outcomes and module structure...', 'active');
+      const structureMsg = 'Unit Code: ' + state.unitCode + '\nUnit Name: ' + state.unitName +
+        '\n\nDELIVERY CONTEXT:\n' + (ctxStr||'Not specified') +
+        '\n\nTGA UNIT SUMMARY:\n' + tgaSafe.substring(0, 12000) +
+        (assessCompact ? '\n\nASSESSMENT TASKS SUMMARY:\n' + assessCompact.substring(0, 4000) : '');
+      const learningStructure = await callClaude(LEARNING_STRUCTURE_SYSTEM, structureMsg, 3000);
+      const moduleList = learningStructure.modules || [];
+      addLog('Structure: ' + moduleList.length + ' modules, ' + (learningStructure.learningOutcomes?.length||0) + ' outcomes', 'done');
+
+      // 4b. Phase 3b — Activities: one focused call per module
+      const activities = [];
+      for (let i = 0; i < moduleList.length; i++) {
+        const mod = moduleList[i];
+        const pct = 62 + Math.round((i / moduleList.length) * 16);
+        setProgress(pct, 'Writing Session ' + (i+1) + ' of ' + moduleList.length + '...', mod.title);
+        addLog('Phase 3b — Session ' + (i+1) + ': ' + mod.title + '...', 'active');
+        const actMsg = 'Unit: ' + state.unitCode + ' — ' + state.unitName +
+          '\nSession number: ' + (i+1) + ' of ' + moduleList.length +
+          '\n\nMODULE TO DESIGN:\n' + JSON.stringify(mod) +
+          '\n\nLEARNING OUTCOMES (for context):\n' + JSON.stringify(learningStructure.learningOutcomes||[]) +
+          '\n\nTGA UNIT SUMMARY:\n' + tgaSafe.substring(0, 8000) +
+          (assessCompact ? '\n\nASSESSMENT TASKS:\n' + assessCompact.substring(0, 3000) : '');
+        const act = await callClaude(LEARNING_ACTIVITY_SYSTEM, actMsg, 6000);
+        activities.push(act);
+        addLog('Session ' + (i+1) + ' complete: ' + mod.title, 'done');
+      }
+      const learningDesign = Object.assign({}, learningStructure, { activities });
+
+      // 4c. Phase 3c — Recommended Resources: one focused call per module
+      setProgress(80, 'Sourcing Recommended Resources...', 'Finding videos, images, and diagrams');
+      addLog('Phase 3c — Generating recommended resources...', 'active');
+      try {
+        const resourcesMsg = 'Unit: ' + state.unitCode + ' — ' + state.unitName +
+          '\n\nModules:\n' + moduleList.map(m => m.id + ': ' + m.title + ' — ' + m.purpose).join('\n');
+        const resourcesResult = await callClaude(RECOMMENDED_RESOURCES_SYSTEM, resourcesMsg, 8000);
+        if (resourcesResult?.modules) {
+          resourcesResult.modules.forEach(rm => {
+            const act = activities.find(a => a.moduleId === rm.moduleId);
+            if (act && rm.recommendedResources) act.recommendedResources = rm.recommendedResources;
+          });
+        }
+        addLog('Recommended resources added — ' + (resourcesResult?.modules?.length||0) + ' modules', 'done');
+      } catch(e) {
+        addLog('Note: Recommended resources skipped this run', '');
+      }
+
+      // 4d. Learning Phase 4: Session Plan + Mapping (compact inputs)
+      setProgress(88, 'Building Session Plan & Mapping...', 'Mapping learning activities to assessment evidence');
+      addLog('Phase 4 — Creating session plan and learning-assessment mapping...', 'active');
+      const learningDesignCompact = JSON.stringify({
+        modules: learningDesign.modules,
+        activities: (learningDesign.activities||[]).map(a=>({
+          moduleId:a.moduleId, moduleTitle:a.moduleTitle, sessionNumber:a.sessionNumber,
+          learningActivities: a.learningActivities
+        })),
+        learningOutcomes: learningDesign.learningOutcomes
+      });
+      const assessFull = state.assessmentResult ? JSON.stringify({
+        tasks: state.assessmentResult.tasks,
+        performanceEvidence: state.assessmentResult.performanceEvidence,
+        knowledgeEvidence: state.assessmentResult.knowledgeEvidence
+      }).substring(0, 6000) : '';
+      const learningMsg2 = 'LEARNING DESIGN (use these activity names exactly in mapping):\n' +
+        learningDesignCompact.substring(0, 8000) +
+        (assessFull ? '\n\nASSESSMENT EVIDENCE (copy evidence text verbatim):\n' + assessFull : '');
+      const learningMap = await callClaude(LEARNING_MAP_SYSTEM, learningMsg2, 12000);
+      addLog('Session plan and mapping complete — ' + (learningMap.sessionPlan?.length||0) + ' sessions, ' + (learningMap.learningMapping?.length||0) + ' mapped items', 'done');
+
+      state.learningResult = Object.assign({}, learningDesign, learningMap);
+      setProgress(95, 'Almost Done...', 'Building your results...');
+    }
+
+    // 5. Render results
+    addLog('Building output documents...', 'active');
+    setProgress(100, 'Complete!', 'Your design is ready');
+
+    setTimeout(() => {
+      renderResults();
+      goTo(5);
+    }, 600);
+
+  } catch (err) {
+    document.getElementById('processingSpinner').style.display = 'none';
+    document.getElementById('processingError').style.display = 'flex';
+    document.getElementById('processingErrorMsg').textContent = err.message;
+    setProgress(0, 'Error', 'See error above');
+    console.error(err);
+  }
+}
+
+// ===== RENDER RESULTS =====
+function renderResults() {
+  const today = new Date().toLocaleDateString('en-AU', { day: '2-digit', month: 'long', year: 'numeric' });
+  const r = state.assessmentResult;
+  const l = state.learningResult;
+  const code = r?.unitCode || state.unitCode;
+  const name = r?.unitName || state.unitName;
+
+  document.getElementById('resultsHeaderMeta').innerHTML =
+    'Educator: ' + state.educatorName + ' &nbsp;|&nbsp; ' +
+    'Unit: ' + code + ' — ' + name + ' &nbsp;|&nbsp; ' +
+    'Organisation: TAFE Gippsland &nbsp;|&nbsp; ' +
+    'Date: ' + today;
+
+  // Build tabs
+  const tabs = [];
+  if (r) {
+    tabs.push({ id: 'tab-design',    label: '📋 Assessment Design' });
+    tabs.push({ id: 'tab-mapping',   label: '🗂️ Assessment Mapping' });
+    tabs.push({ id: 'tab-compliance',label: '✅ Compliance' });
+  }
+  if (l) {
+    tabs.push({ id: 'tab-learning',  label: '📚 Learning Design' });
+    tabs.push({ id: 'tab-lmapping',  label: '🔗 Learning Mapping' });
+  }
+
+  const tabBar = document.getElementById('resultsTabs');
+  const content = document.getElementById('resultsContent');
+  tabBar.innerHTML = '';
+  content.innerHTML = '';
+
+  tabs.forEach((tab, i) => {
+    const btn = document.createElement('button');
+    btn.className = 'tab-btn' + (i === 0 ? ' active' : '');
+    btn.textContent = tab.label;
+    btn.onclick = () => {
+      document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+      document.querySelectorAll('.tab-pane').forEach(p => p.classList.remove('active'));
+      btn.classList.add('active');
+      document.getElementById(tab.id).classList.add('active');
+    };
+    tabBar.appendChild(btn);
+
+    const pane = document.createElement('div');
+    pane.className = 'tab-pane' + (i === 0 ? ' active' : '');
+    pane.id = tab.id;
+    content.appendChild(pane);
+  });
+
+  // Populate panes
+  if (r) {
+    document.getElementById('tab-design').innerHTML    = renderAssessmentDesign(r, today);
+    document.getElementById('tab-mapping').innerHTML   = renderAssessmentMapping(r);
+    document.getElementById('tab-compliance').innerHTML = renderCompliance(r);
+  }
+  if (l) {
+    document.getElementById('tab-learning').innerHTML  = renderLearningDesign(l);
+    document.getElementById('tab-lmapping').innerHTML  = renderLearningMapping(l);
+  }
+
+  // Download buttons — Learning Design only
+  const dlRow = document.getElementById('downloadButtons');
+  if (l) {
+    const btnDL = makeDownloadBtn('Download Learning Design (.doc)', () => exportLearningDesigner(l, today));
+    dlRow.appendChild(btnDL);
+  }
+}
+
+function makeDownloadBtn(label, fn) {
+  const b = document.createElement('button');
+  b.className = 'btn btn-success';
+  b.innerHTML = '⬇ ' + label;
+  b.onclick = fn;
+  return b;
+}
+
+// ===== RENDER ASSESSMENT DESIGN =====
+function renderAssessmentDesign(r, today) {
+  let html = '';
+
+  // Strategy overview
+  html += '<div class="result-section">';
+  html += '<div class="result-section-title">📌 Assessment Context & Strategy</div>';
+  html += '<p style="font-size:14px;margin-bottom:10px;">' + esc(r.strategy?.contextSummary || '') + '</p>';
+  html += '<p style="font-size:14px;">' + esc(r.strategy?.rationale || '') + '</p>';
+  if (r.foundationSkillsNote) html += '<p style="font-size:13px;color:var(--tg-muted);margin-top:10px;"><strong>Foundation Skills:</strong> ' + esc(r.foundationSkillsNote) + '</p>';
+  html += '</div>';
+
+  // Tasks
+  html += '<div class="result-section"><div class="result-section-title">📋 Assessment Tasks</div>';
+  (r.tasks || []).forEach(task => {
+    html += '<div class="task-card">';
+    html += '<div class="task-header">';
+    html += '<span class="task-id">' + esc(task.id) + '</span>';
+    html += '<span class="task-name">' + esc(task.name) + '</span>';
+    html += '<span class="task-method">' + esc(task.method) + '</span>';
+    html += '</div><div class="task-body">';
+
+    html += tf('Task Description', task.description);
+    html += '<div class="task-field"><div class="task-field-label">Learner Actions</div><div class="task-field-value"><ul>' +
+      (task.learnerActions || []).map(a => '<li>' + esc(a) + '</li>').join('') + '</ul></div></div>';
+    html += '<div class="task-field"><div class="task-field-label">Evidence Produced</div><div class="task-field-value"><ul>' +
+      (task.evidenceProduced || []).map(e => '<li>' + esc(e) + '</li>').join('') + '</ul></div></div>';
+    html += tf('Conditions (Environment, Equipment, Supervision, Timeframes)', task.conditions);
+    html += tf('LLN &amp; Reasonable Adjustment Considerations', task.llnConsiderations);
+    html += tf('Risk &amp; Regulatory Notes', task.riskNotes);
+    html += tf('Assessment Conditions Coverage', task.acCovered);
+
+    html += '<div class="task-field"><div class="task-field-label">Performance Evidence Mapped</div><div class="mapping-tags">' +
+      (task.peMapping || []).map(p => '<span class="mapping-tag">' + esc(p) + '</span>').join('') + '</div></div>';
+    html += '<div class="task-field"><div class="task-field-label">Knowledge Evidence Mapped</div><div class="mapping-tags">' +
+      (task.keMapping || []).map(k => '<span class="mapping-tag">' + esc(k) + '</span>').join('') + '</div></div>';
+
+    html += '</div></div>';
+  });
+  html += '</div>';
+
+  // Educator Inputs
+  html += '<div class="result-section"><div class="result-section-title">📁 Educator Inputs</div>';
+  html += '<ul style="font-size:13px;padding-left:20px;color:var(--tg-muted);">';
+  html += '<li>' + esc(state._tgaFile?.name || 'TGA Unit PDF') + '</li>';
+  if (state._extraFile) html += '<li>' + esc(state._extraFile.name) + '</li>';
+  html += '</ul></div>';
+
+  return html;
+}
+
+// ===== RENDER ASSESSMENT MAPPING =====
+function renderAssessmentMapping(r) {
+  let html = '';
+
+  html += '<div class="alert alert-info"><span class="alert-icon">ℹ️</span>One row per unique Task ID + Assessment Method + Evidence Type combination. Evidence items consolidated with numbered bullets using verbatim TGA wording.</div>';
+
+  const renderMappingTable = (title, rows) => {
+    if (!rows || rows.length === 0) return '<p style="color:var(--tg-muted);font-size:13px;">No entries.</p>';
+    let t = '<div class="result-section"><div class="result-section-title">' + title + '</div>';
+    t += '<div class="data-table-wrap"><table class="data-table">';
+    t += '<thead><tr><th class="col-narrow">Unit Code</th><th class="col-narrow">Task ID</th><th class="col-med">Task Name</th><th class="col-med">Method</th><th class="col-narrow">Type</th><th class="col-wide">Evidence Item Wording (verbatim)</th></tr></thead><tbody>';
+    rows.forEach(row => {
+      t += '<tr><td>' + esc(r.unitCode||state.unitCode) + '</td><td>' + esc(row.taskId) + '</td><td>' + esc(row.taskName) + '</td><td>' + esc(row.method) + '</td><td><span class="badge badge-covered">' + esc(row.evidenceType) + '</span></td><td style="white-space:pre-wrap;">' + esc(row.evidenceItems) + '</td></tr>';
+    });
+    t += '</tbody></table></div></div>';
+    return t;
+  };
+
+  html += renderMappingTable('Performance Evidence Mapping', r.mappingTable?.performance);
+  html += renderMappingTable('Knowledge Evidence Mapping', r.mappingTable?.knowledge);
+  html += renderMappingTable('Assessment Conditions Mapping', r.mappingTable?.conditions);
+  return html;
+}
+
+// ===== RENDER COMPLIANCE =====
+function renderCompliance(r) {
+  const c = r.compliance || {};
+  let html = '';
+
+  const overallBadge = c.overallStatus === 'Compliant' ? 'badge-compliant' : 'badge-attention';
+  html += '<div style="margin-bottom:20px;font-size:15px;"><strong>Overall Status: </strong><span class="badge ' + overallBadge + '">' + esc(c.overallStatus||'') + '</span></div>';
+
+  html += '<div class="compliance-grid">';
+  html += coverageBox('Performance Evidence', c.peCoverage?.covered, c.peCoverage?.partial, c.peCoverage?.uncovered);
+  html += coverageBox('Knowledge Evidence', c.keCoverage?.covered, c.keCoverage?.partial, c.keCoverage?.uncovered);
+  html += '<div class="compliance-box"><div class="compliance-box-title">Assessment Conditions</div><div style="font-size:13px;font-weight:600;margin-bottom:6px;">' + esc(c.acStatus||'') + '</div><p style="font-size:12px;color:var(--tg-muted);">' + esc(c.acNotes||'') + '</p></div>';
+  html += '</div>';
+
+  if (c.gaps && c.gaps.length) {
+    html += '<div class="result-section"><div class="result-section-title">⚠️ Gaps &amp; Risks</div><ul style="font-size:14px;padding-left:20px;">';
+    c.gaps.forEach(g => html += '<li style="margin-bottom:6px;">' + esc(g) + '</li>');
+    html += '</ul></div>';
+  }
+
+  if (c.recommendations && c.recommendations.length) {
+    html += '<div class="result-section"><div class="result-section-title">💡 Recommendations</div><ul style="font-size:14px;padding-left:20px;">';
+    c.recommendations.forEach(rec => html += '<li style="margin-bottom:6px;">' + esc(rec) + '</li>');
+    html += '</ul></div>';
+  }
+
+  return html;
+}
+
+function coverageBox(title, covered, partial, uncovered) {
+  let html = '<div class="compliance-box"><div class="compliance-box-title">' + title + '</div>';
+  (covered||[]).forEach(id => html += '<div class="compliance-item"><span class="ci-dot covered"></span>' + esc(id) + ' — Covered</div>');
+  (partial||[]).forEach(id => html += '<div class="compliance-item"><span class="ci-dot partial"></span>' + esc(id) + ' — Partial</div>');
+  (uncovered||[]).forEach(id => html += '<div class="compliance-item"><span class="ci-dot gap"></span>' + esc(id) + ' — Not covered</div>');
+  if (!covered?.length && !partial?.length && !uncovered?.length) html += '<p style="font-size:12px;color:var(--tg-muted);">No items found.</p>';
+  html += '</div>';
+  return html;
+}
+
+// ===== RENDER LEARNING DESIGN =====
+function renderLearningDesign(l) {
+  let html = '';
+
+  // Unit Overview / Application
+  if (l.unitOverview || l.unitApplication) {
+    html += '<div class="result-section"><div class="result-section-title">📖 Unit Overview / Application</div>';
+    if (l.unitOverview) html += '<p style="font-size:14px;margin-bottom:10px;"><strong>Unit Overview:</strong> ' + esc(l.unitOverview) + '</p>';
+    if (l.unitApplication) html += '<p style="font-size:14px;"><strong>Application:</strong> ' + esc(l.unitApplication) + '</p>';
+    html += '</div>';
+  }
+
+  // Delivery Considerations
+  if (l.deliveryContextSummary) {
+    html += '<div class="result-section"><div class="result-section-title">🎓 Delivery Considerations</div>';
+    html += '<p style="font-size:14px;">' + esc(l.deliveryContextSummary) + '</p></div>';
+  }
+
+  // Learning Outcomes Table
+  html += '<div class="result-section"><div class="result-section-title">🎯 Learning Outcomes Table</div>';
+  (l.learningOutcomes || []).forEach(lo => {
+    html += '<div class="outcome-row">';
+    html += '<span class="outcome-id">' + esc(lo.id) + '</span>';
+    html += '<span class="outcome-text">' + esc(lo.outcome) + '</span>';
+    html += '<div class="outcome-meta">Elements: ' + esc(lo.relatedElements||'—') + ' &nbsp;|&nbsp; KE: ' + esc(lo.relatedKE||'—') + ' &nbsp;|&nbsp; Assessment: ' + esc(lo.assessmentTasks||'—') + '</div>';
+    html += '</div>';
+  });
+  html += '</div>';
+
+  // Module Structure Table
+  html += '<div class="result-section"><div class="result-section-title">📦 Module Structure Table</div>';
+  (l.modules || []).forEach(mod => {
+    html += '<div class="module-card">';
+    html += '<div class="module-card-header"><span class="module-id">' + esc(mod.id) + '</span><span class="module-title">' + esc(mod.title) + '</span></div>';
+    html += '<p style="font-size:13px;margin-bottom:6px;">' + esc(mod.purpose) + '</p>';
+    html += '<div class="module-meta">Outcomes: ' + esc(mod.relatedOutcomes||'—') + ' &nbsp;|&nbsp; Assessment: ' + esc(mod.assessmentAlignment||'—') + ' &nbsp;|&nbsp; Duration: ' + esc(mod.estimatedDuration||'TBC') + '</div>';
+    html += '</div>';
+  });
+  html += '</div>';
+
+  // Teacher Session-by-Session Outline
+  html += '<div class="result-section"><div class="result-section-title">📋 Teacher Session-by-Session Outline (with exemplar answers)</div>';
+  (l.activities || []).forEach(act => {
+    const sessionLabel = act.sessionNumber ? 'Session ' + act.sessionNumber + ' – ' + esc(act.moduleTitle) : esc(act.moduleId) + ' — ' + esc(act.moduleTitle);
+    html += '<div class="task-card" style="margin-bottom:20px;">';
+    html += '<div class="task-header"><span class="task-id">' + esc(act.moduleId) + '</span><span class="task-name">' + sessionLabel + '</span></div>';
+    html += '<div class="task-body">';
+
+    // Focus
+    if (act.focus) html += '<div class="task-field"><div class="task-field-label">Focus:</div><div class="task-field-value" style="font-weight:600;">' + esc(act.focus) + '</div></div>';
+
+    // Content Outline — rendered with bold+italic sub-headings and paragraph breaks
+    if (act.contentOutline) html += '<div class="task-field"><div class="task-field-label">Content Outline: (Summary of what is to be taught)</div><div class="task-field-value" style="line-height:1.8;">' + renderContent(act.contentOutline) + '</div></div>';
+
+    // Learning Activities — activity names rendered bold+italic, paragraph breaks between sections
+    html += '<div class="task-field"><div class="task-field-label">Learning Activities: (Summary of activities for the session)</div><div class="task-field-value"><ul>' + (act.learningActivities||act.skillActivities||[]).map(a=>'<li style="margin-bottom:10px;">'+renderContent(a)+'</li>').join('') + '</ul></div></div>';
+
+    // Links to Assessments
+    if (act.linksToAssessments || act.practiceApplication) html += '<div class="task-field"><div class="task-field-label">Links to Assessments: (Summary of how these activities link to assessments)</div><div class="task-field-value">' + esc(act.linksToAssessments || act.practiceApplication) + '</div></div>';
+
+    // Content Recommendations
+    if (act.contentRecommendations?.length) {
+      html += '<div class="task-field"><div class="task-field-label">Session ' + (act.sessionNumber||act.moduleId) + ' — Content Recommendations: (List of all the content to be taught)</div>';
+      html += '<div class="task-field-value"><ul>' + act.contentRecommendations.map(r=>'<li style="margin-bottom:4px;">'+esc(r)+'</li>').join('') + '</ul></div></div>';
+    }
+
+    // Foundation Skills
+    if (act.foundationSkills) html += '<div class="task-field"><div class="task-field-label">Foundation Skills &amp; LLN Support</div><div class="task-field-value">' + esc(act.foundationSkills) + '</div></div>';
+
+    // Resources (inline, with live links)
+    const res = act.resources || act.resourcesRequired || [];
+    if (res.length) html += '<div class="task-field"><div class="task-field-label">Resources Required</div><div class="task-field-value"><ul>' + res.map(r=>'<li>'+linkify(r)+'</li>').join('') + '</ul></div></div>';
+
+    // Recommended Resources (inline per module — videos, images, diagrams)
+    const rr = act.recommendedResources;
+    if (rr) {
+      html += '<div class="task-field"><div class="task-field-label" style="color:var(--tg-accent);">🎬 Recommended Resources for this Session</div><div class="task-field-value">';
+
+      // Videos
+      if (rr.videos?.length) {
+        html += '<div style="margin-bottom:10px;"><strong>Videos</strong><ul style="margin-top:4px;">';
+        rr.videos.forEach(v => {
+          html += '<li style="margin-bottom:6px;">';
+          html += '<strong>' + esc(v.title||'Video') + '</strong>';
+          if (v.duration) html += ' <span style="color:var(--tg-muted);font-size:12px;">(' + esc(v.duration) + ')</span>';
+          html += '<br><span style="font-size:13px;">' + esc(v.description||'') + '</span>';
+          if (v.url) html += '<br><a href="' + esc(v.url) + '" target="_blank" rel="noopener" style="font-size:12px;color:var(--tg-accent);">' + esc(v.url) + '</a>';
+          html += '</li>';
+        });
+        html += '</ul></div>';
+      }
+
+      // Images
+      if (rr.images?.length) {
+        html += '<div style="margin-bottom:10px;"><strong>Images / Photographs</strong><ul style="margin-top:4px;">';
+        rr.images.forEach(img => {
+          html += '<li style="margin-bottom:6px;">';
+          html += '<span style="font-size:13px;">' + esc(img.description||'') + '</span>';
+          if (img.url) html += '<br><a href="' + esc(img.url) + '" target="_blank" rel="noopener" style="font-size:12px;color:var(--tg-accent);">' + esc(img.url) + '</a>';
+          if (img.photographer) html += '<br><span style="font-size:11px;color:var(--tg-muted);">📷 ' + esc(img.photographer) + ' — ' + esc(img.source||'') + ' — ' + esc(img.licence||'') + '</span>';
+          html += '</li>';
+        });
+        html += '</ul></div>';
+      }
+
+      // Diagrams
+      if (rr.diagrams?.length) {
+        html += '<div><strong>Diagrams / Infographics</strong><ul style="margin-top:4px;">';
+        rr.diagrams.forEach(d => {
+          html += '<li style="margin-bottom:6px;">';
+          html += '<span style="font-size:13px;">' + esc(d.description||'') + '</span>';
+          if (d.source) html += ' <span style="font-size:11px;color:var(--tg-muted);">[' + esc(d.source) + ']</span>';
+          if (d.url) html += '<br><a href="' + esc(d.url) + '" target="_blank" rel="noopener" style="font-size:12px;color:var(--tg-accent);">' + esc(d.url) + '</a>';
+          html += '</li>';
+        });
+        html += '</ul></div>';
+      }
+
+      html += '</div></div>';
+    }
+
+    html += '</div></div>';
+  });
+  html += '</div>';
+
+  // Teacher Session-by-Session Outline table (overview)
+  if (l.sessionPlan?.length) {
+    html += '<div class="result-section"><div class="result-section-title">📅 Teacher Session-by-Session Outline — Overview Table</div>';
+    html += '<div class="data-table-wrap"><table class="data-table">';
+    html += '<thead><tr><th class="col-narrow">Session</th><th class="col-med">Module</th><th>Focus</th><th>Learning Activities</th><th>Links to Assessments</th><th class="col-narrow">Notes</th></tr></thead><tbody>';
+    (l.sessionPlan || []).forEach(s => {
+      html += '<tr><td style="text-align:center;font-weight:700;">' + esc(s.session) + '</td><td>' + esc(s.module) + '</td><td>' + esc(s.focus) + '</td><td>' + esc(s.activities) + '</td><td>' + esc(s.linksToAssessments||s.assessmentPrep||'') + '</td><td>' + esc(s.notes||'') + '</td></tr>';
+    });
+    html += '</tbody></table></div></div>';
+  }
+
+  // Citations (with live links)
+  if (l.citations?.length) {
+    html += '<div class="result-section"><div class="result-section-title">📚 Citations &amp; Sources</div>';
+    html += '<ul style="font-size:13px;padding-left:20px;">' + l.citations.map(c=>'<li style="margin-bottom:4px;">'+linkify(c)+'</li>').join('') + '</ul></div>';
+  }
+
+  return html;
+}
+
+// ===== RENDER LEARNING MAPPING =====
+function renderLearningMapping(l) {
+  let html = '';
+
+  html += '<div class="alert alert-info"><span class="alert-icon">ℹ️</span>Mapping is assessment-centric: each row starts from an assessment evidence requirement and shows how learning prepares learners for it.</div>';
+
+  html += '<div class="data-table-wrap"><table class="data-table">';
+  html += '<thead><tr>';
+  html += '<th class="col-narrow">Task ID</th><th class="col-med">Task Name</th><th class="col-narrow">Type</th><th>Evidence Item (verbatim)</th><th class="col-med">Learning Module</th><th class="col-med">Activity</th><th>How Learning Prepares</th><th class="col-narrow">Coverage</th>';
+  html += '</tr></thead><tbody>';
+
+  (l.learningMapping || []).forEach(row => {
+    const badge = row.coverageStatus === 'Covered' ? 'badge-covered' : row.coverageStatus === 'Partial' ? 'badge-partial' : 'badge-gap';
+    html += '<tr>';
+    html += '<td>' + esc(row.taskId) + '</td>';
+    html += '<td>' + esc(row.taskName) + '</td>';
+    html += '<td><span class="badge badge-covered">' + esc(row.evidenceType) + '</span></td>';
+    html += '<td style="font-size:12px;">' + esc(row.evidenceItem) + '</td>';
+    html += '<td style="font-size:12px;">' + esc(row.learningModule) + '</td>';
+    html += '<td style="font-size:12px;">' + esc(row.learningActivity) + '</td>';
+    html += '<td style="font-size:12px;">' + esc(row.howPrepares) + '</td>';
+    html += '<td><span class="badge ' + badge + '">' + esc(row.coverageStatus) + '</span></td>';
+    html += '</tr>';
+  });
+
+  html += '</tbody></table></div>';
+
+  const comp = l.complianceCheck;
+  if (comp) {
+    if (comp.gaps?.length) {
+      html += '<div class="result-section" style="margin-top:24px;"><div class="result-section-title">⚠️ Learning Gaps</div><ul style="font-size:13px;padding-left:20px;">';
+      comp.gaps.forEach(g => html += '<li>' + esc(g) + '</li>');
+      html += '</ul></div>';
+    }
+    if (comp.notes) {
+      html += '<div class="result-section"><div class="result-section-title">📝 Compliance Notes</div><p style="font-size:14px;">' + esc(comp.notes) + '</p></div>';
+    }
+  }
+
+  return html;
+}
+
+// ===== HELPERS =====
+function esc(str) {
+  if (!str) return '';
+  return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+// Escape HTML then convert bare URLs to clickable links
+function linkify(str) {
+  if (!str) return '';
+  const escaped = String(str)
+    .replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+  return escaped.replace(/(https?:\/\/[^\s&lt;&gt;&quot;]+)/g,
+    '<a href="$1" target="_blank" rel="noopener" style="color:var(--tg-accent);word-break:break-all;">$1</a>');
+}
+
+// Render content with markdown-style bold+italic headings and live links.
+// **Heading:** or ***Heading:*** → <br><br><strong><em>Heading:</em></strong>
+// Any bare https:// URL → clickable link
+function renderContent(str) {
+  if (!str) return '';
+  // Split on ***...*** and **...** markers (bold+italic headings)
+  const parts = String(str).split(/(\*{2,3}[^*]+\*{2,3})/g);
+  let result = '';
+  let first = true;
+  parts.forEach(part => {
+    const tripleMatch = part.match(/^\*{3}([^*]+)\*{3}$/);
+    const doubleMatch = part.match(/^\*{2}([^*]+)\*{2}$/);
+    if (tripleMatch || doubleMatch) {
+      const inner = ((tripleMatch || doubleMatch)[1])
+        .replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+      // Add paragraph break before every heading except the very first
+      if (!first) result += '<br><br>';
+      result += '<strong><em>' + inner + '</em></strong>';
+      first = false;
+    } else {
+      // Escape HTML then linkify bare URLs in plain text segments
+      const escaped = String(part)
+        .replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+      const linked = escaped.replace(/(https?:\/\/[^\s&lt;&gt;&quot;]+)/g,
+        '<a href="$1" target="_blank" rel="noopener" style="color:var(--tg-accent);word-break:break-all;">$1</a>');
+      result += linked;
+      if (part.trim()) first = false;
+    }
+  });
+  return result;
+}
+
+function tf(label, value) {
+  if (!value) return '';
+  return '<div class="task-field"><div class="task-field-label">' + label + '</div><div class="task-field-value">' + esc(value) + '</div></div>';
+}
+
+// Strip **stars** and ***stars*** from a string (for headings/titles in Word)
+function stripStars(str) {
+  if (!str) return '';
+  return String(str).replace(/\*{2,3}([^*]+)\*{2,3}/g, '$1').trim();
+}
+
+// Word-document version of renderContent:
+// **Heading:** → bold+italic heading with a paragraph break before it
+// ***Heading:*** → same
+// URLs → Word-friendly hyperlink
+function wordContent(str) {
+  if (!str) return '';
+  const parts = String(str).split(/(\*{2,3}[^*]+\*{2,3})/g);
+  let result = '';
+  let first = true;
+  parts.forEach(part => {
+    const tripleMatch = part.match(/^\*{3}([^*]+)\*{3}$/);
+    const doubleMatch = part.match(/^\*{2}([^*]+)\*{2}$/);
+    if (tripleMatch || doubleMatch) {
+      const inner = esc((tripleMatch || doubleMatch)[1]);
+      if (!first) result += '</p><p>';
+      result += '<strong><em>' + inner + '</em></strong> ';
+      first = false;
+    } else {
+      const escaped = esc(part);
+      const linked = escaped.replace(/(https?:\/\/[^\s&lt;&gt;&quot;]+)/g,
+        '<a href="$1" style="color:#007a4c;font-style:italic;">$1</a>');
+      result += linked;
+      if (part.trim()) first = false;
+    }
+  });
+  return result;
+}
+
+// ===== WORD EXPORT =====
+function wordDocHeader(r, title, fileType, today) {
+  const code = r?.unitCode || state.unitCode;
+  const name = r?.unitName || state.unitName;
+  return `<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:w="urn:schemas-microsoft-com:office:word" xmlns="http://www.w3.org/TR/REC-html40">
+<head><meta charset="utf-8"><title>SPARK Learning Designer | RockMouse AI Agents</title>
+<!--[if gte mso 9]><xml><w:WordDocument><w:View>Print</w:View><w:Zoom>90</w:Zoom><w:DoNotOptimizeForBrowser/></w:WordDocument></xml><![endif]-->
+<style>
+  @page { margin: 2cm 2.5cm 2cm 2.5cm; }
+  body { font-family: Aptos, Calibri, 'Segoe UI', sans-serif; font-size: 12pt; margin: 0; color: #1a2e25; }
+  h2 { font-size: 15pt; color: #003d2b; margin-top: 18pt; margin-bottom: 6pt; }
+  h3 { font-size: 13pt; color: #005838; margin-top: 12pt; margin-bottom: 4pt; }
+  p { margin-bottom: 8pt; font-size: 12pt; }
+  ul { padding-left: 18pt; margin-bottom: 8pt; }
+  li { margin-bottom: 3pt; font-size: 12pt; }
+  table { border-collapse: collapse; width: 100%; font-size: 10pt; margin-bottom: 12pt; }
+  th { background-color: #005838; color: white; padding: 5pt 7pt; text-align: left; font-size: 10pt; }
+  td { border: 0.5pt solid #c5ddd3; padding: 5pt 7pt; vertical-align: top; }
+  tr.alt td { background-color: #f4faf7; }
+  .tbl-title td { background-color: #003d2b; color: white; font-size: 13pt; font-weight: bold; padding: 8pt 10pt; border: none; }
+  .badge-cv { color: #1e5e34; font-weight: bold; }
+  .badge-pt { color: #856404; font-weight: bold; }
+  .badge-gp { color: #721c24; font-weight: bold; }
+  .label { font-size: 9pt; font-weight: bold; text-transform: uppercase; letter-spacing: 0.5pt; color: #5c7a6e; margin-bottom: 2pt; }
+  .disclaimer { background: #fffbea; border: 1pt solid #f5d66e; padding: 8pt 10pt; font-size: 9pt; color: #665c00; margin-bottom: 12pt; }
+  .meta { font-size: 10pt; color: #5c7a6e; margin-bottom: 4pt; }
+  .cover-block { background-color: #003d2b; color: white; padding: 16pt 12pt 14pt 12pt; margin-bottom: 18pt; }
+  .cover-org { font-size: 10pt; color: #a8d4c0; margin-bottom: 6pt; }
+  .cover-unit { font-size: 24pt; font-weight: 900; color: white; line-height: 1.1; margin-bottom: 4pt; }
+  .cover-title-text { font-size: 15pt; font-weight: bold; color: white; margin-bottom: 4pt; }
+  .cover-sub { font-size: 11pt; color: #a8d4c0; }
+  .session-heading td { background-color: #005838; color: white; font-size: 12pt; font-weight: bold; padding: 7pt 10pt; border: none; }
+  .section-lbl { font-size: 9pt; font-weight: bold; color: #007a4c; text-transform: uppercase; letter-spacing: 0.4pt; border-bottom: 0.5pt solid #c5ddd3; padding-bottom: 2pt; margin-bottom: 4pt; margin-top: 10pt; }
+  .teacher-note { background: #f4faf7; border-left: 3pt solid #007a4c; padding: 6pt 10pt; font-size: 10pt; color: #1a2e25; font-style: italic; margin: 8pt 0; }
+  .page-break { page-break-after: always; height: 0; }
+</style></head><body>
+<div class="cover-block">
+  <p class="cover-org">TAFE Gippsland</p>
+  <p class="cover-unit">${code}</p>
+  <p class="cover-title-text">${name}</p>
+  <p class="cover-sub">${title}</p>
+</div>
+<table>
+  <tr class="tbl-title"><td colspan="2">Unit Overview / Application</td></tr>
+  <tr><td style="width:30%;"><strong>Unit Code and Title</strong></td><td>${code} — ${name}</td></tr>
+  <tr class="alt"><td><strong>Organisation</strong></td><td>TAFE Gippsland</td></tr>
+  <tr><td><strong>Educator</strong></td><td>${state.educatorName}</td></tr>
+  <tr class="alt"><td><strong>Date</strong></td><td>${today}</td></tr>
+  ${state.deliveryContext?.mode ? `<tr><td><strong>Delivery Mode</strong></td><td>${state.deliveryContext.mode}</td></tr>` : ''}
+  ${state.deliveryContext?.sessions ? `<tr class="alt"><td><strong>Sessions</strong></td><td>${state.deliveryContext.sessions}${state.deliveryContext.sessionLength ? ' × ' + state.deliveryContext.sessionLength : ''}</td></tr>` : ''}
+  ${state.deliveryContext?.cohort ? `<tr><td><strong>Cohort</strong></td><td>${state.deliveryContext.cohort}</td></tr>` : ''}
+  ${state.deliveryContext?.constraints ? `<tr class="alt"><td><strong>Delivery Considerations</strong></td><td>${state.deliveryContext.constraints}</td></tr>` : ''}
+</table>
+<p class="disclaimer">⚠️ <strong>AI Disclaimer:</strong> This document was generated with AI assistance. The educator/assessor must validate all content against current TGA requirements, your organisation's policies, and applicable legislation before use.</p>`;
+}
+
+function wordDocFooter() {
+  return '</body></html>';
+}
+
+function exportAssessmentDesigner(r, today) {
+  const title = 'Assessment Designer';
+  const fn = 'Assessment Designer_' + state.unitCode + '_' + state.unitName.substring(0,30).replace(/[^a-zA-Z0-9 ]/g,'') + '_' + state.educatorName + '_Claude_' + today.replace(/ /g,'_') + '.doc';
+  let body = wordDocHeader(r, title, 'Assessment Designer File', today);
+
+  body += '<h2>Assessment Context &amp; Strategy</h2>';
+  body += '<p>' + esc(r.strategy?.contextSummary||'') + '</p>';
+  body += '<p>' + esc(r.strategy?.rationale||'') + '</p>';
+
+  (r.tasks||[]).forEach(task => {
+    body += '<h2>' + esc(task.id) + ' — ' + esc(task.name) + '</h2>';
+    body += '<p><span class="label">Assessment Method</span><br>' + esc(task.method) + '</p>';
+    body += '<p><span class="label">Description</span><br>' + esc(task.description) + '</p>';
+    body += '<p class="label">Learner Actions</p><ul>' + (task.learnerActions||[]).map(a=>'<li>'+esc(a)+'</li>').join('') + '</ul>';
+    body += '<p class="label">Evidence Produced</p><ul>' + (task.evidenceProduced||[]).map(e=>'<li>'+esc(e)+'</li>').join('') + '</ul>';
+    body += '<p><span class="label">Conditions</span><br>' + esc(task.conditions) + '</p>';
+    body += '<p><span class="label">LLN &amp; Reasonable Adjustment</span><br>' + esc(task.llnConsiderations) + '</p>';
+    body += '<p><span class="label">Risk &amp; Regulatory Notes</span><br>' + esc(task.riskNotes) + '</p>';
+    body += '<p><span class="label">Assessment Conditions Coverage</span><br>' + esc(task.acCovered) + '</p>';
+    body += '<p><span class="label">Performance Evidence Mapped:</span> ' + (task.peMapping||[]).join(', ') + '</p>';
+    body += '<p><span class="label">Knowledge Evidence Mapped:</span> ' + (task.keMapping||[]).join(', ') + '</p>';
+  });
+
+  body += '<h2>Educator Inputs</h2><ul>';
+  body += '<li>' + esc(state._tgaFile?.name||'TGA Unit PDF') + '</li>';
+  if (state._extraFile) body += '<li>' + esc(state._extraFile.name) + '</li>';
+  body += '</ul>';
+
+  body += wordDocFooter();
+  downloadDoc(body, fn);
+}
+
+function exportAssessmentMapper(r, today) {
+  const title = 'Assessment Mapper';
+  const fn = 'Assessment Mapper_' + state.unitCode + '_' + state.unitName.substring(0,30).replace(/[^a-zA-Z0-9 ]/g,'') + '_' + state.educatorName + '_Claude_' + today.replace(/ /g,'_') + '.doc';
+  let body = wordDocHeader(r, title, 'Assessment Mapping File', today);
+
+  const renderTable = (heading, rows) => {
+    if (!rows?.length) return '';
+    let t = '<h2>' + heading + '</h2><table><thead><tr><th style="width:65pt;">Unit Code</th><th style="width:40pt;">Task ID</th><th style="width:90pt;">Task Name</th><th style="width:90pt;">Method</th><th style="width:30pt;">Type</th><th>Evidence Item Wording (verbatim)</th></tr></thead><tbody>';
+    rows.forEach((row,i) => {
+      t += '<tr' + (i%2?'':' class="alt"') + '><td>' + esc(r.unitCode) + '</td><td>' + esc(row.taskId) + '</td><td>' + esc(row.taskName) + '</td><td>' + esc(row.method) + '</td><td>' + esc(row.evidenceType) + '</td><td style="white-space:pre-wrap;">' + esc(row.evidenceItems) + '</td></tr>';
+    });
+    t += '</tbody></table>';
+    return t;
+  };
+
+  body += renderTable('Part 1 — Performance Evidence Mapping', r.mappingTable?.performance);
+  body += renderTable('Part 2 — Knowledge Evidence Mapping', r.mappingTable?.knowledge);
+  body += renderTable('Part 3 — Assessment Conditions Mapping', r.mappingTable?.conditions);
+
+  const c = r.compliance||{};
+  body += '<h2>Part 4 — Compliance Analysis</h2>';
+  body += '<h3>Coverage Check</h3>';
+  body += '<p><strong>Performance Evidence:</strong> Covered: ' + (c.peCoverage?.covered||[]).join(', ') + ' | Partial: ' + (c.peCoverage?.partial||[]).join(', ')||'None' + ' | Uncovered: ' + (c.peCoverage?.uncovered||[]).join(', ')||'None' + '</p>';
+  body += '<p><strong>Knowledge Evidence:</strong> Covered: ' + (c.keCoverage?.covered||[]).join(', ') + ' | Partial: ' + (c.keCoverage?.partial||[]).join(', ')||'None' + ' | Uncovered: ' + (c.keCoverage?.uncovered||[]).join(', ')||'None' + '</p>';
+  body += '<p><strong>Assessment Conditions:</strong> ' + esc(c.acStatus||'') + ' — ' + esc(c.acNotes||'') + '</p>';
+  if (c.gaps?.length) { body += '<h3>Gaps &amp; Risks</h3><ul>' + (c.gaps||[]).map(g=>'<li>'+esc(g)+'</li>').join('') + '</ul>'; }
+  if (c.recommendations?.length) { body += '<h3>Recommendations</h3><ul>' + (c.recommendations||[]).map(r=>'<li>'+esc(r)+'</li>').join('') + '</ul>'; }
+
+  body += '<h2>Part 5 — Educator Inputs</h2><ul>';
+  body += '<li>' + esc(state._tgaFile?.name||'TGA Unit PDF') + '</li>';
+  if (state._extraFile) body += '<li>' + esc(state._extraFile.name) + '</li>';
+  body += '</ul>';
+
+  body += wordDocFooter();
+  downloadDoc(body, fn);
+}
+
+function exportLearningDesigner(l, today) {
+  const title = 'Learning Designer';
+  const fn = 'Learning Designer_' + state.unitCode + '_' + state.unitName.substring(0,30).replace(/[^a-zA-Z0-9 ]/g,'') + '_' + state.educatorName + '_' + today.replace(/ /g,'_') + '.doc';
+  let body = wordDocHeader(null, title, 'Learning Designer File', today);
+
+  // Unit Overview / Application
+  if (l.unitOverview || l.unitApplication) {
+    body += '<h2>Unit Overview / Application</h2>';
+    if (l.unitOverview) body += '<p><strong>Unit Overview:</strong> ' + esc(l.unitOverview) + '</p>';
+    if (l.unitApplication) body += '<p><strong>Application:</strong> ' + esc(l.unitApplication) + '</p>';
+  }
+
+  // Delivery Considerations
+  if (l.deliveryContextSummary) {
+    body += '<h2>Delivery Considerations</h2>';
+    body += '<p>' + esc(l.deliveryContextSummary) + '</p>';
+  }
+
+  // Learning Outcomes — merged title row
+  body += '<table>';
+  body += '<tr class="tbl-title"><td colspan="5">Learning Outcomes</td></tr>';
+  body += '<thead><tr><th style="width:40pt;">ID</th><th>Learning Outcome</th><th style="width:70pt;">Elements/PC</th><th style="width:90pt;">Knowledge Evidence</th><th style="width:70pt;">Assess. Tasks</th></tr></thead><tbody>';
+  (l.learningOutcomes||[]).forEach((lo,i) => {
+    body += '<tr' + (i%2?'':' class="alt"') + '><td>' + esc(lo.id) + '</td><td>' + esc(lo.outcome) + '</td><td>' + esc(lo.relatedElements||'') + '</td><td>' + esc(lo.relatedKE||'') + '</td><td>' + esc(lo.assessmentTasks||'') + '</td></tr>';
+  });
+  body += '</tbody></table>';
+
+  // Teacher Session-by-Session Outline
+  body += '<h2>Teacher Session-by-Session Outline (with exemplar answers)</h2>';
+  (l.activities||[]).forEach(act => {
+    const cleanTitle = stripStars(act.moduleTitle || '');
+    const sessionLabel = act.sessionNumber
+      ? 'Session ' + act.sessionNumber + ' – ' + esc(cleanTitle)
+      : esc(act.moduleId) + ' — ' + esc(cleanTitle);
+    body += '<div class="page-break"></div>';
+    body += '<table><tr class="session-heading"><td>' + sessionLabel + '</td></tr></table>';
+    if (act.assessmentTasks) body += '<p style="margin-top:4pt;"><strong>Assessment Tasks:</strong> ' + esc(act.assessmentTasks) + '</p>';
+
+    if (act.focus) {
+      body += '<p class="section-lbl">Focus:</p>';
+      body += '<p><strong>' + esc(act.focus) + '</strong></p>';
+    }
+
+    if (act.contentOutline) {
+      body += '<p class="section-lbl">Content Outline: (Summary of what is to be taught)</p>';
+      body += '<p>' + wordContent(act.contentOutline) + '</p>';
+    }
+
+    if (act.teacherNote) {
+      body += '<div class="teacher-note">&#128161; ' + esc(act.teacherNote) + '</div>';
+    }
+
+    const activities = act.learningActivities || act.skillActivities || [];
+    if (activities.length) {
+      body += '<p class="section-lbl">Learning Activities: (Summary of activities for the session)</p>';
+      body += '<ul>' + activities.map(a => '<li><p>' + wordContent(a) + '</p></li>').join('') + '</ul>';
+    }
+
+    if (act.linksToAssessments || act.practiceApplication) {
+      body += '<p class="section-lbl">Links to Assessments: (Summary of how these activities link to assessments)</p>';
+      body += '<p>' + esc(act.linksToAssessments || act.practiceApplication) + '</p>';
+    }
+
+    const hasContentRec = act.contentRecommendations?.length;
+    const hasResources = act.resources?.length;
+    if (hasContentRec || hasResources) {
+      body += '<p class="section-lbl">Session ' + (act.sessionNumber||act.moduleId) + ' – Content Recommendations: (List of all the content to be taught)</p>';
+      if (hasContentRec) {
+        body += '<p><strong>All content to be taught in this session (full list):</strong></p>';
+        body += '<ul>' + act.contentRecommendations.map(r=>'<li>'+esc(r)+'</li>').join('') + '</ul>';
+      }
+      if (hasResources) {
+        body += '<p><strong>Recommended Resources and Citations:</strong></p>';
+        body += '<ul>' + act.resources.map(r => {
+          // Try to extract URL if resource string contains one
+          const urlMatch = r.match(/(https?:\/\/[^\s]+)/);
+          if (urlMatch) {
+            const url = urlMatch[1];
+            const label = r.replace(url, '').replace(/\s*—\s*$/, '').trim();
+            return '<li>' + esc(label) + ' <a href="' + url + '" style="color:#007a4c;font-style:italic;">' + url + '</a></li>';
+          }
+          return '<li>' + esc(r) + '</li>';
+        }).join('') + '</ul>';
+      }
+    }
+  });
+
+  // Teacher Session-by-Session Outline table
+  if (l.sessionPlan?.length) {
+    body += '<table><tr class="tbl-title"><td colspan="6">Teacher Session-by-Session Outline — Overview Table</td></tr></table>';
+    body += '<table><thead><tr><th style="width:40pt;">Session</th><th style="width:120pt;">Module</th><th>Focus</th><th>Learning Activities</th><th>Links to Assessments</th><th style="width:60pt;">Notes</th></tr></thead><tbody>';
+    (l.sessionPlan||[]).forEach((s,i) => {
+      body += '<tr' + (i%2?'':' class="alt"') + '><td style="text-align:center;">' + esc(s.session) + '</td><td>' + esc(s.module) + '</td><td>' + esc(s.focus) + '</td><td>' + esc(s.activities) + '</td><td>' + esc(s.linksToAssessments||s.assessmentPrep||'') + '</td><td>' + esc(s.notes||'') + '</td></tr>';
+    });
+    body += '</tbody></table>';
+  }
+
+  // Citations (with live links)
+  if (l.citations?.length) {
+    body += '<h2>Citations &amp; Sources</h2>';
+    body += '<ul>' + l.citations.map(c => {
+      const urlMatch = c.match(/(https?:\/\/[^\s]+)/);
+      if (urlMatch) {
+        const url = urlMatch[1];
+        const label = esc(c.replace(url, '').replace(/\s*—\s*$/, '').trim());
+        return '<li>' + label + ' — <a href="' + url + '" style="color:#007a4c;font-style:italic;">' + url + '</a></li>';
+      }
+      return '<li>' + esc(c) + '</li>';
+    }).join('') + '</ul>';
+  }
+
+  body += wordDocFooter();
+  downloadDoc(body, fn);
+}
+
+function exportLearningMapper(l, today) {
+  const title = 'Learning Mapper';
+  const fn = 'Learning Mapper_' + state.unitCode + '_' + state.unitName.substring(0,30).replace(/[^a-zA-Z0-9 ]/g,'') + '_' + state.educatorName + '_Claude_' + today.replace(/ /g,'_') + '.doc';
+  let body = wordDocHeader(null, title, 'Learning Mapping File', today);
+
+  body += '<table><thead><tr><th style="width:40pt;">Task ID</th><th style="width:100pt;">Task Name</th><th style="width:30pt;">Type</th><th>Evidence Item (verbatim)</th><th style="width:100pt;">Module</th><th style="width:100pt;">Activity</th><th>How Learning Prepares</th><th style="width:50pt;">Coverage</th></tr></thead><tbody>';
+  (l.learningMapping||[]).forEach((row,i) => {
+    const cls = row.coverageStatus==='Covered' ? 'badge-cv' : row.coverageStatus==='Partial' ? 'badge-pt' : 'badge-gp';
+    body += '<tr' + (i%2?'':' class="alt"') + '><td>' + esc(row.taskId) + '</td><td>' + esc(row.taskName) + '</td><td>' + esc(row.evidenceType) + '</td><td>' + esc(row.evidenceItem) + '</td><td>' + esc(row.learningModule) + '</td><td>' + esc(row.learningActivity) + '</td><td>' + esc(row.howPrepares) + '</td><td class="'+cls+'">' + esc(row.coverageStatus) + '</td></tr>';
+  });
+  body += '</tbody></table>';
+
+  const comp = l.complianceCheck;
+  if (comp?.notes) body += '<h2>Compliance Notes</h2><p>' + esc(comp.notes) + '</p>';
+  if (comp?.gaps?.length) { body += '<h2>Gaps</h2><ul>' + (comp.gaps||[]).map(g=>'<li>'+esc(g)+'</li>').join('') + '</ul>'; }
+
+  body += wordDocFooter();
+  downloadDoc(body, fn);
+}
+
+function downloadDoc(html, filename) {
+  const blob = new Blob([html], { type: 'application/msword;charset=utf-8' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = filename;
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+}
+</script>
+</body>
+</html>

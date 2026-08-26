@@ -1,0 +1,906 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Speak-Up Scenario | RockMouse</title>
+    <style>
+        :root {
+            --teal-dark: #0a4a4a;
+            --teal: #0d7b7b;
+            --teal-light: #e8f4f4;
+            --bg: #f5f7f5;
+            --white: #ffffff;
+            --text: #1a2e2e;
+            --text-muted: #5a7070;
+            --border: #d0e0e0;
+            --shadow: 0 2px 8px rgba(10,74,74,0.08);
+            --shadow-md: 0 4px 16px rgba(10,74,74,0.12);
+            --warning-bg: #fff8e1;
+            --warning-border: #f0c040;
+            --warning-text: #7a5c00;
+            --radius: 12px;
+            --radius-sm: 8px;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+            line-height: 1.65;
+        }
+
+        /* HEADER */
+        .rm-header {
+            background: #1a4a2e;
+            color: white;
+            padding: 14px 24px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .rm-logo { font-size: 17px; font-weight: 700; letter-spacing: -0.5px; }
+        .rm-logo span { color: #7dd4d4; }
+        .rm-badge {
+            background: var(--teal);
+            font-size: 10px;
+            font-weight: 700;
+            padding: 3px 10px;
+            border-radius: 20px;
+            letter-spacing: 0.8px;
+            text-transform: uppercase;
+        }
+
+        /* LAYOUT */
+        .container {
+            max-width: 740px;
+            margin: 0 auto;
+            padding: 36px 24px 80px;
+        }
+
+        /* SCREENS */
+        .screen { display: none; }
+        .screen.active { display: block; }
+
+        /* PROGRESS */
+        .progress-bar {
+            background: var(--border);
+            border-radius: 4px;
+            height: 5px;
+            margin-bottom: 32px;
+            overflow: hidden;
+        }
+        .progress-fill {
+            background: var(--teal);
+            height: 100%;
+            border-radius: 4px;
+            transition: width 0.5s ease;
+        }
+
+        /* CARDS */
+        .card {
+            background: var(--white);
+            border-radius: var(--radius);
+            padding: 28px 32px;
+            box-shadow: var(--shadow);
+            margin-bottom: 20px;
+        }
+        .card-sm { padding: 18px 24px; }
+
+        /* TYPOGRAPHY */
+        h1 { font-size: 30px; font-weight: 800; color: var(--teal-dark); line-height: 1.2; margin-bottom: 10px; }
+        h2 { font-size: 22px; font-weight: 700; color: var(--teal-dark); line-height: 1.3; margin-bottom: 12px; }
+        h3 { font-size: 15px; font-weight: 700; color: var(--teal-dark); margin-bottom: 10px; }
+
+        p { margin-bottom: 14px; }
+        p:last-child { margin-bottom: 0; }
+
+        .eyebrow {
+            font-size: 11px;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 1.2px;
+            color: var(--teal);
+            margin-bottom: 8px;
+        }
+        .subtitle {
+            font-size: 16px;
+            color: var(--text-muted);
+            margin-bottom: 22px;
+        }
+
+        /* BUTTONS */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+            padding: 12px 22px;
+            border-radius: var(--radius-sm);
+            font-size: 14px;
+            font-weight: 700;
+            cursor: pointer;
+            border: none;
+            transition: all 0.15s ease;
+            font-family: inherit;
+            text-decoration: none;
+            white-space: nowrap;
+        }
+        .btn-primary { background: var(--teal); color: white; }
+        .btn-primary:hover { background: var(--teal-dark); }
+        .btn-outline { background: transparent; color: var(--teal); border: 2px solid var(--teal); }
+        .btn-outline:hover { background: var(--teal-light); }
+        .btn-ghost { background: transparent; color: var(--text-muted); padding: 10px 14px; font-size: 13px; }
+        .btn-ghost:hover { color: var(--teal); }
+        .btn-copy {
+            background: var(--teal-light);
+            color: var(--teal-dark);
+            border: 1px solid var(--border);
+            font-size: 13px;
+            padding: 8px 16px;
+        }
+        .btn-copy:hover { background: #cde8e8; }
+        .btn-row { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 24px; align-items: center; }
+
+        /* CHOICE GRID */
+        .choice-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 14px;
+            margin-top: 24px;
+        }
+        @media (max-width: 540px) { .choice-grid { grid-template-columns: 1fr; } }
+
+        .choice-card {
+            background: var(--white);
+            border: 2px solid var(--border);
+            border-radius: var(--radius);
+            padding: 20px;
+            cursor: pointer;
+            transition: all 0.15s ease;
+            text-align: left;
+        }
+        .choice-card:hover {
+            border-color: var(--teal);
+            box-shadow: var(--shadow-md);
+            transform: translateY(-2px);
+        }
+        .choice-icon { font-size: 26px; margin-bottom: 10px; }
+        .choice-label { font-size: 15px; font-weight: 700; color: var(--teal-dark); margin-bottom: 5px; }
+        .choice-desc { font-size: 13px; color: var(--text-muted); line-height: 1.5; }
+
+        /* CHARACTERS */
+        .character-grid { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 14px; }
+        .character-chip {
+            background: var(--teal-light);
+            border-radius: var(--radius-sm);
+            padding: 8px 14px;
+            font-size: 13px;
+            line-height: 1.5;
+        }
+        .char-name { font-weight: 700; color: var(--teal-dark); }
+        .char-role { color: var(--text-muted); }
+
+        /* DRAFT BANNER */
+        .draft-banner {
+            background: var(--warning-bg);
+            border: 1px solid var(--warning-border);
+            border-radius: var(--radius-sm);
+            padding: 11px 16px;
+            font-size: 13px;
+            color: var(--warning-text);
+            margin-bottom: 20px;
+            display: flex;
+            gap: 8px;
+            align-items: flex-start;
+            line-height: 1.5;
+        }
+
+        /* TIMELINE */
+        .timeline-block {
+            border-left: 3px solid var(--teal);
+            padding-left: 20px;
+            margin-bottom: 20px;
+            position: relative;
+        }
+        .timeline-block::before {
+            content: '';
+            width: 11px;
+            height: 11px;
+            background: var(--teal);
+            border-radius: 50%;
+            position: absolute;
+            left: -7px;
+            top: 5px;
+        }
+        .timeline-label {
+            font-size: 11px;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--teal);
+            margin-bottom: 8px;
+        }
+
+        /* TENSION BOX */
+        .tension-box {
+            background: #f0f7f7;
+            border-left: 4px solid var(--teal);
+            border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+            padding: 14px 18px;
+            margin: 18px 0;
+            font-style: italic;
+            font-size: 15px;
+            color: var(--text);
+            line-height: 1.6;
+        }
+
+        /* OUTCOME TAG */
+        .outcome-tag {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: var(--teal-light);
+            color: var(--teal-dark);
+            border-radius: 20px;
+            padding: 6px 16px;
+            font-size: 13px;
+            font-weight: 700;
+            margin-bottom: 20px;
+            border: 1px solid var(--border);
+        }
+
+        /* SPECTRUM BADGE */
+        .spectrum-badge {
+            display: inline-block;
+            padding: 4px 14px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+            margin-bottom: 16px;
+        }
+        .spectrum-passive { background: #fef3e2; color: #b45309; }
+        .spectrum-assertive { background: #ecfdf5; color: #065f46; }
+        .spectrum-aggressive { background: #fef2f2; color: #991b1b; }
+
+        /* REFLECTION */
+        .reflection-area {
+            width: 100%;
+            border: 1.5px solid var(--border);
+            border-radius: var(--radius-sm);
+            padding: 12px 16px;
+            font-size: 14px;
+            font-family: inherit;
+            color: var(--text);
+            resize: vertical;
+            min-height: 90px;
+            margin-top: 10px;
+            transition: border-color 0.15s;
+            background: var(--bg);
+        }
+        .reflection-area:focus { outline: none; border-color: var(--teal); background: white; }
+
+        /* COACHING */
+        .coaching-text {
+            font-size: 15px;
+            line-height: 1.85;
+            color: var(--text);
+            white-space: pre-wrap;
+        }
+
+        /* LOADING */
+        .loading-state { text-align: center; padding: 56px 24px; }
+        .spinner {
+            width: 38px;
+            height: 38px;
+            border: 3px solid var(--border);
+            border-top-color: var(--teal);
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+            margin: 0 auto 16px;
+        }
+        @keyframes spin { to { transform: rotate(360deg); } }
+        .loading-label { font-size: 14px; color: var(--text-muted); }
+
+        /* FORM */
+        label { font-size: 13px; font-weight: 700; color: var(--text-muted); display: block; margin-bottom: 6px; }
+        .name-input {
+            border: 1.5px solid var(--border);
+            border-radius: var(--radius-sm);
+            padding: 11px 16px;
+            font-size: 15px;
+            font-family: inherit;
+            width: 100%;
+            max-width: 300px;
+            transition: border-color 0.15s;
+            background: var(--bg);
+        }
+        .name-input:focus { outline: none; border-color: var(--teal); background: white; }
+
+        /* DIVIDER */
+        hr { border: none; border-top: 1px solid var(--border); margin: 22px 0; }
+
+        /* ERROR */
+        .error-card { background: #fef2f2; border: 1px solid #fca5a5; border-radius: var(--radius-sm); padding: 16px 20px; }
+        .error-card p { color: #991b1b; margin: 0; font-size: 14px; }
+
+        /* FOOTER */
+        .rm-footer { text-align: center; font-size: 12px; color: var(--text-muted); margin-top: 56px; }
+        .rm-footer a { color: var(--teal); text-decoration: none; }
+
+        /* RESPONSIVE */
+        @media (max-width: 480px) {
+            .container { padding: 20px 16px 60px; }
+            .card { padding: 22px 18px; }
+            h1 { font-size: 25px; }
+            h2 { font-size: 20px; }
+        }
+    </style>
+</head>
+<body>
+
+<header class="rm-header">
+  <div style="display:flex;align-items:center;gap:12px;">
+    <img src="https://rockmouse.live/assets/rockmouse-logo-wide.svg" alt="RockMouse" onerror="this.style.display='none'" style="height:26px;width:auto;filter:brightness(0) invert(1);">
+    <span style="border-left:1px solid rgba(255,255,255,0.25);padding-left:12px;font-size:13px;color:rgba(255,255,255,0.9);font-weight:600;">Speak-Up Scenario</span>
+  </div>
+</header>
+
+<div class="container">
+
+    <!-- ═══════════════════════════════════════
+         SCREEN 1 — WELCOME
+    ═══════════════════════════════════════ -->
+    <div class="screen active" id="screen-welcome">
+        <div class="card">
+            <div class="eyebrow">Branching Scenario · New Manager Series</div>
+            <h1>The Speak-Up Scenario</h1>
+            <p class="subtitle">A workplace learning experience for new managers</p>
+            <p>You are four months into your first management role. You are sitting in a meeting. A colleague is about to take the blame for something that is not their fault — and you have the data to prove it.</p>
+            <p>Do you stay silent? Speak up? Ask a question? Wait for a private moment?</p>
+            <p>Each path leads somewhere different. This scenario lets you explore those paths — and understand what your instincts reveal about how you are learning to lead.</p>
+            <hr>
+            <label for="manager-name">Your name (optional — we'll use it in the scenario)</label>
+            <input type="text" id="manager-name" class="name-input" placeholder="e.g. Alex" maxlength="30">
+            <div class="btn-row">
+                <button class="btn btn-primary" onclick="startScenario()">Begin Scenario →</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ═══════════════════════════════════════
+         SCREEN 2 — SCENE SETTING
+    ═══════════════════════════════════════ -->
+    <div class="screen" id="screen-scene">
+        <div class="progress-bar"><div class="progress-fill" style="width:20%"></div></div>
+        <div class="eyebrow">Setting the Scene</div>
+        <h2>Monday Morning. Project Phoenix Status Meeting.</h2>
+        <div class="card">
+            <p id="scene-p1"></p>
+            <p id="scene-p2">Project Phoenix is a mid-size internal transformation project. Today's status meeting is in the glass-walled boardroom on Level 4. Eight people around the table. The meeting started two minutes late.</p>
+            <p id="scene-p3">Marcus, a peer manager with six years at the company, has just finished presenting. He pauses, then speaks directly: "I want to be transparent. Phoenix is three weeks behind schedule. That's on my team and me. We'll work this weekend to catch up."</p>
+            <p id="scene-p4"></p>
+        </div>
+        <div class="card card-sm">
+            <h3>Who's in the room</h3>
+            <div class="character-grid" id="character-grid"></div>
+        </div>
+        <div class="btn-row">
+            <button class="btn btn-primary" onclick="showDecision()">The Moment Arrives →</button>
+        </div>
+    </div>
+
+    <!-- ═══════════════════════════════════════
+         SCREEN 3 — DECISION POINT
+    ═══════════════════════════════════════ -->
+    <div class="screen" id="screen-decision">
+        <div class="progress-bar"><div class="progress-fill" style="width:40%"></div></div>
+        <div class="eyebrow">Decision Point</div>
+        <h2>Marcus has just finished speaking.</h2>
+        <div class="card">
+            <p id="decision-p1"></p>
+            <div class="tension-box">"That's on my team and me. We'll work this weekend to catch up."</div>
+            <p id="decision-p2"></p>
+        </div>
+        <div class="choice-grid" id="choice-grid"></div>
+    </div>
+
+    <!-- ═══════════════════════════════════════
+         SCREEN 4 — OUTCOME (IMMEDIATE)
+    ═══════════════════════════════════════ -->
+    <div class="screen" id="screen-outcome">
+        <div class="progress-bar"><div class="progress-fill" style="width:60%"></div></div>
+        <div class="outcome-tag" id="outcome-tag-label">📍 Your choice</div>
+        <div class="card">
+            <div class="timeline-block">
+                <div class="timeline-label">In the room — right now</div>
+                <p id="outcome-immediate-text"></p>
+            </div>
+            <hr>
+            <label for="reflection-text">How are you feeling about that call? (Optional)</label>
+            <textarea class="reflection-area" id="reflection-text" placeholder="What were you thinking when you made that choice? What were you weighing up?"></textarea>
+        </div>
+        <div class="btn-row">
+            <button class="btn btn-primary" onclick="show48Hours()">48 Hours Later →</button>
+        </div>
+    </div>
+
+    <!-- ═══════════════════════════════════════
+         SCREEN 5 — 48 HOURS LATER
+    ═══════════════════════════════════════ -->
+    <div class="screen" id="screen-48hours">
+        <div class="progress-bar"><div class="progress-fill" style="width:75%"></div></div>
+        <div class="outcome-tag">⏱ 48 Hours Later</div>
+        <div class="card">
+            <div class="timeline-block">
+                <div class="timeline-label">Two days on</div>
+                <p id="outcome-later-text"></p>
+            </div>
+        </div>
+        <div class="btn-row">
+            <button class="btn btn-primary" onclick="getCoachingNote()">Get My Coaching Note →</button>
+        </div>
+    </div>
+
+    <!-- ═══════════════════════════════════════
+         SCREEN 6 — COACHING NOTE
+    ═══════════════════════════════════════ -->
+    <div class="screen" id="screen-coaching">
+        <div class="progress-bar"><div class="progress-fill" style="width:90%"></div></div>
+
+        <div id="coaching-loading" class="loading-state">
+            <div class="spinner"></div>
+            <p class="loading-label">Preparing your coaching note…</p>
+        </div>
+
+        <div id="coaching-content" style="display:none">
+            <div class="eyebrow">Your Coaching Note</div>
+            <h2 id="coaching-heading"></h2>
+            <div class="draft-banner">
+                ⚠️ <div><strong>DRAFT</strong> — This output has been generated by AI and requires human review before use.</div>
+            </div>
+            <div class="card">
+                <div class="spectrum-badge" id="spectrum-badge"></div>
+                <div class="coaching-text" id="coaching-text"></div>
+                <hr>
+                <button class="btn btn-copy" onclick="copyCoaching()">📋 Copy Coaching Note</button>
+            </div>
+            <div class="btn-row">
+                <button class="btn btn-primary" onclick="exploreAnotherPath()">Explore Another Path</button>
+                <button class="btn btn-outline" onclick="requestDebrief()">Full Debrief — All 4 Paths</button>
+            </div>
+        </div>
+
+        <div id="coaching-error" style="display:none">
+            <div class="error-card" style="margin-bottom:16px">
+                <p>⚠️ The coaching engine could not be reached. Check your connection and try again.</p>
+            </div>
+            <div class="btn-row">
+                <button class="btn btn-outline" onclick="getCoachingNote()">Retry</button>
+                <button class="btn btn-ghost" onclick="skipCoaching()">Skip to end →</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ═══════════════════════════════════════
+         SCREEN 7 — FULL DEBRIEF
+    ═══════════════════════════════════════ -->
+    <div class="screen" id="screen-debrief">
+        <div class="progress-bar"><div class="progress-fill" style="width:100%"></div></div>
+        <div class="eyebrow">Full Debrief</div>
+        <h2>All Four Paths — Compared</h2>
+
+        <div id="debrief-loading" class="loading-state">
+            <div class="spinner"></div>
+            <p class="loading-label">Generating your full debrief…</p>
+        </div>
+
+        <div id="debrief-content" style="display:none">
+            <div class="draft-banner">
+                ⚠️ <div><strong>DRAFT</strong> — This output has been generated by AI and requires human review before use.</div>
+            </div>
+            <div class="card">
+                <div class="coaching-text" id="debrief-text"></div>
+                <hr>
+                <button class="btn btn-copy" onclick="copyDebrief()">📋 Copy Debrief</button>
+            </div>
+        </div>
+
+        <div id="debrief-error" style="display:none">
+            <div class="error-card" style="margin-bottom:16px">
+                <p>⚠️ The debrief could not be generated. Please try again.</p>
+            </div>
+            <div class="btn-row">
+                <button class="btn btn-outline" onclick="requestDebrief()">Retry</button>
+            </div>
+        </div>
+
+        <div class="btn-row" id="debrief-actions" style="display:none">
+            <button class="btn btn-primary" onclick="restartScenario()">Start Over</button>
+            <button class="btn btn-outline" onclick="exploreAnotherPath()">Explore Another Path</button>
+        </div>
+    </div>
+
+    <div class="rm-footer">
+        Built by <a href="https://rockmouse.com.au" target="_blank">RockMouse</a> · Performance Support Agents
+    </div>
+
+</div><!-- /container -->
+
+<script>
+'use strict';
+
+// ─────────────────────────────────────────
+// STATE
+// ─────────────────────────────────────────
+let managerName = 'Alex';
+let currentBranch = null;
+let coachingNoteText = '';
+let debriefText = '';
+
+// ─────────────────────────────────────────
+// SCENARIO DATA
+// ─────────────────────────────────────────
+const CHOICES = [
+    {
+        id: 'a',
+        icon: '🤐',
+        label: 'Stay Silent',
+        desc: 'Let it pass. It\'s not your place to redirect this.',
+        spectrum: 'passive'
+    },
+    {
+        id: 'b',
+        icon: '🙋',
+        label: 'Speak Up Directly',
+        desc: 'Share the context. You have the data and this is the moment.',
+        spectrum: 'assertive'
+    },
+    {
+        id: 'c',
+        icon: '🤔',
+        label: 'Ask a Clarifying Question',
+        desc: 'Slow the room down. Redirect without pointing fingers.',
+        spectrum: 'assertive'
+    },
+    {
+        id: 'd',
+        icon: '👋',
+        label: 'Catch Priya Afterwards',
+        desc: 'Handle it privately. The meeting isn\'t the right moment.',
+        spectrum: 'passive'
+    }
+];
+
+const BRANCHES = {
+    a: {
+        immediate: `Priya accepts Marcus's accountability without question and announces a new weekly check-in requirement for his team. "I appreciate the transparency, Marcus. Let's make sure we stay on top of this." The meeting moves to the next item. You feel a flicker of relief — and then something quieter underneath it. Jordan, your direct report, catches your eye briefly as the next slide appears. Says nothing.`,
+        later: `Two days later, Marcus pulls you aside in the kitchen. He has heard from Jordan that you had documentation about the scope change — a change that actually caused the delay. He is not angry, exactly, but the directness in his voice is unmistakable. "I would have wanted to know," he says. Priya's check-in requirement is still in place. The project is still three weeks behind, because the root cause was never surfaced. Your credibility with Jordan — who watched you stay silent when you had something real to offer — has taken a quiet but real hit.`
+    },
+    b: {
+        immediate: `Before Priya can move on, you speak. "Before we move on — I want to add some context. I have documentation showing a scope change was approved three weeks ago that added two features to the delivery scope without consulting the delivery team. I don't think Marcus's team caused this delay. I wanted to flag it." There's a pause. Priya's expression shifts — not angry, but recalibrating. Marcus exhales. Priya says: "That's useful. Can you send me that documentation after the meeting?" The agenda moves on, but the atmosphere in the room has changed. Jordan is visibly impressed.`,
+        later: `Priya reviews the documentation. She removes the check-in requirement from Marcus's team and sends a brief message to the project group acknowledging the scope approval process needs tightening. Marcus thanks you privately. Jordan mentions the moment approvingly in your team's morning standup. The project receives a revised timeline. In a single meeting moment, you have gained credibility with your peer, your direct report, and a senior stakeholder.`
+    },
+    c: {
+        immediate: `Just as Priya nods and reaches for her pen, you lean in. "Before we move on — can I ask: do we fully understand what drove the three-week delay? I want to make sure we're solving the right problem." The room slows. Priya pauses. "Good question. What do we know?" Marcus looks uncertain. You share what your team documented about the scope change — not as a correction, but as a contribution. The conversation opens up. It feels collaborative rather than confrontational. Priya is engaged. Jordan is watching carefully.`,
+        later: `Priya reviews the documentation and the check-in requirement is never imposed. Marcus and you are now seen as a functioning pair. Priya mentions to your manager that you "asked a good question in Phoenix this week." The project receives a revised timeline. Your approach — redirecting without blaming — becomes a quiet reference point in this team for how to raise difficult things. A small but real reputation has started forming around the way you handle a room.`
+    },
+    d: {
+        immediate: `You stay silent in the meeting. Priya imposes the check-in requirement on Marcus's team and moves to the next item. After the meeting closes, you catch Priya in the corridor. "I wanted to share some documentation about what actually drove the Phoenix delay." She pauses briefly, checks her phone. "Can you email it to me?" She doesn't stop walking.`,
+        later: `You send the documentation. Priya reads it three days later and acknowledges — fairly, and without drama — that the scope approval process needs review. The check-in requirement on Marcus stays in place for now. Marcus heard what happened and is grateful, but mildly frustrated it didn't happen in the room. The first impression formed in that meeting — that Marcus's team owns the delay — has already hardened. A small lesson, learned quietly: private corrections after public moments rarely carry the same weight.`
+    }
+};
+
+// ─────────────────────────────────────────
+// SYSTEM PROMPT — KNOWLEDGE BASE
+// ─────────────────────────────────────────
+const SYSTEM_PROMPT = `You are an expert workplace learning coach specialising in new manager development. You provide coaching notes for a branching scenario exercise about speaking up in meetings.
+
+KNOWLEDGE BASE:
+
+1. PSYCHOLOGICAL SAFETY (Amy Edmondson)
+Psychological safety is the belief that you will not be punished or humiliated for speaking up with ideas, questions, concerns, or mistakes. In meetings it is shaped by the behaviour of the most senior person in the room, whether previous contributions were rewarded or shut down, and the perceived cost of being wrong in public. New managers often underestimate how much their silence shapes — or damages — the psychological safety of their team.
+
+2. ASSERTIVENESS SPECTRUM
+Passive: Staying silent or deferring. Protects relationships short-term but erodes credibility over time and can leave others carrying unnecessary weight.
+Assertive: Expressing a view clearly, respectfully, and at the right moment. Uses "I" statements and frames contributions as additions, not corrections.
+Aggressive: Dominating or framing contributions as corrections of others. Damages relationships even when technically accurate.
+Language anchors — Passive: silence, or "I probably shouldn't say this, but...". Assertive: "Can I add something here?" or "I want to flag something I noticed..." Aggressive: "That's wrong." or "Actually..." used as a correction opener.
+
+3. MEETING POWER DYNAMICS
+Reading the room means recognising who holds formal authority (title, org chart), who holds informal influence (who others look to before reacting), when the window for a contribution has passed, and what type of meeting this is — decision-making or status update. New managers often misjudge the meeting type.
+
+4. SBI FEEDBACK MODEL (Situation–Behaviour–Impact)
+Situation: The specific context in which the behaviour occurred.
+Behaviour: What the person actually did — observable, not interpreted.
+Impact: The effect on the outcome, the team, or the relationship.
+SBI keeps coaching concrete and non-judgmental.
+
+5. NEW MANAGER IDENTITY TRANSITION
+The first 12 months in a management role require a shift from being valued for doing to being valued for enabling and influencing decisions. Key risks in this period: staying silent to avoid appearing "above yourself," speaking too forcefully to compensate for imposter feelings, waiting for permission to lead, confusing likability with credibility.
+
+SCENARIO CONTEXT:
+The manager is 4 months into their first management role. In a project status meeting with Priya (Head of Operations), Marcus (peer manager with 6 years at the company), Jordan (team lead — the manager's direct report), and two team members, Marcus accepted blame for a project delay. The manager held documentation showing the delay was caused by a scope change Priya had approved without consulting the delivery team. The manager chose whether and how to share that information.
+
+YOUR ROLE:
+When given the chosen branch and any reflection, write a coaching note of 150–170 words using the SBI framework. Be specific, direct, non-judgmental, and end with exactly one concrete technique the manager can apply in their next real meeting. Write in flowing prose — no bullet points, no numbered lists, no headers. Do not open with "In this scenario" or any generic scene-setting. Begin directly with the Situation.`;
+
+// ─────────────────────────────────────────
+// NAVIGATION
+// ─────────────────────────────────────────
+function showScreen(id) {
+    document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+    document.getElementById(id).classList.add('active');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+// ─────────────────────────────────────────
+// SCREEN 1 → 2
+// ─────────────────────────────────────────
+function startScenario() {
+    const input = document.getElementById('manager-name').value.trim();
+    managerName = input || 'Alex';
+
+    // Personalise scene
+    document.getElementById('scene-p1').textContent =
+        `${managerName}, you have been a manager for four months. You are attending the weekly Project Phoenix status meeting — a project you are actively contributing to alongside Marcus's team.`;
+    document.getElementById('scene-p4').textContent =
+        `You know something Marcus doesn't. Three weeks ago, Priya approved a scope change in a side conversation with the client — adding two new features to the delivery scope without consulting the delivery team. Your team documented it. That scope change is what caused the delay. Marcus is not to blame. Priya has not mentioned it. And she is nodding.`;
+
+    // Build character chips
+    const chars = [
+        { name: 'Priya', role: 'Head of Operations — senior stakeholder' },
+        { name: 'Marcus', role: 'Peer manager — presenting, about to take the blame' },
+        { name: 'Jordan', role: 'Team lead — your direct report, watching you' },
+        { name: 'Sam & Riley', role: 'Team members — quiet, following the room' },
+        { name: `${managerName} (You)`, role: 'New manager — 4 months in' }
+    ];
+    const grid = document.getElementById('character-grid');
+    grid.innerHTML = '';
+    chars.forEach(c => {
+        const chip = document.createElement('div');
+        chip.className = 'character-chip';
+        chip.innerHTML = `<span class="char-name">${c.name}</span> <span class="char-role">— ${c.role}</span>`;
+        grid.appendChild(chip);
+    });
+
+    showScreen('screen-scene');
+}
+
+// ─────────────────────────────────────────
+// SCREEN 2 → 3
+// ─────────────────────────────────────────
+function showDecision() {
+    document.getElementById('decision-p1').textContent =
+        `Marcus has just accepted full responsibility for the three-week delay. Priya is nodding. She is about to move on to the next agenda item. You have documentation — open on your laptop — showing the delay was caused by a scope change Priya approved without consulting the delivery team.`;
+    document.getElementById('decision-p2').textContent =
+        `The pause lasts two seconds. What do you do, ${managerName}?`;
+
+    const grid = document.getElementById('choice-grid');
+    grid.innerHTML = '';
+    CHOICES.forEach(choice => {
+        const card = document.createElement('div');
+        card.className = 'choice-card';
+        card.innerHTML = `
+            <div class="choice-icon">${choice.icon}</div>
+            <div class="choice-label">${choice.label}</div>
+            <div class="choice-desc">${choice.desc}</div>
+        `;
+        card.onclick = () => selectChoice(choice.id);
+        grid.appendChild(card);
+    });
+
+    showScreen('screen-decision');
+}
+
+// ─────────────────────────────────────────
+// SCREEN 3 → 4
+// ─────────────────────────────────────────
+function selectChoice(branchId) {
+    currentBranch = branchId;
+    const choice = CHOICES.find(c => c.id === branchId);
+    const branch = BRANCHES[branchId];
+
+    document.getElementById('outcome-tag-label').textContent = `${choice.icon} You chose: ${choice.label}`;
+    document.getElementById('outcome-immediate-text').textContent = branch.immediate;
+    document.getElementById('reflection-text').value = '';
+
+    showScreen('screen-outcome');
+}
+
+// ─────────────────────────────────────────
+// SCREEN 4 → 5
+// ─────────────────────────────────────────
+function show48Hours() {
+    document.getElementById('outcome-later-text').textContent = BRANCHES[currentBranch].later;
+    showScreen('screen-48hours');
+}
+
+// ─────────────────────────────────────────
+// SCREEN 5 → 6 (API: COACHING NOTE)
+// ─────────────────────────────────────────
+async function getCoachingNote() {
+    showScreen('screen-coaching');
+    document.getElementById('coaching-loading').style.display = 'block';
+    document.getElementById('coaching-content').style.display = 'none';
+    document.getElementById('coaching-error').style.display = 'none';
+
+    const choice = CHOICES.find(c => c.id === currentBranch);
+    const branch = BRANCHES[currentBranch];
+    const reflection = document.getElementById('reflection-text').value.trim();
+
+    const userMessage = `The manager chose: "${choice.label}" — ${choice.desc}
+
+Immediate outcome: ${branch.immediate}
+
+48-hour outcome: ${branch.later}
+
+${reflection ? `The manager's reflection: "${reflection}"` : 'The manager left no reflection.'}
+
+Assertiveness spectrum position: ${choice.spectrum}
+
+Please write the coaching note.`;
+
+    try {
+        const res = await fetch('https://rockmouse-agent-proxy.craig-3c4.workers.dev', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                systemPrompt: SYSTEM_PROMPT,
+                userInput: userMessage
+            })
+        });
+
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+        const data = await res.json();
+        const text = data.content?.[0]?.text
+                  || data.choices?.[0]?.message?.content
+                  || '';
+        if (!text) throw new Error('Empty response');
+
+        coachingNoteText = text;
+
+        document.getElementById('coaching-heading').textContent =
+            `Coaching Note — ${choice.label}`;
+
+        const badge = document.getElementById('spectrum-badge');
+        badge.className = `spectrum-badge spectrum-${choice.spectrum}`;
+        badge.textContent = choice.spectrum.charAt(0).toUpperCase() + choice.spectrum.slice(1);
+
+        document.getElementById('coaching-text').textContent = text;
+
+        document.getElementById('coaching-loading').style.display = 'none';
+        document.getElementById('coaching-content').style.display = 'block';
+
+    } catch (err) {
+        console.error('Coaching note error:', err);
+        document.getElementById('coaching-loading').style.display = 'none';
+        document.getElementById('coaching-error').style.display = 'block';
+    }
+}
+
+// ─────────────────────────────────────────
+// SCREEN 6/7 (API: FULL DEBRIEF)
+// ─────────────────────────────────────────
+async function requestDebrief() {
+    showScreen('screen-debrief');
+    document.getElementById('debrief-loading').style.display = 'block';
+    document.getElementById('debrief-content').style.display = 'none';
+    document.getElementById('debrief-error').style.display = 'none';
+    document.getElementById('debrief-actions').style.display = 'none';
+
+    const chosenChoice = CHOICES.find(c => c.id === currentBranch);
+
+    const prompt = `The manager ${managerName} has completed the branching scenario. They chose Path ${currentBranch.toUpperCase()} (${chosenChoice.label}).
+
+Here are all four paths and their outcomes:
+
+PATH A — Stay Silent (Passive):
+Immediate: ${BRANCHES.a.immediate}
+48 hours: ${BRANCHES.a.later}
+
+PATH B — Speak Up Directly (Assertive):
+Immediate: ${BRANCHES.b.immediate}
+48 hours: ${BRANCHES.b.later}
+
+PATH C — Ask a Clarifying Question (Assertive):
+Immediate: ${BRANCHES.c.immediate}
+48 hours: ${BRANCHES.c.later}
+
+PATH D — Catch Priya Afterwards (Passive):
+Immediate: ${BRANCHES.d.immediate}
+48 hours: ${BRANCHES.d.later}
+
+Please write a full debrief of 300–350 words that:
+1. Compares all four paths and what they reveal about the assertiveness spectrum and new manager credibility
+2. Explains which paths are most effective and why, drawing directly on psychological safety theory and the new manager identity transition
+3. Distinguishes between Path B and Path C — both assertive but different in approach and risk profile
+4. Names the recommended path for a new manager in this specific context, with a clear rationale
+5. Ends with a single take-away sentence the manager can carry into their next meeting
+
+Write in flowing prose. No bullet points or numbered lists. No headers. Be specific, direct, and useful.`;
+
+    try {
+        const res = await fetch('https://rockmouse-agent-proxy.craig-3c4.workers.dev', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                systemPrompt: SYSTEM_PROMPT,
+                userInput: prompt
+            })
+        });
+
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+        const data = await res.json();
+        const text = data.content?.[0]?.text
+                  || data.choices?.[0]?.message?.content
+                  || '';
+        if (!text) throw new Error('Empty response');
+
+        debriefText = text;
+        document.getElementById('debrief-text').textContent = text;
+
+        document.getElementById('debrief-loading').style.display = 'none';
+        document.getElementById('debrief-content').style.display = 'block';
+        document.getElementById('debrief-actions').style.display = 'flex';
+
+    } catch (err) {
+        console.error('Debrief error:', err);
+        document.getElementById('debrief-loading').style.display = 'none';
+        document.getElementById('debrief-error').style.display = 'block';
+    }
+}
+
+// ─────────────────────────────────────────
+// UTILITY
+// ─────────────────────────────────────────
+function copyToClipboard(text, btnSelector) {
+    navigator.clipboard.writeText(text).then(() => {
+        const btns = document.querySelectorAll(btnSelector || '.btn-copy');
+        btns.forEach(btn => {
+            const orig = btn.textContent;
+            btn.textContent = '✅ Copied!';
+            setTimeout(() => { btn.textContent = orig; }, 2200);
+        });
+    }).catch(() => { prompt('Copy this text:', text); });
+}
+
+function copyCoaching() {
+    const text = `COACHING NOTE — The Speak-Up Scenario\n⚠️ DRAFT — AI-generated. Requires human review before use.\n\n${coachingNoteText}`;
+    copyToClipboard(text);
+}
+
+function copyDebrief() {
+    const text = `FULL DEBRIEF — The Speak-Up Scenario\n⚠️ DRAFT — AI-generated. Requires human review before use.\n\n${debriefText}`;
+    copyToClipboard(text);
+}
+
+function exploreAnotherPath() { showDecision(); }
+
+function skipCoaching() {
+    document.getElementById('coaching-loading').style.display = 'none';
+    document.getElementById('coaching-error').style.display = 'none';
+    document.getElementById('coaching-content').style.display = 'block';
+    const choice = CHOICES.find(c => c.id === currentBranch);
+    document.getElementById('coaching-heading').textContent = `Coaching Note — ${choice.label}`;
+    const badge = document.getElementById('spectrum-badge');
+    badge.className = `spectrum-badge spectrum-${choice.spectrum}`;
+    badge.textContent = choice.spectrum.charAt(0).toUpperCase() + choice.spectrum.slice(1);
+    document.getElementById('coaching-text').textContent =
+        'The coaching engine could not be reached. Try the Full Debrief option, or reload and try again.';
+}
+
+function restartScenario() {
+    currentBranch = null;
+    coachingNoteText = '';
+    debriefText = '';
+    showScreen('screen-welcome');
+}
+
+</script>
+</body>
+</html>

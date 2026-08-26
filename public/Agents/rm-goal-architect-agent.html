@@ -1,0 +1,972 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Goal Architect | RockMouse</title>
+  <style>
+    :root {
+      --teal-dark:   #0a4a4a;
+      --teal:        #0d7b7b;
+      --teal-mid:    #1a9a9a;
+      --teal-light:  #e6f4f4;
+      --teal-pale:   #f0f9f9;
+      --bg:          #f5f7f5;
+      --white:       #ffffff;
+      --text:        #1a2e2e;
+      --text-muted:  #5a7070;
+      --border:      #cde0e0;
+      --shadow:      0 2px 10px rgba(10,74,74,0.08);
+      --shadow-md:   0 4px 20px rgba(10,74,74,0.13);
+      --warning-bg:  #fff8e1;
+      --warning-bdr: #f0c040;
+      --warning-txt: #7a5c00;
+      --radius:      14px;
+      --radius-sm:   8px;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      line-height: 1.65;
+    }
+
+    /* ── Header ─────────────────────────────────────────────────────── */
+    .rm-header {
+      background: var(--teal-dark);
+      color: #fff;
+      padding: 14px 24px;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      flex-shrink: 0;
+    }
+    .rm-logo { font-size: 17px; font-weight: 700; letter-spacing: -0.4px; }
+    .rm-logo span { color: #7dd4d4; }
+    .rm-badge {
+      background: var(--teal);
+      font-size: 10px;
+      font-weight: 700;
+      padding: 3px 10px;
+      border-radius: 20px;
+      letter-spacing: 0.8px;
+      text-transform: uppercase;
+    }
+    .rm-header-sep { flex: 1; }
+    .rm-header-agent {
+      font-size: 12px;
+      color: #9ecece;
+      font-weight: 500;
+    }
+
+    /* ── Layout ─────────────────────────────────────────────────────── */
+    .main {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      max-width: 760px;
+      width: 100%;
+      margin: 0 auto;
+      padding: 0 16px 100px;
+    }
+
+    /* ── Welcome screen ─────────────────────────────────────────────── */
+    #welcome {
+      padding: 40px 0 0;
+    }
+    .welcome-hero {
+      background: var(--white);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 36px 32px 32px;
+      border-top: 4px solid var(--teal);
+    }
+    .welcome-icon {
+      width: 52px;
+      height: 52px;
+      background: var(--teal-light);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 24px;
+      margin-bottom: 20px;
+    }
+    .welcome-hero h1 {
+      font-size: 24px;
+      font-weight: 700;
+      color: var(--teal-dark);
+      margin-bottom: 8px;
+    }
+    .welcome-hero p {
+      color: var(--text-muted);
+      font-size: 15px;
+      margin-bottom: 28px;
+      max-width: 560px;
+    }
+    .welcome-steps {
+      display: flex;
+      gap: 12px;
+      margin-bottom: 32px;
+      flex-wrap: wrap;
+    }
+    .welcome-step {
+      flex: 1;
+      min-width: 140px;
+      background: var(--teal-pale);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      padding: 14px 16px;
+    }
+    .welcome-step .step-num {
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--teal);
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      margin-bottom: 4px;
+    }
+    .welcome-step .step-label {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--teal-dark);
+    }
+
+    label.field-label {
+      display: block;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--teal-dark);
+      margin-bottom: 6px;
+    }
+    label.field-hint {
+      display: block;
+      font-size: 12px;
+      color: var(--text-muted);
+      margin-bottom: 8px;
+    }
+    textarea, input[type="text"] {
+      width: 100%;
+      font-family: inherit;
+      font-size: 15px;
+      color: var(--text);
+      background: var(--white);
+      border: 1.5px solid var(--border);
+      border-radius: var(--radius-sm);
+      padding: 12px 14px;
+      transition: border-color 0.2s;
+      resize: none;
+    }
+    textarea:focus, input[type="text"]:focus {
+      outline: none;
+      border-color: var(--teal);
+    }
+    .field-row {
+      display: flex;
+      gap: 14px;
+      margin-top: 16px;
+    }
+    .field-row .field { flex: 1; }
+
+    .btn-primary {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--teal);
+      color: #fff;
+      font-family: inherit;
+      font-size: 15px;
+      font-weight: 600;
+      padding: 12px 28px;
+      border: none;
+      border-radius: var(--radius-sm);
+      cursor: pointer;
+      transition: background 0.18s, transform 0.1s;
+      margin-top: 20px;
+    }
+    .btn-primary:hover { background: var(--teal-dark); }
+    .btn-primary:active { transform: scale(0.98); }
+    .btn-primary:disabled { opacity: 0.55; cursor: default; transform: none; }
+
+    /* ── Chat interface ─────────────────────────────────────────────── */
+    #chat { display: none; flex-direction: column; padding-top: 24px; gap: 16px; }
+    #chat.active { display: flex; }
+
+    .chat-context-bar {
+      background: var(--teal-light);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      padding: 10px 16px;
+      font-size: 13px;
+      color: var(--teal-dark);
+    }
+    .chat-context-bar strong { font-weight: 600; }
+
+    .msg {
+      display: flex;
+      gap: 10px;
+      align-items: flex-start;
+    }
+    .msg.user { flex-direction: row-reverse; }
+
+    .msg-avatar {
+      width: 34px;
+      height: 34px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 15px;
+      flex-shrink: 0;
+    }
+    .msg.ai .msg-avatar   { background: var(--teal); color: #fff; }
+    .msg.user .msg-avatar { background: #dde8e8; color: var(--teal-dark); }
+
+    .msg-bubble {
+      max-width: 76%;
+      padding: 13px 16px;
+      border-radius: var(--radius);
+      font-size: 15px;
+      line-height: 1.65;
+    }
+    .msg.ai .msg-bubble {
+      background: var(--white);
+      box-shadow: var(--shadow);
+      border-top-left-radius: 4px;
+      color: var(--text);
+    }
+    .msg.user .msg-bubble {
+      background: var(--teal);
+      color: #fff;
+      border-top-right-radius: 4px;
+    }
+
+    .typing-indicator {
+      display: flex;
+      gap: 5px;
+      padding: 14px 16px;
+      background: var(--white);
+      border-radius: var(--radius);
+      border-top-left-radius: 4px;
+      box-shadow: var(--shadow);
+      width: fit-content;
+    }
+    .typing-dot {
+      width: 8px; height: 8px;
+      background: var(--teal);
+      border-radius: 50%;
+      animation: bounce 1.2s ease-in-out infinite;
+    }
+    .typing-dot:nth-child(2) { animation-delay: 0.2s; }
+    .typing-dot:nth-child(3) { animation-delay: 0.4s; }
+    @keyframes bounce {
+      0%, 80%, 100% { transform: translateY(0); opacity: 0.5; }
+      40%           { transform: translateY(-6px); opacity: 1; }
+    }
+
+    /* Reply input bar */
+    .reply-bar {
+      position: fixed;
+      bottom: 0;
+      left: 0; right: 0;
+      background: var(--white);
+      border-top: 1.5px solid var(--border);
+      padding: 12px 16px;
+      display: none;
+      z-index: 100;
+    }
+    .reply-bar.active { display: block; }
+    .reply-inner {
+      max-width: 760px;
+      margin: 0 auto;
+      display: flex;
+      gap: 10px;
+      align-items: flex-end;
+    }
+    .reply-bar textarea {
+      flex: 1;
+      min-height: 44px;
+      max-height: 120px;
+      padding: 10px 14px;
+      font-size: 15px;
+      resize: none;
+      overflow-y: auto;
+    }
+    .reply-send {
+      background: var(--teal);
+      color: #fff;
+      border: none;
+      border-radius: var(--radius-sm);
+      width: 44px;
+      height: 44px;
+      font-size: 18px;
+      cursor: pointer;
+      flex-shrink: 0;
+      transition: background 0.18s;
+    }
+    .reply-send:hover { background: var(--teal-dark); }
+    .reply-send:disabled { opacity: 0.4; cursor: default; }
+
+    /* ── Goal Context Card ──────────────────────────────────────────── */
+    #card-section { display: none; padding: 24px 0; }
+    #card-section.active { display: block; }
+
+    .draft-banner {
+      background: var(--warning-bg);
+      border: 1.5px solid var(--warning-bdr);
+      border-radius: var(--radius-sm);
+      padding: 12px 16px;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--warning-txt);
+      margin-bottom: 20px;
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+    }
+    .draft-banner span { font-size: 16px; flex-shrink: 0; }
+
+    .goal-card {
+      background: var(--white);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow-md);
+      overflow: hidden;
+    }
+    .goal-card-header {
+      background: var(--teal-dark);
+      color: #fff;
+      padding: 20px 24px;
+    }
+    .goal-card-header .card-label {
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 1.2px;
+      text-transform: uppercase;
+      color: #7dd4d4;
+      margin-bottom: 8px;
+    }
+    .goal-card-header .card-goal {
+      font-size: 17px;
+      font-weight: 600;
+      line-height: 1.5;
+    }
+
+    .goal-card-body {
+      padding: 20px 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+    .card-row {
+      display: flex;
+      gap: 14px;
+    }
+    .card-field {
+      flex: 1;
+      background: var(--teal-pale);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      padding: 12px 14px;
+    }
+    .card-field .cf-label {
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.8px;
+      text-transform: uppercase;
+      color: var(--teal);
+      margin-bottom: 4px;
+    }
+    .card-field .cf-value {
+      font-size: 14px;
+      color: var(--teal-dark);
+      font-weight: 500;
+    }
+
+    .card-next {
+      background: var(--teal-light);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      padding: 14px 16px;
+    }
+    .card-next .cf-label {
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.8px;
+      text-transform: uppercase;
+      color: var(--teal);
+      margin-bottom: 6px;
+    }
+    .card-next .cf-value {
+      font-size: 14px;
+      color: var(--teal-dark);
+    }
+
+    .json-block {
+      background: #1a2e2e;
+      border-radius: var(--radius-sm);
+      padding: 16px;
+      font-family: 'Courier New', monospace;
+      font-size: 12px;
+      color: #7dd4d4;
+      overflow-x: auto;
+      line-height: 1.6;
+    }
+    .json-block-label {
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--text-muted);
+      margin-bottom: 8px;
+      text-transform: uppercase;
+      letter-spacing: 0.6px;
+    }
+
+    .card-actions {
+      display: flex;
+      gap: 10px;
+      padding: 0 24px 24px;
+      flex-wrap: wrap;
+    }
+    .btn-action {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      font-family: inherit;
+      font-size: 13px;
+      font-weight: 600;
+      padding: 9px 18px;
+      border-radius: var(--radius-sm);
+      cursor: pointer;
+      border: 1.5px solid var(--border);
+      background: var(--white);
+      color: var(--teal-dark);
+      transition: all 0.18s;
+    }
+    .btn-action:hover { background: var(--teal-light); border-color: var(--teal); }
+    .btn-action.primary {
+      background: var(--teal);
+      color: #fff;
+      border-color: var(--teal);
+    }
+    .btn-action.primary:hover { background: var(--teal-dark); border-color: var(--teal-dark); }
+    .btn-action.copied { background: #2e7d32; border-color: #2e7d32; color: #fff; }
+
+    .new-goal-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-family: inherit;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text-muted);
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 8px 0;
+      text-decoration: underline;
+      text-underline-offset: 3px;
+    }
+    .new-goal-btn:hover { color: var(--teal-dark); }
+
+    /* ── Error ──────────────────────────────────────────────────────── */
+    .error-msg {
+      background: #fef2f2;
+      border: 1px solid #fca5a5;
+      border-radius: var(--radius-sm);
+      padding: 12px 16px;
+      font-size: 14px;
+      color: #b91c1c;
+    }
+
+    /* ── Responsive ─────────────────────────────────────────────────── */
+    @media (max-width: 560px) {
+      .welcome-hero { padding: 24px 18px; }
+      .field-row { flex-direction: column; gap: 10px; }
+      .card-row { flex-direction: column; }
+      .msg-bubble { max-width: 88%; }
+      .welcome-steps { flex-direction: column; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ── Header ──────────────────────────────────────────────────────────── -->
+<header class="rm-header">
+  <div style="display:flex;align-items:center;gap:12px;">
+    <img src="https://rockmouse.live/assets/rockmouse-logo-wide.svg" alt="RockMouse" onerror="this.style.display='none'" style="height:26px;width:auto;filter:brightness(0) invert(1);">
+    <span style="border-left:1px solid rgba(255,255,255,0.25);padding-left:12px;font-size:13px;color:rgba(255,255,255,0.9);font-weight:600;">Goal Architect</span>
+  </div>
+</header>
+
+<!-- ── Main ────────────────────────────────────────────────────────────── -->
+<div class="main">
+
+  <!-- Welcome screen -->
+  <div id="welcome">
+    <div class="welcome-hero">
+      <div class="welcome-icon">🎯</div>
+      <h1>Goal Architect</h1>
+      <p>Turn a rough ambition into a goal that survives contact with reality. Through a short coaching conversation, we'll shape something specific, achievable, and connected to what your organisation actually cares about.</p>
+
+      <div class="welcome-steps">
+        <div class="welcome-step">
+          <div class="step-num">Step 1</div>
+          <div class="step-label">Share your ambition</div>
+        </div>
+        <div class="welcome-step">
+          <div class="step-num">Step 2</div>
+          <div class="step-label">Brief coaching dialogue</div>
+        </div>
+        <div class="welcome-step">
+          <div class="step-num">Step 3</div>
+          <div class="step-label">Receive your Goal Card</div>
+        </div>
+      </div>
+
+      <label class="field-label" for="raw-goal">What do you want to work on?</label>
+      <label class="field-hint">Don't worry about getting it perfect — just say what's on your mind.</label>
+      <textarea id="raw-goal" rows="4" placeholder="e.g. I want to get better at running meetings, or I need to do something about how I manage my team's workload…"></textarea>
+
+      <div class="field-row">
+        <div class="field">
+          <label class="field-label" for="role-title">Your role (optional)</label>
+          <input type="text" id="role-title" placeholder="e.g. Team Leader, Project Manager">
+        </div>
+        <div class="field">
+          <label class="field-label" for="team-name">Your team (optional)</label>
+          <input type="text" id="team-name" placeholder="e.g. Customer Experience, Finance">
+        </div>
+      </div>
+
+      <button class="btn-primary" id="start-btn" onclick="startSession()">
+        <span>Start coaching</span> <span>→</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- Chat interface -->
+  <div id="chat">
+    <div class="chat-context-bar" id="context-bar"></div>
+    <div id="messages"></div>
+    <div id="typing" style="display:none;">
+      <div class="msg ai">
+        <div class="msg-avatar">🎯</div>
+        <div class="typing-indicator">
+          <div class="typing-dot"></div>
+          <div class="typing-dot"></div>
+          <div class="typing-dot"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Goal Context Card -->
+  <div id="card-section">
+    <div class="draft-banner">
+      <span>⚠️</span>
+      <div>DRAFT — This goal has been shaped by AI coaching and requires your own review and agreement before sharing with your manager.</div>
+    </div>
+
+    <div class="goal-card">
+      <div class="goal-card-header">
+        <div class="card-label">Your Goal</div>
+        <div class="card-goal" id="card-goal-text"></div>
+      </div>
+      <div class="goal-card-body">
+        <div class="card-row">
+          <div class="card-field">
+            <div class="cf-label">Strategic Priority</div>
+            <div class="cf-value" id="card-priority"></div>
+          </div>
+          <div class="card-field">
+            <div class="cf-label">Capability Domain</div>
+            <div class="cf-value" id="card-domain"></div>
+          </div>
+          <div class="card-field">
+            <div class="cf-label">Timeframe</div>
+            <div class="cf-value" id="card-timeframe"></div>
+          </div>
+        </div>
+        <div class="card-next">
+          <div class="cf-label">Suggested First Step</div>
+          <div class="cf-value" id="card-next-step"></div>
+        </div>
+        <div>
+          <div class="json-block-label">Goal Context Card — for downstream agents</div>
+          <div class="json-block" id="card-json"></div>
+        </div>
+      </div>
+      <div class="card-actions">
+        <button class="btn-action primary" id="copy-btn" onclick="copyCard()">📋 Copy Goal Card</button>
+        <button class="btn-action" id="download-btn" onclick="downloadCard()">⬇️ Download as .txt</button>
+        <button class="new-goal-btn" onclick="resetSession()">↩ Start a new goal</button>
+      </div>
+    </div>
+  </div>
+
+</div><!-- /main -->
+
+<!-- Reply bar (fixed bottom) -->
+<div class="reply-bar" id="reply-bar">
+  <div class="reply-inner">
+    <textarea id="reply-input" placeholder="Type your response…" rows="1"
+      onkeydown="handleReplyKey(event)" oninput="autoGrow(this)"></textarea>
+    <button class="reply-send" id="reply-send" onclick="sendReply()" title="Send">➤</button>
+  </div>
+</div>
+
+<script>
+// ── System prompt ────────────────────────────────────────────────────────────
+const SYSTEM_PROMPT = `You are Goal Architect — a workplace coaching AI built by RockMouse. Your role is to help employees turn rough ambitions into goals that survive contact with reality.
+
+You work through three phases. Move through them naturally — do not announce the phase names to the user.
+
+━━━ PHASE 1: COACHING DIALOGUE ━━━
+After receiving the employee's raw goal, ask up to FIVE targeted questions — one at a time, never more.
+Focus your questions on: specificity (what exactly will change?), motivation (why does this matter to them?), feasibility (what is realistic given their situation?), timeframe (by when?), and impact (what difference will it make for them or their organisation?).
+Keep your tone warm, direct, and curious. Avoid jargon like "SMART goals", "KPIs", or "deliverables" — coach in plain human language.
+After 3–5 exchanges, you have enough information to move to synthesis.
+
+━━━ PHASE 2: SYNTHESIS ━━━
+Present a refined goal statement in this exact format:
+"By [date], I will [outcome] so that [impact]."
+
+Then, in plain language, briefly identify:
+- Which of the organisation's strategic priorities this goal connects to (and why)
+- Which capability domain it sits within (and why)
+
+Then ask: "Does this feel right, or would you like to adjust the wording before I generate your Goal Context Card?"
+
+━━━ PHASE 3: CARD GENERATION ━━━
+Once the employee confirms their goal (says yes, looks good, that's right, happy with it, etc.), output their Goal Context Card.
+
+CRITICAL: The card must begin with the EXACT marker on its own line: ---GOAL_CARD_START---
+Then a valid JSON object. Then the EXACT marker on its own line: ---GOAL_CARD_END---
+Do not include any text between the two markers except the JSON.
+
+JSON format (all fields required, use plain strings):
+{
+  "goal_statement": "By [date], I will [outcome] so that [impact].",
+  "strategic_priority": "[name of priority]",
+  "capability_domain": "[capability domain name]",
+  "timeframe": "[e.g. 30 June 2026]",
+  "outcome": "[concise description of what they will achieve]",
+  "impact": "[the difference it will make]",
+  "next_step": "[one specific, concrete first action they can take this week]"
+}
+
+After the card markers, add a brief warm closing sentence encouraging the employee to share it with their manager or use it with their next agent.
+
+━━━ CAPABILITY FRAMEWORK ━━━
+Use these eight domains to map goals. Choose the most relevant one.
+
+1. Communication & Collaboration — Expressing ideas clearly, listening actively, working effectively with others across teams and levels.
+2. Critical Thinking & Problem Solving — Analysing situations, weighing evidence, generating options, and making sound decisions under ambiguity.
+3. Leadership & Influence — Inspiring others, building trust, providing direction, and enabling high performance in teams.
+4. Learning Agility & Growth — Seeking feedback, adapting quickly, building new skills, and applying lessons from experience.
+5. Customer & Stakeholder Focus — Understanding needs, managing relationships, and consistently delivering value to those served.
+6. Results & Accountability — Setting clear targets, following through on commitments, and taking ownership of outcomes.
+7. Innovation & Creativity — Generating novel ideas, challenging the status quo, and experimenting with new approaches.
+8. Digital Literacy & Data Fluency — Using technology effectively, interpreting data, and applying digital tools to improve work.
+
+━━━ ORGANISATIONAL STRATEGIC PRIORITIES ━━━
+Map goals to one of these five priorities. Replace this section with the client's own priorities per deployment.
+
+1. Growth — Expand our reach, market position, and revenue through disciplined investment and partnership.
+2. Customer — Deliver experiences that earn loyalty and advocacy at every touchpoint.
+3. People — Build a culture where talent thrives, diversity is valued, and high performance is recognised.
+4. Innovation — Pursue new ideas and ways of working that create competitive advantage.
+5. Efficiency — Streamline operations and eliminate waste so resources flow to what matters most.
+
+━━━ IMPORTANT RULES ━━━
+- Never ask more than one question per response
+- The employee's goal is theirs — you shape it, not replace it
+- Be brief — this is a dialogue, not a lecture
+- Do not generate the Goal Context Card until the employee explicitly confirms the goal wording
+- If the employee wants to change the wording, update the goal statement and ask again before generating the card
+- Use Australian English spelling (organise, behaviour, programme, etc.)`;
+
+// ── State ────────────────────────────────────────────────────────────────────
+let messages = [];
+let cardData  = null;
+let isLoading = false;
+
+// ── Session start ─────────────────────────────────────────────────────────────
+function startSession() {
+  const rawGoal = document.getElementById('raw-goal').value.trim();
+  if (!rawGoal) {
+    document.getElementById('raw-goal').focus();
+    return;
+  }
+  const role = document.getElementById('role-title').value.trim();
+  const team = document.getElementById('team-name').value.trim();
+
+  // Build context bar
+  let contextParts = [];
+  if (role) contextParts.push(role);
+  if (team) contextParts.push(team);
+  const contextBar = document.getElementById('context-bar');
+  contextBar.innerHTML = contextParts.length
+    ? `<strong>Your context:</strong> ${contextParts.join(' · ')}`
+    : '<strong>Coaching session started.</strong> Your Goal Card will be ready shortly.';
+
+  // Build first user message
+  let userMsg = rawGoal;
+  if (role || team) {
+    userMsg += `\n\n[Context: ${[role && `Role: ${role}`, team && `Team: ${team}`].filter(Boolean).join(', ')}]`;
+  }
+
+  // Switch to chat
+  document.getElementById('welcome').style.display = 'none';
+  document.getElementById('chat').classList.add('active');
+  document.getElementById('reply-bar').classList.add('active');
+
+  // Send first message
+  addUserMessage(rawGoal);
+  messages.push({ role: 'user', content: userMsg });
+  callAPI();
+}
+
+// ── Message rendering ─────────────────────────────────────────────────────────
+function addUserMessage(text) {
+  const container = document.getElementById('messages');
+  const div = document.createElement('div');
+  div.className = 'msg user';
+  div.innerHTML = `
+    <div class="msg-avatar">👤</div>
+    <div class="msg-bubble">${escapeHtml(text)}</div>
+  `;
+  container.appendChild(div);
+  scrollBottom();
+}
+
+function addAIMessage(text) {
+  // Strip card markers from display text
+  const display = text
+    .replace(/---GOAL_CARD_START---[\s\S]*?---GOAL_CARD_END---/g, '')
+    .trim();
+
+  if (display) {
+    const container = document.getElementById('messages');
+    const div = document.createElement('div');
+    div.className = 'msg ai';
+    div.innerHTML = `
+      <div class="msg-avatar">🎯</div>
+      <div class="msg-bubble">${formatAIText(display)}</div>
+    `;
+    container.appendChild(div);
+    scrollBottom();
+  }
+}
+
+function formatAIText(text) {
+  return escapeHtml(text)
+    .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
+    .replace(/\n/g, '<br>');
+}
+
+function escapeHtml(str) {
+  return str
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;');
+}
+
+// ── API call ──────────────────────────────────────────────────────────────────
+async function callAPI() {
+  if (isLoading) return;
+  isLoading = true;
+  setInputEnabled(false);
+  document.getElementById('typing').style.display = 'block';
+  scrollBottom();
+
+  try {
+    const res = await fetch('https://rockmouse-agent-proxy.craig-3c4.workers.dev', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        systemPrompt: SYSTEM_PROMPT,
+        userInput: messages.length > 1
+          ? messages.slice(0, -1).map(m => (m.role === 'user' ? 'User' : 'Assistant') + ': ' + m.content).join('\n\n') + '\n\nUser: ' + messages[messages.length - 1].content
+          : messages[messages.length - 1].content
+      })
+    });
+
+    if (!res.ok) throw new Error(`API error ${res.status}`);
+    const data = await res.json();
+    const aiText = data.content?.[0]?.text || '';
+
+    document.getElementById('typing').style.display = 'none';
+    messages.push({ role: 'assistant', content: aiText });
+    addAIMessage(aiText);
+
+    // Check for card
+    const cardMatch = aiText.match(/---GOAL_CARD_START---([\s\S]*?)---GOAL_CARD_END---/);
+    if (cardMatch) {
+      try {
+        cardData = JSON.parse(cardMatch[1].trim());
+        renderCard(cardData);
+      } catch (e) {
+        console.error('Card parse error:', e);
+      }
+    }
+
+  } catch (err) {
+    document.getElementById('typing').style.display = 'none';
+    const container = document.getElementById('messages');
+    const div = document.createElement('div');
+    div.className = 'error-msg';
+    div.textContent = `Something went wrong: ${err.message}. Please check your connection and try again.`;
+    container.appendChild(div);
+    scrollBottom();
+  }
+
+  isLoading = false;
+  setInputEnabled(true);
+  document.getElementById('reply-input').focus();
+}
+
+// ── Reply ─────────────────────────────────────────────────────────────────────
+function sendReply() {
+  const input = document.getElementById('reply-input');
+  const text = input.value.trim();
+  if (!text || isLoading) return;
+
+  input.value = '';
+  autoGrow(input);
+  addUserMessage(text);
+  messages.push({ role: 'user', content: text });
+  callAPI();
+}
+
+function handleReplyKey(e) {
+  if (e.key === 'Enter' && !e.shiftKey) {
+    e.preventDefault();
+    sendReply();
+  }
+}
+
+function autoGrow(el) {
+  el.style.height = 'auto';
+  el.style.height = Math.min(el.scrollHeight, 120) + 'px';
+}
+
+function setInputEnabled(enabled) {
+  document.getElementById('reply-input').disabled = !enabled;
+  document.getElementById('reply-send').disabled = !enabled;
+}
+
+// ── Card rendering ─────────────────────────────────────────────────────────────
+function renderCard(data) {
+  document.getElementById('card-goal-text').textContent  = data.goal_statement  || '';
+  document.getElementById('card-priority').textContent   = data.strategic_priority || '';
+  document.getElementById('card-domain').textContent     = data.capability_domain  || '';
+  document.getElementById('card-timeframe').textContent  = data.timeframe           || '';
+  document.getElementById('card-next-step').textContent  = data.next_step           || '';
+  document.getElementById('card-json').textContent       = JSON.stringify(data, null, 2);
+
+  const cardSection = document.getElementById('card-section');
+  cardSection.classList.add('active');
+
+  // Hide reply bar when card is shown
+  document.getElementById('reply-bar').classList.remove('active');
+
+  setTimeout(() => {
+    cardSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }, 200);
+}
+
+// ── Card actions ──────────────────────────────────────────────────────────────
+function copyCard() {
+  if (!cardData) return;
+  const text = buildCardText(cardData);
+  navigator.clipboard.writeText(text).then(() => {
+    const btn = document.getElementById('copy-btn');
+    btn.textContent = '✓ Copied!';
+    btn.classList.add('copied');
+    setTimeout(() => {
+      btn.textContent = '📋 Copy Goal Card';
+      btn.classList.remove('copied');
+    }, 2500);
+  });
+}
+
+function downloadCard() {
+  if (!cardData) return;
+  const text = buildCardText(cardData);
+  const blob = new Blob([text], { type: 'text/plain' });
+  const url  = URL.createObjectURL(blob);
+  const a    = document.createElement('a');
+  a.href     = url;
+  a.download = 'goal-context-card.txt';
+  a.click();
+  URL.revokeObjectURL(url);
+}
+
+function buildCardText(data) {
+  const lines = [
+    '⚠️  DRAFT — This goal has been shaped by AI coaching and requires human review before sharing.',
+    '',
+    '══════════════════════════════════════════════',
+    'GOAL CONTEXT CARD — Generated by Goal Architect',
+    '══════════════════════════════════════════════',
+    '',
+    'GOAL STATEMENT',
+    data.goal_statement || '',
+    '',
+    'STRATEGIC PRIORITY',
+    data.strategic_priority || '',
+    '',
+    'CAPABILITY DOMAIN',
+    data.capability_domain || '',
+    '',
+    'TIMEFRAME',
+    data.timeframe || '',
+    '',
+    'OUTCOME',
+    data.outcome || '',
+    '',
+    'IMPACT',
+    data.impact || '',
+    '',
+    'SUGGESTED FIRST STEP',
+    data.next_step || '',
+    '',
+    '── JSON (for downstream agents) ──────────────',
+    JSON.stringify(data, null, 2),
+    '',
+    '══════════════════════════════════════════════',
+    'Powered by RockMouse · rockmouse.com.au',
+  ];
+  return lines.join('\n');
+}
+
+// ── Reset ─────────────────────────────────────────────────────────────────────
+function resetSession() {
+  messages  = [];
+  cardData  = null;
+  isLoading = false;
+  document.getElementById('messages').innerHTML = '';
+  document.getElementById('card-section').classList.remove('active');
+  document.getElementById('chat').classList.remove('active');
+  document.getElementById('reply-bar').classList.remove('active');
+  document.getElementById('welcome').style.display = 'block';
+  document.getElementById('raw-goal').value   = '';
+  document.getElementById('role-title').value = '';
+  document.getElementById('team-name').value  = '';
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+// ── Utils ─────────────────────────────────────────────────────────────────────
+function scrollBottom() {
+  setTimeout(() => window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' }), 60);
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,1162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Content Currency Agent | RockMouse AI Agents</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap');
+
+  :root {
+    --navy: #1a2744;
+    --navy-light: #243257;
+    --teal: #00b5b8;
+    --teal-dim: #00999c;
+    --white: #ffffff;
+    --off-white: #f5f6f8;
+    --border: #dde1e9;
+    --text: #1a2744;
+    --text-mid: #4a5568;
+    --text-light: #8896ab;
+    --red: #e05252;
+    --amber: #f0a041;
+    --green: #27a868;
+    --green-dim: #1f8f57;
+    --shadow: 0 2px 12px rgba(26,39,68,0.10);
+    --shadow-lg: 0 8px 32px rgba(26,39,68,0.14);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--off-white);
+    color: var(--text);
+    min-height: 100vh;
+  }
+
+  /* ── TOP NAV ── */
+  .topnav {
+    background: var(--navy);
+    padding: 0 32px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 64px;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.22);
+  }
+  .logo-area {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+  .logo-mark {
+    width: 38px; height: 38px;
+    background: var(--teal);
+    border-radius: 6px;
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Playfair Display', serif;
+    font-size: 18px; font-weight: 700;
+    color: var(--navy);
+    letter-spacing: -1px;
+    flex-shrink: 0;
+  }
+  .logo-text {
+    display: flex; flex-direction: column; gap: 1px;
+  }
+  .logo-text .org {
+    font-size: 12px; font-weight: 500;
+    color: rgba(255,255,255,0.55);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+  .logo-text .tool {
+    font-size: 15px; font-weight: 600;
+    color: white;
+    letter-spacing: -0.01em;
+  }
+  .nav-meta {
+    display: flex; align-items: center; gap: 20px;
+  }
+  .nav-badge {
+    font-size: 11px; font-weight: 600;
+    padding: 4px 10px; border-radius: 20px;
+    background: rgba(0,181,184,0.18);
+    color: var(--teal);
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+  }
+  .nav-user {
+    width: 34px; height: 34px;
+    background: var(--navy-light);
+    border: 1.5px solid rgba(255,255,255,0.15);
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 13px; font-weight: 600; color: white;
+    cursor: pointer;
+  }
+
+  /* ── LAYOUT ── */
+  .layout {
+    display: grid;
+    grid-template-columns: 260px 1fr;
+    min-height: calc(100vh - 64px);
+  }
+
+  /* ── SIDEBAR ── */
+  .sidebar {
+    background: white;
+    border-right: 1px solid var(--border);
+    padding: 28px 0;
+    position: sticky;
+    top: 64px;
+    height: calc(100vh - 64px);
+    overflow-y: auto;
+  }
+  .sidebar-section {
+    margin-bottom: 28px;
+    padding: 0 20px;
+  }
+  .sidebar-label {
+    font-size: 10px; font-weight: 600;
+    text-transform: uppercase; letter-spacing: 0.1em;
+    color: var(--text-light);
+    margin-bottom: 10px;
+    padding-left: 4px;
+  }
+  .sidebar-nav {
+    display: flex; flex-direction: column; gap: 2px;
+  }
+  .nav-item {
+    display: flex; align-items: center; gap: 10px;
+    padding: 9px 12px; border-radius: 8px;
+    font-size: 13.5px; font-weight: 500;
+    color: var(--text-mid);
+    cursor: pointer;
+    transition: all 0.15s;
+    text-decoration: none;
+  }
+  .nav-item:hover { background: var(--off-white); color: var(--navy); }
+  .nav-item.active {
+    background: rgba(0,181,184,0.10);
+    color: var(--teal-dim);
+    font-weight: 600;
+  }
+  .nav-item .icon { font-size: 15px; width: 20px; text-align: center; }
+  .nav-badge-count {
+    margin-left: auto;
+    background: var(--red);
+    color: white;
+    font-size: 10px; font-weight: 700;
+    padding: 2px 6px; border-radius: 10px;
+    min-width: 18px; text-align: center;
+  }
+  .sidebar-divider {
+    height: 1px; background: var(--border);
+    margin: 4px 20px 20px;
+  }
+
+  /* ── MAIN CONTENT ── */
+  .main {
+    padding: 32px 36px;
+    max-width: 1100px;
+  }
+
+  /* ── PAGE HEADER ── */
+  .page-header {
+    display: flex; align-items: flex-start; justify-content: space-between;
+    margin-bottom: 28px;
+    gap: 20px;
+  }
+  .page-title h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: 28px; font-weight: 700;
+    color: var(--navy);
+    letter-spacing: -0.02em;
+    line-height: 1.2;
+  }
+  .page-title p {
+    font-size: 14px; color: var(--text-mid);
+    margin-top: 5px;
+  }
+  .header-actions {
+    display: flex; gap: 10px; align-items: center; flex-shrink: 0;
+  }
+  .btn {
+    display: inline-flex; align-items: center; gap: 6px;
+    padding: 9px 18px; border-radius: 7px;
+    font-size: 13.5px; font-weight: 600;
+    cursor: pointer; border: none;
+    font-family: 'DM Sans', sans-serif;
+    transition: all 0.15s;
+  }
+  .btn-primary {
+    background: var(--teal);
+    color: var(--navy);
+  }
+  .btn-primary:hover { background: var(--teal-dim); transform: translateY(-1px); box-shadow: 0 4px 12px rgba(0,181,184,0.3); }
+  .btn-outline {
+    background: white;
+    color: var(--navy);
+    border: 1.5px solid var(--border);
+  }
+  .btn-outline:hover { border-color: var(--teal); color: var(--teal-dim); }
+
+  /* ── STATS ROW ── */
+  .stats-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+    margin-bottom: 28px;
+  }
+  .stat-card {
+    background: white;
+    border-radius: 12px;
+    padding: 20px 22px;
+    border: 1px solid var(--border);
+    box-shadow: var(--shadow);
+    transition: transform 0.15s, box-shadow 0.15s;
+  }
+  .stat-card:hover { transform: translateY(-2px); box-shadow: var(--shadow-lg); }
+  .stat-label {
+    font-size: 11px; font-weight: 600;
+    text-transform: uppercase; letter-spacing: 0.08em;
+    color: var(--text-light);
+    margin-bottom: 8px;
+  }
+  .stat-value {
+    font-family: 'Playfair Display', serif;
+    font-size: 32px; font-weight: 700;
+    color: var(--navy);
+    line-height: 1;
+  }
+  .stat-sub {
+    font-size: 12px; color: var(--text-mid);
+    margin-top: 4px;
+  }
+  .stat-accent { color: var(--teal); }
+  .stat-card.alert-stat .stat-value { color: var(--red); }
+  .stat-card.warn-stat .stat-value { color: var(--amber); }
+
+  /* ── CONTENT GRID ── */
+  .content-grid {
+    display: grid;
+    grid-template-columns: 1fr 340px;
+    gap: 24px;
+  }
+
+  /* ── ALERT FEED ── */
+  .panel {
+    background: white;
+    border-radius: 14px;
+    border: 1px solid var(--border);
+    box-shadow: var(--shadow);
+    overflow: hidden;
+  }
+  .panel-header {
+    padding: 18px 24px;
+    border-bottom: 1px solid var(--border);
+    display: flex; align-items: center; justify-content: space-between;
+  }
+  .panel-title {
+    font-size: 15px; font-weight: 700;
+    color: var(--navy);
+    display: flex; align-items: center; gap: 8px;
+  }
+  .panel-title .icon { color: var(--teal); }
+  .panel-action {
+    font-size: 12px; font-weight: 600;
+    color: var(--teal-dim);
+    cursor: pointer;
+    text-decoration: none;
+    padding: 5px 12px;
+    border-radius: 6px;
+    border: 1px solid rgba(0,181,184,0.3);
+    transition: all 0.15s;
+  }
+  .panel-action:hover { background: rgba(0,181,184,0.08); }
+
+  /* ── ALERT ITEMS ── */
+  .alert-list { padding: 8px 0; }
+  .alert-item {
+    padding: 16px 24px;
+    border-bottom: 1px solid var(--border);
+    cursor: pointer;
+    transition: background 0.12s;
+    position: relative;
+  }
+  .alert-item:last-child { border-bottom: none; }
+  .alert-item:hover { background: var(--off-white); }
+  .alert-item.selected { background: rgba(0,181,184,0.05); border-left: 3px solid var(--teal); padding-left: 21px; }
+  .alert-item.new-item::before {
+    content: '';
+    position: absolute;
+    left: 8px; top: 50%;
+    transform: translateY(-50%);
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: var(--teal);
+  }
+  .alert-top {
+    display: flex; align-items: center; gap: 8px;
+    margin-bottom: 6px;
+  }
+  .source-badge {
+    font-size: 10px; font-weight: 700;
+    padding: 2px 8px; border-radius: 4px;
+    text-transform: uppercase; letter-spacing: 0.06em;
+  }
+  .source-ato { background: rgba(224,82,82,0.1); color: #c0392b; }
+  .source-ifac { background: rgba(0,181,184,0.1); color: var(--teal-dim); }
+  .source-aasb { background: rgba(103,86,175,0.1); color: #6756af; }
+  .source-asic { background: rgba(240,160,65,0.1); color: #d08a20; }
+  .source-wef { background: rgba(26,39,68,0.1); color: var(--navy); }
+  .source-ird { background: rgba(39,168,104,0.1); color: var(--green-dim); }
+
+  .urgency-dot {
+    width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0;
+  }
+  .urgency-high { background: var(--red); }
+  .urgency-medium { background: var(--amber); }
+  .urgency-low { background: var(--green); }
+
+  .alert-date {
+    font-size: 11px; color: var(--text-light);
+    margin-left: auto; flex-shrink: 0;
+  }
+  .alert-title {
+    font-size: 13.5px; font-weight: 600;
+    color: var(--navy);
+    line-height: 1.35;
+    margin-bottom: 5px;
+  }
+  .alert-meta {
+    font-size: 12px; color: var(--text-mid);
+    display: flex; align-items: center; gap: 8px;
+    flex-wrap: wrap;
+  }
+  .subject-tag {
+    background: var(--off-white);
+    border: 1px solid var(--border);
+    padding: 2px 7px; border-radius: 4px;
+    font-size: 11px; font-weight: 500;
+    color: var(--text-mid);
+  }
+
+  /* ── DETAIL PANEL ── */
+  .detail-panel { display: flex; flex-direction: column; gap: 16px; }
+
+  .brief-card {
+    background: white;
+    border-radius: 14px;
+    border: 1px solid var(--border);
+    box-shadow: var(--shadow);
+    overflow: hidden;
+  }
+  .brief-header {
+    background: var(--navy);
+    padding: 18px 22px;
+  }
+  .brief-header-top {
+    display: flex; align-items: center; gap: 10px;
+    margin-bottom: 10px;
+  }
+  .brief-source {
+    font-size: 11px; font-weight: 700;
+    padding: 3px 9px; border-radius: 4px;
+    text-transform: uppercase; letter-spacing: 0.06em;
+    background: rgba(255,255,255,0.15); color: white;
+  }
+  .brief-urgency {
+    font-size: 11px; font-weight: 700;
+    padding: 3px 9px; border-radius: 4px;
+    text-transform: uppercase; letter-spacing: 0.06em;
+  }
+  .urgency-high-badge { background: rgba(224,82,82,0.25); color: #ff8080; }
+  .urgency-med-badge { background: rgba(240,160,65,0.25); color: #f0c060; }
+  .urgency-low-badge { background: rgba(39,168,104,0.25); color: #60d090; }
+  .brief-date { font-size: 11px; color: rgba(255,255,255,0.45); margin-left: auto; }
+  .brief-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 17px; font-weight: 700;
+    color: white; line-height: 1.3;
+  }
+
+  .brief-body { padding: 20px 22px; }
+  .brief-section { margin-bottom: 18px; }
+  .brief-section:last-child { margin-bottom: 0; }
+  .brief-section-label {
+    font-size: 10px; font-weight: 700;
+    text-transform: uppercase; letter-spacing: 0.1em;
+    color: var(--text-light);
+    margin-bottom: 7px;
+    display: flex; align-items: center; gap: 6px;
+  }
+  .brief-section-label::after {
+    content: '';
+    flex: 1; height: 1px;
+    background: var(--border);
+  }
+  .brief-text {
+    font-size: 13.5px; line-height: 1.65;
+    color: var(--text-mid);
+  }
+  .affected-subjects {
+    display: flex; flex-wrap: wrap; gap: 6px;
+  }
+  .subject-pill {
+    display: flex; align-items: center; gap: 5px;
+    padding: 5px 11px; border-radius: 6px;
+    font-size: 12px; font-weight: 600;
+    border: 1.5px solid var(--border);
+    color: var(--navy);
+    background: var(--off-white);
+  }
+  .subject-pill .dot {
+    width: 6px; height: 6px; border-radius: 50%;
+    background: var(--teal);
+  }
+
+  .recommended-action {
+    display: flex; align-items: flex-start; gap: 12px;
+    background: rgba(0,181,184,0.07);
+    border: 1.5px solid rgba(0,181,184,0.25);
+    border-radius: 10px;
+    padding: 14px 16px;
+  }
+  .action-icon {
+    font-size: 22px; margin-top: 1px;
+  }
+  .action-details {}
+  .action-type {
+    font-size: 11px; font-weight: 700;
+    text-transform: uppercase; letter-spacing: 0.08em;
+    color: var(--teal-dim);
+    margin-bottom: 3px;
+  }
+  .action-text {
+    font-size: 13px; line-height: 1.5;
+    color: var(--text);
+    font-weight: 500;
+  }
+  .action-timeline {
+    font-size: 11px; color: var(--text-mid);
+    margin-top: 4px;
+  }
+
+  .brief-actions {
+    display: flex; gap: 8px;
+    padding: 16px 22px;
+    border-top: 1px solid var(--border);
+    background: var(--off-white);
+  }
+  .btn-sm {
+    padding: 8px 14px; font-size: 12.5px;
+    flex: 1; justify-content: center;
+  }
+  .btn-approve {
+    background: var(--green); color: white;
+  }
+  .btn-approve:hover { background: var(--green-dim); }
+  .btn-defer {
+    background: white; color: var(--text-mid);
+    border: 1.5px solid var(--border);
+  }
+  .btn-defer:hover { border-color: var(--amber); color: var(--amber); }
+  .btn-dismiss {
+    background: white; color: var(--text-mid);
+    border: 1.5px solid var(--border);
+    flex: 0 0 auto; padding: 8px 10px;
+  }
+  .btn-dismiss:hover { border-color: var(--red); color: var(--red); }
+
+  /* ── SOURCE MONITOR CARD ── */
+  .sources-card { }
+  .source-row {
+    display: flex; align-items: center;
+    padding: 13px 22px;
+    border-bottom: 1px solid var(--border);
+    gap: 12px;
+  }
+  .source-row:last-child { border-bottom: none; }
+  .source-status {
+    width: 8px; height: 8px; border-radius: 50%;
+    flex-shrink: 0;
+  }
+  .status-live { background: var(--green); box-shadow: 0 0 0 3px rgba(39,168,104,0.2); }
+  .status-checking { background: var(--amber); }
+  .source-name { font-size: 13.5px; font-weight: 600; color: var(--navy); }
+  .source-desc { font-size: 11.5px; color: var(--text-light); }
+  .source-last {
+    margin-left: auto;
+    font-family: 'DM Mono', monospace;
+    font-size: 11px; color: var(--text-light);
+    text-align: right;
+  }
+  .source-alert-count {
+    background: var(--red);
+    color: white; font-size: 10px; font-weight: 700;
+    padding: 2px 6px; border-radius: 10px;
+  }
+
+  /* ── EMPTY STATE ── */
+  .empty-brief {
+    background: white;
+    border-radius: 14px;
+    border: 1px solid var(--border);
+    box-shadow: var(--shadow);
+    padding: 48px 32px;
+    text-align: center;
+  }
+  .empty-icon { font-size: 40px; margin-bottom: 16px; opacity: 0.4; }
+  .empty-text { font-size: 14px; color: var(--text-mid); }
+
+  /* ── STATUS BAR ── */
+  .status-bar {
+    background: var(--navy);
+    padding: 8px 32px;
+    display: flex; align-items: center; gap: 24px;
+    font-size: 11.5px; color: rgba(255,255,255,0.55);
+    border-top: 1px solid rgba(255,255,255,0.06);
+  }
+  .status-bar span { display: flex; align-items: center; gap: 5px; }
+  .status-live-dot {
+    width: 6px; height: 6px; border-radius: 50%;
+    background: var(--green);
+    animation: pulse 2s infinite;
+  }
+  @keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.4; }
+  }
+
+  /* ── FILTER BAR ── */
+  .filter-bar {
+    display: flex; align-items: center; gap: 10px;
+    margin-bottom: 18px;
+    flex-wrap: wrap;
+  }
+  .filter-chip {
+    padding: 6px 14px; border-radius: 20px;
+    font-size: 12px; font-weight: 600;
+    cursor: pointer;
+    border: 1.5px solid var(--border);
+    background: white; color: var(--text-mid);
+    transition: all 0.15s;
+  }
+  .filter-chip:hover { border-color: var(--teal); color: var(--teal-dim); }
+  .filter-chip.active {
+    background: var(--navy); color: white;
+    border-color: var(--navy);
+  }
+  .filter-chip.high { }
+  .filter-chip.high.active { background: var(--red); border-color: var(--red); }
+  .filter-chip.medium.active { background: var(--amber); border-color: var(--amber); }
+  .filter-chip.low.active { background: var(--green); border-color: var(--green); }
+
+  .search-input {
+    flex: 1; min-width: 180px;
+    display: flex; align-items: center;
+    background: white;
+    border: 1.5px solid var(--border);
+    border-radius: 8px;
+    padding: 7px 12px;
+    gap: 8px;
+    font-size: 13px; color: var(--text-mid);
+    font-family: 'DM Sans', sans-serif;
+    transition: border-color 0.15s;
+  }
+  .search-input:focus-within { border-color: var(--teal); }
+  .search-input input {
+    border: none; outline: none;
+    font-family: inherit; font-size: 13px;
+    color: var(--text); background: transparent;
+    flex: 1;
+  }
+  .search-icon { color: var(--text-light); }
+
+  /* ── TOAST ── */
+  .toast {
+    position: fixed; bottom: 24px; right: 24px;
+    background: var(--navy); color: white;
+    padding: 14px 20px; border-radius: 10px;
+    font-size: 13.5px; font-weight: 500;
+    box-shadow: var(--shadow-lg);
+    display: flex; align-items: center; gap: 10px;
+    transform: translateY(80px); opacity: 0;
+    transition: all 0.3s cubic-bezier(0.34,1.56,0.64,1);
+    z-index: 999;
+    max-width: 340px;
+  }
+  .toast.show { transform: translateY(0); opacity: 1; }
+  .toast-icon { font-size: 18px; }
+
+  /* animations */
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(8px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .main { animation: fadeIn 0.3s ease; }
+
+  /* scrollbar */
+  ::-webkit-scrollbar { width: 6px; height: 6px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+  ::-webkit-scrollbar-thumb:hover { background: #bcc4d4; }
+</style>
+</head>
+<body>
+
+<!-- TOP NAV -->
+<nav class="topnav">
+  <div class="logo-area">
+    <img src="https://rockmouse.live/assets/rockmouse-logo-wide.svg" alt="RockMouse" onerror="this.style.display='none'" style="height:30px;width:auto;filter:brightness(0) invert(1);">
+    <span style="border-left:1px solid rgba(255,255,255,0.25);padding-left:12px;font-size:13px;color:rgba(255,255,255,0.9);font-weight:600;">Content Currency Agent</span>
+  </div>
+</nav>
+
+<!-- LAYOUT -->
+<div class="layout">
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <div class="sidebar-section">
+      <div class="sidebar-label">Overview</div>
+      <nav class="sidebar-nav">
+        <a class="nav-item active" onclick="showView('dashboard')">
+          <span class="icon">📊</span> Dashboard
+        </a>
+        <a class="nav-item" onclick="showView('alerts')">
+          <span class="icon">🔔</span> Change Briefs
+          <span class="nav-badge-count">3</span>
+        </a>
+        <a class="nav-item" onclick="showView('sources')">
+          <span class="icon">🌐</span> Source Monitor
+        </a>
+      </nav>
+    </div>
+    <div class="sidebar-divider"></div>
+    <div class="sidebar-section">
+      <div class="sidebar-label">Program Scope</div>
+      <nav class="sidebar-nav">
+        <a class="nav-item" onclick="filterBySubject('Core 4')">
+          <span class="icon">📋</span> Core 4: Tax (AU)
+          <span class="nav-badge-count">2</span>
+        </a>
+        <a class="nav-item" onclick="filterBySubject('Core 3')">
+          <span class="icon">📋</span> Core 3: Fin. Reporting
+        </a>
+        <a class="nav-item" onclick="filterBySubject('Elective B')">
+          <span class="icon">📋</span> Elective B: Sustainability
+          <span class="nav-badge-count">1</span>
+        </a>
+        <a class="nav-item" onclick="filterBySubject('CPD')">
+          <span class="icon">📚</span> CPD Portfolio
+        </a>
+      </nav>
+    </div>
+    <div class="sidebar-divider"></div>
+    <div class="sidebar-section">
+      <div class="sidebar-label">Settings</div>
+      <nav class="sidebar-nav">
+        <a class="nav-item">
+          <span class="icon">⚙️</span> Configure Sources
+        </a>
+        <a class="nav-item">
+          <span class="icon">👥</span> Ownership Map
+        </a>
+        <a class="nav-item">
+          <span class="icon">📧</span> Alert Routing
+        </a>
+      </nav>
+    </div>
+  </aside>
+
+  <!-- MAIN -->
+  <main class="main">
+
+    <!-- PAGE HEADER -->
+    <div class="page-header">
+      <div class="page-title">
+        <h1>Change Briefs</h1>
+        <p>AI-generated alerts from monitored regulatory and standards sources — reviewed before action</p>
+      </div>
+      <div class="header-actions">
+        <button class="btn btn-outline" onclick="runScan()">⟳ Run Scan</button>
+        <button class="btn btn-primary" onclick="showToast('📧 Alert digest sent to 4 content owners')">✉ Send Digest</button>
+      </div>
+    </div>
+
+    <!-- STATS -->
+    <div class="stats-grid">
+      <div class="stat-card alert-stat">
+        <div class="stat-label">High Urgency</div>
+        <div class="stat-value">3</div>
+        <div class="stat-sub">Require immediate review</div>
+      </div>
+      <div class="stat-card warn-stat">
+        <div class="stat-label">Medium Urgency</div>
+        <div class="stat-value">2</div>
+        <div class="stat-sub">Review within 2 weeks</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Sources Monitored</div>
+        <div class="stat-value stat-accent">5</div>
+        <div class="stat-sub">ATO · IFAC · AASB · ASIC · WEF</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Resolved This Term</div>
+        <div class="stat-value">11</div>
+        <div class="stat-sub">Avg. 2.1 days to action</div>
+      </div>
+    </div>
+
+    <!-- FILTER BAR -->
+    <div class="filter-bar">
+      <div class="search-input">
+        <span class="search-icon">🔍</span>
+        <input type="text" placeholder="Search briefs..." oninput="filterSearch(this.value)">
+      </div>
+      <div class="filter-chip active" onclick="setFilter(this,'all')">All</div>
+      <div class="filter-chip high" onclick="setFilter(this,'high')">🔴 High</div>
+      <div class="filter-chip medium" onclick="setFilter(this,'medium')">🟡 Medium</div>
+      <div class="filter-chip low" onclick="setFilter(this,'low')">🟢 Low</div>
+    </div>
+
+    <!-- MAIN CONTENT GRID -->
+    <div class="content-grid">
+
+      <!-- ALERT FEED -->
+      <div class="panel">
+        <div class="panel-header">
+          <div class="panel-title">
+            <span class="icon">📋</span>
+            Active Change Briefs
+          </div>
+          <a class="panel-action">View All History</a>
+        </div>
+        <div class="alert-list" id="alertList">
+
+          <div class="alert-item new-item selected" onclick="selectAlert(0)" data-urgency="high" data-subject="Core 4" data-idx="0">
+            <div class="alert-top">
+              <span class="source-badge source-ato">ATO</span>
+              <span class="urgency-dot urgency-high"></span>
+              <span style="font-size:11px;font-weight:700;color:var(--red);">HIGH</span>
+              <span class="alert-date">24 Mar 2026</span>
+            </div>
+            <div class="alert-title">2026–27 FBT Rate Changes & Exempt Benefits Revision</div>
+            <div class="alert-meta">
+              <span class="subject-tag">Core 4: Tax (AU)</span>
+              <span class="subject-tag">CPD</span>
+              Impacts: 3 topics · Update required
+            </div>
+          </div>
+
+          <div class="alert-item new-item" onclick="selectAlert(1)" data-urgency="high" data-subject="Core 4" data-idx="1">
+            <div class="alert-top">
+              <span class="source-badge source-ato">ATO</span>
+              <span class="urgency-dot urgency-high"></span>
+              <span style="font-size:11px;font-weight:700;color:var(--red);">HIGH</span>
+              <span class="alert-date">22 Mar 2026</span>
+            </div>
+            <div class="alert-title">Small Business CGT Concessions — Revised Eligibility Thresholds</div>
+            <div class="alert-meta">
+              <span class="subject-tag">Core 4: Tax (AU)</span>
+              Impacts: 2 topics · Update required
+            </div>
+          </div>
+
+          <div class="alert-item new-item" onclick="selectAlert(2)" data-urgency="high" data-subject="Elective B" data-idx="2">
+            <div class="alert-top">
+              <span class="source-badge source-asic">ASIC</span>
+              <span class="urgency-dot urgency-high"></span>
+              <span style="font-size:11px;font-weight:700;color:var(--red);">HIGH</span>
+              <span class="alert-date">20 Mar 2026</span>
+            </div>
+            <div class="alert-title">ASIC Climate Disclosure Reporting Obligations — Phase 2 Guidance</div>
+            <div class="alert-meta">
+              <span class="subject-tag">Elective B: Sustainability</span>
+              <span class="subject-tag">CPD: Climate</span>
+              Impacts: 5 topics · Review required
+            </div>
+          </div>
+
+          <div class="alert-item" onclick="selectAlert(3)" data-urgency="medium" data-subject="Core 3" data-idx="3">
+            <div class="alert-top">
+              <span class="source-badge source-aasb">AASB</span>
+              <span class="urgency-dot urgency-medium"></span>
+              <span style="font-size:11px;font-weight:700;color:var(--amber);">MEDIUM</span>
+              <span class="alert-date">18 Mar 2026</span>
+            </div>
+            <div class="alert-title">AASB 17 Insurance Contracts — Implementation Guidance Update</div>
+            <div class="alert-meta">
+              <span class="subject-tag">Core 3: Fin. Accounting & Reporting</span>
+              Impacts: 1 topic · Monitor
+            </div>
+          </div>
+
+          <div class="alert-item" onclick="selectAlert(4)" data-urgency="medium" data-subject="CPD" data-idx="4">
+            <div class="alert-top">
+              <span class="source-badge source-wef">WEF</span>
+              <span class="urgency-dot urgency-medium"></span>
+              <span style="font-size:11px;font-weight:700;color:var(--amber);">MEDIUM</span>
+              <span class="alert-date">15 Mar 2026</span>
+            </div>
+            <div class="alert-title">Future of Jobs Report 2026 — Finance & Accounting Skills Outlook</div>
+            <div class="alert-meta">
+              <span class="subject-tag">CPD: Finance Partnering</span>
+              <span class="subject-tag">CPD: AI Fluency</span>
+              Impacts: 2 CPD products · Review
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- RIGHT PANEL -->
+      <div class="detail-panel">
+
+        <!-- CHANGE BRIEF DETAIL -->
+        <div id="briefDetail">
+          <div class="brief-card">
+            <div class="brief-header">
+              <div class="brief-header-top">
+                <span class="brief-source">ATO</span>
+                <span class="brief-urgency urgency-high-badge">HIGH URGENCY</span>
+                <span class="brief-date">24 Mar 2026</span>
+              </div>
+              <div class="brief-title">2026–27 FBT Rate Changes & Exempt Benefits Revision</div>
+            </div>
+            <div class="brief-body">
+              <div class="brief-section">
+                <div class="brief-section-label">Summary</div>
+                <div class="brief-text">The ATO has published updated FBT rates for 2026–27, including a revised gross-up rate for Type 1 benefits (from 2.0802 to 2.0947) and amended caps for exempt remote area housing benefits. The ruling also clarifies meal entertainment thresholds under the 50/50 split method.</div>
+              </div>
+              <div class="brief-section">
+                <div class="brief-section-label">Affected Subjects</div>
+                <div class="affected-subjects">
+                  <div class="subject-pill"><span class="dot"></span>Core 4: Tax (AU) — Unit 3.2</div>
+                  <div class="subject-pill"><span class="dot"></span>Core 4: Tax (AU) — Unit 4.1</div>
+                  <div class="subject-pill"><span class="dot"></span>CPD: Tax Essentials</div>
+                </div>
+              </div>
+              <div class="brief-section">
+                <div class="brief-section-label">Recommended Action</div>
+                <div class="recommended-action">
+                  <div class="action-icon">✏️</div>
+                  <div class="action-details">
+                    <div class="action-type">Update Required</div>
+                    <div class="action-text">Revise FBT rate tables in Units 3.2 and 4.1. Update worked examples using current gross-up rates. Add note on meal entertainment threshold clarification.</div>
+                    <div class="action-timeline">⏱ Suggested by: End of Term 2 (30 Apr 2026)</div>
+                  </div>
+                </div>
+              </div>
+              <div class="brief-section">
+                <div class="brief-section-label">Route To</div>
+                <div class="brief-text" style="display:flex;align-items:center;gap:10px;">
+                  <div style="width:28px;height:28px;border-radius:50%;background:var(--navy);color:white;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;flex-shrink:0;">JM</div>
+                  <div>
+                    <div style="font-weight:600;font-size:13px;">James Morrison</div>
+                    <div style="font-size:11.5px;color:var(--text-light);">Content Lead — Tax &amp; Financial Planning</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="brief-actions">
+              <button class="btn btn-approve btn-sm" onclick="approveAlert()">✓ Assign &amp; Action</button>
+              <button class="btn btn-defer btn-sm" onclick="deferAlert()">⏸ Defer</button>
+              <button class="btn btn-dismiss btn-sm btn-outline" onclick="dismissAlert()" title="Dismiss">✕</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- SOURCE STATUS -->
+        <div class="panel sources-card">
+          <div class="panel-header">
+            <div class="panel-title">
+              <span class="icon">🌐</span>
+              Source Status
+            </div>
+            <span style="font-size:11px;color:var(--text-light);">Last scan: 2 min ago</span>
+          </div>
+          <div>
+            <div class="source-row">
+              <div class="source-status status-live"></div>
+              <div>
+                <div class="source-name">ATO</div>
+                <div class="source-desc">Australian Taxation Office</div>
+              </div>
+              <div class="source-last">
+                <div>Just now</div>
+                <span class="source-alert-count">2</span>
+              </div>
+            </div>
+            <div class="source-row">
+              <div class="source-status status-live"></div>
+              <div>
+                <div class="source-name">IFAC</div>
+                <div class="source-desc">Int'l Federation of Accountants</div>
+              </div>
+              <div class="source-last">
+                <div>8 min ago</div>
+              </div>
+            </div>
+            <div class="source-row">
+              <div class="source-status status-live"></div>
+              <div>
+                <div class="source-name">AASB</div>
+                <div class="source-desc">Australian Accounting Standards</div>
+              </div>
+              <div class="source-last">
+                <div>8 min ago</div>
+                <span class="source-alert-count">1</span>
+              </div>
+            </div>
+            <div class="source-row">
+              <div class="source-status status-live"></div>
+              <div>
+                <div class="source-name">ASIC</div>
+                <div class="source-desc">Australian Securities &amp; Investments</div>
+              </div>
+              <div class="source-last">
+                <div>11 min ago</div>
+                <span class="source-alert-count">1</span>
+              </div>
+            </div>
+            <div class="source-row">
+              <div class="source-status status-checking"></div>
+              <div>
+                <div class="source-name">WEF</div>
+                <div class="source-desc">World Economic Forum</div>
+              </div>
+              <div class="source-last">
+                <div>Checking…</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </main>
+</div>
+
+<!-- STATUS BAR -->
+<div class="status-bar">
+  <span><span class="status-live-dot"></span> Agent Running</span>
+  <span>5 sources · Scan interval: 15 min</span>
+  <span>3 subjects in scope (MVP)</span>
+  <span style="margin-left:auto;">Rockmouse Consulting · Module 01 MVP · April 2026</span>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast">
+  <span class="toast-icon" id="toastIcon">✅</span>
+  <span id="toastMsg">Action complete</span>
+</div>
+
+<script>
+const alerts = [
+  {
+    source: 'ATO', sourceClass: 'source-ato', urgency: 'HIGH', urgencyClass: 'urgency-high-badge',
+    date: '24 Mar 2026',
+    title: '2026–27 FBT Rate Changes & Exempt Benefits Revision',
+    summary: 'The ATO has published updated FBT rates for 2026–27, including a revised gross-up rate for Type 1 benefits (from 2.0802 to 2.0947) and amended caps for exempt remote area housing benefits. The ruling also clarifies meal entertainment thresholds under the 50/50 split method.',
+    subjects: ['Core 4: Tax (AU) — Unit 3.2', 'Core 4: Tax (AU) — Unit 4.1', 'CPD: Tax Essentials'],
+    action: 'Update Required',
+    actionIcon: '✏️',
+    actionText: 'Revise FBT rate tables in Units 3.2 and 4.1. Update worked examples using current gross-up rates. Add note on meal entertainment threshold clarification.',
+    timeline: 'End of Term 2 (30 Apr 2026)',
+    owner: 'JM', ownerName: 'James Morrison', ownerRole: 'Content Lead — Tax & Financial Planning'
+  },
+  {
+    source: 'ATO', sourceClass: 'source-ato', urgency: 'HIGH', urgencyClass: 'urgency-high-badge',
+    date: '22 Mar 2026',
+    title: 'Small Business CGT Concessions — Revised Eligibility Thresholds',
+    summary: 'The ATO has updated the net asset value test threshold for small business CGT concessions, raising the limit from $6M to $6.5M effective 1 July 2026. This affects eligibility calculations across the 15-year exemption, 50% active asset reduction, retirement exemption, and rollover concessions.',
+    subjects: ['Core 4: Tax (AU) — Unit 5.1', 'Core 4: Tax (AU) — Unit 5.3'],
+    action: 'Update Required',
+    actionIcon: '✏️',
+    actionText: 'Update all CGT concession eligibility threshold references and worked examples in Units 5.1 and 5.3. Flag for SME review.',
+    timeline: 'Before Term 2 launch (15 Apr 2026)',
+    owner: 'JM', ownerName: 'James Morrison', ownerRole: 'Content Lead — Tax & Financial Planning'
+  },
+  {
+    source: 'ASIC', sourceClass: 'source-asic', urgency: 'HIGH', urgencyClass: 'urgency-high-badge',
+    date: '20 Mar 2026',
+    title: 'ASIC Climate Disclosure Reporting Obligations — Phase 2 Guidance',
+    summary: 'ASIC has released Phase 2 implementation guidance for mandatory climate disclosure reporting, extending obligations to Group 2 entities (large proprietary companies with revenue >$50M) from 1 January 2027. New guidance covers scenario analysis requirements and Scope 3 emissions disclosure methodology.',
+    subjects: ['Elective B: Sustainability — Module 4', 'Elective B: Sustainability — Module 6', 'CPD: Climate Disclosures', 'CPD: Finance Partnering', 'Core 7: ICAP — Case Study B'],
+    action: 'Review Required',
+    actionIcon: '🔍',
+    actionText: 'Review Elective B Modules 4 and 6 against new Phase 2 guidance. Update entity threshold tables and Scope 3 methodology sections. Assess impact on CPD Climate Disclosures cohort materials (next cohort: June 2026).',
+    timeline: 'Review by 10 Apr 2026; update by 1 May 2026',
+    owner: 'SR', ownerName: 'Sarah Reeves', ownerRole: 'Content Lead — Sustainability & Reporting'
+  },
+  {
+    source: 'AASB', sourceClass: 'source-aasb', urgency: 'MEDIUM', urgencyClass: 'urgency-med-badge',
+    date: '18 Mar 2026',
+    title: 'AASB 17 Insurance Contracts — Implementation Guidance Update',
+    summary: 'AASB has issued supplementary implementation guidance for AASB 17 relating to the treatment of reinsurance contracts held, clarifying the presentation of net gains and losses on initial recognition. Applies to periods beginning on or after 1 January 2026.',
+    subjects: ['Core 3: Financial Accounting & Reporting — Unit 8.2'],
+    action: 'Monitor',
+    actionIcon: '👁️',
+    actionText: 'Review Unit 8.2 AASB 17 content to assess whether the reinsurance clarification affects current examples. Low likelihood of material change — monitor for final standard publication.',
+    timeline: 'Review at next content cycle (Term 3 2026)',
+    owner: 'AP', ownerName: 'Anh Pham', ownerRole: 'Content Lead — Financial Reporting'
+  },
+  {
+    source: 'WEF', sourceClass: 'source-wef', urgency: 'MEDIUM', urgencyClass: 'urgency-med-badge',
+    date: '15 Mar 2026',
+    title: 'Future of Jobs Report 2026 — Finance & Accounting Skills Outlook',
+    summary: 'The WEF Future of Jobs Report 2026 identifies AI literacy, ESG analysis, and data-driven decision-making as the three fastest-growing skill requirements for finance professionals. The report also flags a 22% decline in demand for traditional bookkeeping and tax compliance roles by 2030, offset by growth in advisory and strategic finance roles.',
+    subjects: ['CPD: Finance Partnering', 'CPD: AI Fluency'],
+    action: 'Review Required',
+    actionIcon: '🔍',
+    actionText: 'Review CPD Finance Partnering module framing against new WEF data. Consider incorporating 2026 WEF statistics in the AI Fluency program introduction (currently references 2025 data).',
+    timeline: 'Prior to Finance Partnering launch (May 2026)',
+    owner: 'MR', ownerName: 'Michelle Ryan', ownerRole: 'Director of Programs'
+  }
+];
+
+let selectedIdx = 0;
+
+function selectAlert(idx) {
+  selectedIdx = idx;
+  const items = document.querySelectorAll('.alert-item');
+  items.forEach(item => item.classList.remove('selected'));
+  items[idx].classList.add('selected');
+  renderBrief(idx);
+}
+
+function renderBrief(idx) {
+  const a = alerts[idx];
+  const subjectPills = a.subjects.map(s => `<div class="subject-pill"><span class="dot"></span>${s}</div>`).join('');
+  document.getElementById('briefDetail').innerHTML = `
+    <div class="brief-card">
+      <div class="brief-header">
+        <div class="brief-header-top">
+          <span class="brief-source">${a.source}</span>
+          <span class="brief-urgency ${a.urgencyClass}">${a.urgency} URGENCY</span>
+          <span class="brief-date">${a.date}</span>
+        </div>
+        <div class="brief-title">${a.title}</div>
+      </div>
+      <div class="brief-body">
+        <div class="brief-section">
+          <div class="brief-section-label">Summary</div>
+          <div class="brief-text">${a.summary}</div>
+        </div>
+        <div class="brief-section">
+          <div class="brief-section-label">Affected Subjects</div>
+          <div class="affected-subjects">${subjectPills}</div>
+        </div>
+        <div class="brief-section">
+          <div class="brief-section-label">Recommended Action</div>
+          <div class="recommended-action">
+            <div class="action-icon">${a.actionIcon}</div>
+            <div class="action-details">
+              <div class="action-type">${a.action}</div>
+              <div class="action-text">${a.actionText}</div>
+              <div class="action-timeline">⏱ Suggested by: ${a.timeline}</div>
+            </div>
+          </div>
+        </div>
+        <div class="brief-section">
+          <div class="brief-section-label">Route To</div>
+          <div class="brief-text" style="display:flex;align-items:center;gap:10px;">
+            <div style="width:28px;height:28px;border-radius:50%;background:var(--navy);color:white;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;flex-shrink:0;">${a.owner}</div>
+            <div>
+              <div style="font-weight:600;font-size:13px;">${a.ownerName}</div>
+              <div style="font-size:11.5px;color:var(--text-light);">${a.ownerRole}</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="brief-actions">
+        <button class="btn btn-approve btn-sm" onclick="approveAlert()">✓ Assign &amp; Action</button>
+        <button class="btn btn-defer btn-sm" onclick="deferAlert()">⏸ Defer</button>
+        <button class="btn btn-dismiss btn-sm btn-outline" onclick="dismissAlert()" title="Dismiss">✕</button>
+      </div>
+    </div>
+  `;
+}
+
+function approveAlert() {
+  const items = document.querySelectorAll('.alert-item');
+  items[selectedIdx].style.opacity = '0.4';
+  items[selectedIdx].style.pointerEvents = 'none';
+  showToast(`✅ Brief assigned to ${alerts[selectedIdx].ownerName} — task created`);
+}
+
+function deferAlert() {
+  showToast(`⏸ Brief deferred — reminder set for 7 days`);
+}
+
+function dismissAlert() {
+  const items = document.querySelectorAll('.alert-item');
+  items[selectedIdx].style.opacity = '0.3';
+  items[selectedIdx].style.pointerEvents = 'none';
+  showToast(`✕ Brief dismissed`);
+}
+
+function runScan() {
+  const btn = document.querySelector('.btn-outline');
+  btn.textContent = '⟳ Scanning…';
+  btn.disabled = true;
+  setTimeout(() => {
+    btn.textContent = '⟳ Run Scan';
+    btn.disabled = false;
+    showToast('🔍 Scan complete — 5 sources checked, no new changes detected');
+  }, 2400);
+}
+
+let activeFilter = 'all';
+
+function setFilter(el, filter) {
+  document.querySelectorAll('.filter-chip').forEach(c => c.classList.remove('active'));
+  el.classList.add('active');
+  activeFilter = filter;
+  applyFilters();
+}
+
+function filterSearch(val) {
+  applyFilters(val.toLowerCase());
+}
+
+function applyFilters(search = '') {
+  const items = document.querySelectorAll('.alert-item');
+  items.forEach(item => {
+    const urgency = item.dataset.urgency;
+    const title = item.querySelector('.alert-title').textContent.toLowerCase();
+    const matchFilter = activeFilter === 'all' || urgency === activeFilter;
+    const matchSearch = !search || title.includes(search);
+    item.style.display = (matchFilter && matchSearch) ? '' : 'none';
+  });
+}
+
+function filterBySubject(subj) {
+  const items = document.querySelectorAll('.alert-item');
+  items.forEach(item => {
+    const s = item.dataset.subject;
+    item.style.display = s === subj ? '' : 'none';
+  });
+}
+
+function showView(view) {
+  document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
+  event.currentTarget.classList.add('active');
+}
+
+function showToast(msg) {
+  const toast = document.getElementById('toast');
+  document.getElementById('toastMsg').textContent = msg;
+  toast.classList.add('show');
+  setTimeout(() => toast.classList.remove('show'), 3200);
+}
+</script>
+</body>
+</html>

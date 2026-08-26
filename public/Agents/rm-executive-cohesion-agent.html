@@ -1,0 +1,1055 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Executive Cohesion Teammate </title>
+  <style>
+    :root {
+      --teal: #0a4a4a;
+      --teal-accent: #0d7b7b;
+      --teal-light: #e8f4f4;
+      --bg: #f5f7f5;
+      --yellow: #F5A800;
+      --yellow-light: #fff8e1;
+      --white: #ffffff;
+      --grey: #595959;
+      --grey-light: #f0f2f0;
+      --border: #dde0dd;
+      --text: #1a1a1a;
+      --draft-bg: #fff3cd;
+      --draft-border: #F5A800;
+      --shadow: 0 2px 12px rgba(10,74,74,0.10);
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+    }
+
+    /* HEADER */
+    .header {
+      background: var(--teal);
+      color: white;
+      padding: 0;
+    }
+    .header-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 16px 24px;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+    .header-logo {
+      height: 90px;
+      width: auto;
+      display: block;
+      filter: brightness(0) invert(1);
+    }
+    .header-brand {
+      display: flex;
+      flex-direction: column;
+    }
+    .header-brand .rm { font-size: 11px; letter-spacing: 2px; color: var(--yellow); text-transform: uppercase; font-weight: 600; }
+    .header-brand h1 { font-size: 20px; font-weight: 700; line-height: 1.2; margin-top: 2px; }
+    .header-brand .sub { font-size: 13px; color: rgba(255,255,255,0.7); margin-top: 2px; }
+
+    .header-bar {
+      background: var(--yellow);
+      height: 4px;
+    }
+
+    /* MODE TABS */
+    .tabs {
+      background: var(--white);
+      border-bottom: 2px solid var(--border);
+      padding: 0 16px;
+      display: flex;
+      gap: 4px;
+      overflow-x: auto;
+      scrollbar-width: none;
+    }
+    .tabs::-webkit-scrollbar { display: none; }
+
+    .tab {
+      padding: 14px 16px 12px;
+      border: none;
+      background: none;
+      cursor: pointer;
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--grey);
+      white-space: nowrap;
+      border-bottom: 3px solid transparent;
+      margin-bottom: -2px;
+      transition: all 0.15s;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .tab:hover { color: var(--teal); background: var(--teal-light); border-radius: 6px 6px 0 0; }
+    .tab.active { color: var(--teal); border-bottom-color: var(--teal); font-weight: 600; }
+    .tab .icon { font-size: 15px; }
+
+    /* MAIN LAYOUT */
+    .main { max-width: 960px; margin: 0 auto; padding: 24px 16px 40px; }
+
+    /* CARD */
+    .card {
+      background: var(--white);
+      border-radius: 12px;
+      box-shadow: var(--shadow);
+      padding: 24px;
+      margin-bottom: 20px;
+    }
+    .card-title {
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--teal);
+      margin-bottom: 6px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .card-desc {
+      font-size: 13px;
+      color: var(--grey);
+      margin-bottom: 20px;
+      line-height: 1.5;
+    }
+
+    /* FORM ELEMENTS */
+    .field { margin-bottom: 16px; }
+    label {
+      display: block;
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--teal);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 6px;
+    }
+    input[type="text"], select, textarea {
+      width: 100%;
+      padding: 10px 14px;
+      border: 1.5px solid var(--border);
+      border-radius: 8px;
+      font-size: 14px;
+      font-family: inherit;
+      color: var(--text);
+      background: var(--white);
+      transition: border-color 0.15s;
+      resize: vertical;
+    }
+    input[type="text"]:focus, select:focus, textarea:focus {
+      outline: none;
+      border-color: var(--teal-accent);
+      box-shadow: 0 0 0 3px rgba(13,123,123,0.12);
+    }
+    textarea { min-height: 100px; }
+    .textarea-lg { min-height: 140px; }
+
+    .field-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    @media (max-width: 600px) { .field-row { grid-template-columns: 1fr; } }
+
+    /* RADIO GROUP */
+    .radio-group { display: flex; flex-wrap: wrap; gap: 8px; }
+    .radio-option { display: flex; align-items: center; gap: 6px; cursor: pointer; }
+    .radio-option input { accent-color: var(--teal); width: 16px; height: 16px; }
+    .radio-option span { font-size: 13px; color: var(--grey); }
+
+    /* SUBMIT BUTTON */
+    .btn-submit {
+      background: var(--teal);
+      color: white;
+      border: none;
+      padding: 12px 28px;
+      border-radius: 8px;
+      font-size: 15px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.15s;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .btn-submit:hover { background: var(--teal-accent); }
+    .btn-submit:disabled { background: #aaa; cursor: not-allowed; }
+    .btn-submit .spinner {
+      width: 16px; height: 16px;
+      border: 2px solid rgba(255,255,255,0.4);
+      border-top-color: white;
+      border-radius: 50%;
+      animation: spin 0.7s linear infinite;
+      display: none;
+    }
+    .btn-submit.loading .spinner { display: block; }
+    .btn-submit.loading .btn-text { opacity: 0.7; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* DRAFT OUTPUT AREA */
+    .draft-wrapper { display: none; }
+    .draft-wrapper.visible { display: block; }
+
+    .draft-banner {
+      background: var(--draft-bg);
+      border: 1.5px solid var(--draft-border);
+      border-radius: 8px 8px 0 0;
+      padding: 10px 16px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+    .draft-banner .draft-label {
+      font-size: 12px;
+      font-weight: 700;
+      color: #7a5000;
+      letter-spacing: 0.5px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .draft-banner .draft-label .warn { font-size: 15px; }
+
+    .btn-copy {
+      background: var(--teal);
+      color: white;
+      border: none;
+      padding: 6px 14px;
+      border-radius: 6px;
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.15s;
+    }
+    .btn-copy:hover { background: var(--teal-accent); }
+    .btn-copy.copied { background: #2a7a2a; }
+
+    .draft-output {
+      background: var(--white);
+      border: 1.5px solid var(--draft-border);
+      border-top: none;
+      border-radius: 0 0 8px 8px;
+      padding: 20px;
+      font-size: 14px;
+      line-height: 1.7;
+      color: var(--text);
+      white-space: pre-wrap;
+      word-wrap: break-word;
+      min-height: 80px;
+    }
+
+    /* ERROR */
+    .error-box {
+      background: #ffeaea;
+      border: 1.5px solid #e05555;
+      border-radius: 8px;
+      padding: 14px 18px;
+      font-size: 13px;
+      color: #8b0000;
+      display: none;
+      margin-top: 16px;
+    }
+    .error-box.visible { display: block; }
+
+    /* MODE PANEL */
+    .mode-panel { display: none; }
+    .mode-panel.active { display: block; }
+
+    /* FOOTER */
+    .footer {
+      text-align: center;
+      padding: 20px 16px;
+      font-size: 11px;
+      color: #999;
+      border-top: 1px solid var(--border);
+      margin-top: 24px;
+    }
+    .footer a { color: var(--teal-accent); text-decoration: none; }
+
+    /* APS BADGE */
+    .aps-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: var(--teal-light);
+      border: 1px solid var(--teal-accent);
+      border-radius: 6px;
+      padding: 4px 10px;
+      font-size: 11px;
+      color: var(--teal);
+      font-weight: 600;
+      margin-bottom: 16px;
+    }
+
+    /* HELP TEXT */
+    .help { font-size: 11px; color: #888; margin-top: 4px; }
+
+    /* STREAMING cursor */
+    .cursor {
+      display: inline-block;
+      width: 2px;
+      height: 1em;
+      background: var(--teal);
+      animation: blink 1s step-end infinite;
+      vertical-align: text-bottom;
+      margin-left: 1px;
+    }
+    @keyframes blink { 50% { opacity: 0; } }
+  </style>
+</head>
+<body>
+
+<!-- HEADER -->
+<div class="header">
+  <div class="header-top">
+    <img class="header-logo" src="https://images.squarespace-cdn.com/content/v1/6822d1b5b766c4290ea84e02/7d67e4f6-5c93-4fd4-b1f6-6a4263c5c29e/RockMouse+Hero+logo+website.png?format=300w" alt="RockMouse">
+    <div class="header-brand">
+      <div class="rm">Cybernetic Teammate</div>
+      <h1>Executive Cohesion Agent</h1>
+      <div class="sub">Facilitator Support Tool — All outputs require human review</div>
+    </div>
+  </div>
+  <div class="header-bar"></div>
+</div>
+
+<!-- MODE TABS -->
+<div class="tabs">
+  <button class="tab active" onclick="switchMode('diagnostic')">
+    <span class="icon">🔍</span> Diagnostic Intake
+  </button>
+  <button class="tab" onclick="switchMode('session')">
+    <span class="icon">📋</span> Session Design
+  </button>
+  <button class="tab" onclick="switchMode('prompts')">
+    <span class="icon">💬</span> Facilitation Prompts
+  </button>
+  <button class="tab" onclick="switchMode('snapshot')">
+    <span class="icon">📊</span> Cohesion Snapshot
+  </button>
+  <button class="tab" onclick="switchMode('synthesis')">
+    <span class="icon">📝</span> Post-Session Synthesis
+  </button>
+</div>
+
+<!-- MAIN -->
+<div class="main">
+
+  <!-- ══════════════════ MODE 1: DIAGNOSTIC INTAKE ══════════════════ -->
+  <div id="mode-diagnostic" class="mode-panel active">
+    <div class="card">
+      <div class="card-title">🔍 Pre-Session Diagnostic Intake</div>
+      <div class="card-desc">Gather client context to anchor the session design. Complete the fields below and the agent will produce a structured diagnostic summary for your review.</div>
+      <div class="aps-badge">🏛 APS ILS Framework Active (EL2 · SES1 · SES2)</div>
+
+      <div class="field">
+        <label>Organisation Name &amp; Sector</label>
+        <input type="text" id="d-org" placeholder="e.g. Department of Infrastructure — Federal Government">
+      </div>
+      <div class="field-row">
+        <div class="field">
+          <label>Number of Participants</label>
+          <input type="text" id="d-size" placeholder="e.g. 12 executives">
+        </div>
+        <div class="field">
+          <label>Participant Level(s)</label>
+          <select id="d-level">
+            <option value="">Select level(s)...</option>
+            <option>EL2 (Executive Level 2)</option>
+            <option>SES Band 1</option>
+            <option>SES Band 2</option>
+            <option>Board / Directors</option>
+            <option>Mixed EL2 &amp; SES</option>
+            <option>Mixed SES1 &amp; SES2</option>
+            <option>Private Sector Executive Team</option>
+            <option>Mixed Public/Private</option>
+          </select>
+        </div>
+      </div>
+      <div class="field">
+        <label>Roles &amp; Composition</label>
+        <textarea id="d-roles" class="textarea-lg" placeholder="List the roles in the room, e.g.&#10;— Secretary (1)&#10;— Deputy Secretary Strategy (1)&#10;— Deputy Secretary Operations (1)&#10;— Division heads (8)&#10;— Chief of Staff (1)"></textarea>
+      </div>
+      <div class="field">
+        <label>Current Strategic Priorities &amp; Pressures</label>
+        <textarea id="d-priorities" placeholder="What are the organisation's top 2–3 strategic priorities right now? Any acute pressures (restructure, new minister, workforce issues, performance pressure)?"></textarea>
+      </div>
+      <div class="field">
+        <label>Known Team Dynamics or Tensions</label>
+        <textarea id="d-dynamics" placeholder="What does the facilitator already know or suspect about this group? Siloed decision-making? Trust gaps? New leadership? Competing agendas?"></textarea>
+      </div>
+      <div class="field">
+        <label>Session Objectives</label>
+        <textarea id="d-objectives" placeholder="What does the client want to walk away with? What success looks like from their perspective."></textarea>
+      </div>
+      <div class="field">
+        <label>Session Format</label>
+        <div class="radio-group">
+          <label class="radio-option"><input type="radio" name="d-format" value="Half day (4 hrs)"> <span>Half day (4 hrs)</span></label>
+          <label class="radio-option"><input type="radio" name="d-format" value="Full day (7 hrs)"> <span>Full day (7 hrs)</span></label>
+          <label class="radio-option"><input type="radio" name="d-format" value="Residential (1.5 days)"> <span>Residential (1.5 days)</span></label>
+          <label class="radio-option"><input type="radio" name="d-format" value="Multi-session program"> <span>Multi-session program</span></label>
+        </div>
+      </div>
+      <div class="field">
+        <label>Any Other Context</label>
+        <textarea id="d-other" placeholder="History of cohesion work, recent events, facilitator hunches, what's NOT on the table..."></textarea>
+      </div>
+
+      <button class="btn-submit" id="btn-diagnostic" onclick="runMode('diagnostic')">
+        <div class="spinner"></div>
+        <span class="btn-text">Generate Diagnostic Summary</span>
+      </button>
+    </div>
+
+    <div class="error-box" id="err-diagnostic"></div>
+    <div class="draft-wrapper" id="out-diagnostic">
+      <div class="draft-banner">
+        <div class="draft-label"><span class="warn">⚠️</span> DRAFT — AI-generated diagnostic summary. Review and approve before proceeding to session design.</div>
+        <button class="btn-copy" onclick="copyOutput('diagnostic')">Copy Output</button>
+      </div>
+      <div class="draft-output" id="text-diagnostic"></div>
+    </div>
+  </div>
+
+  <!-- ══════════════════ MODE 2: SESSION DESIGN ══════════════════ -->
+  <div id="mode-session" class="mode-panel">
+    <div class="card">
+      <div class="card-title">📋 Session Design Generator</div>
+      <div class="card-desc">Paste your approved diagnostic summary and session parameters. The agent will produce a tailored discussion guide with sequenced questions, activities, and timing.</div>
+      <div class="aps-badge">🏛 APS ILS Framework Active (EL2 · SES1 · SES2)</div>
+
+      <div class="field">
+        <label>Approved Diagnostic Summary</label>
+        <textarea id="s-diagnostic" class="textarea-lg" placeholder="Paste your reviewed and approved diagnostic summary here. This grounds the session design in the client's specific context."></textarea>
+        <div class="help">Tip: Copy the output from the Diagnostic Intake tab once you've reviewed it.</div>
+      </div>
+      <div class="field-row">
+        <div class="field">
+          <label>Session Duration</label>
+          <select id="s-duration">
+            <option>Half day (4 hrs)</option>
+            <option>Full day (7 hrs)</option>
+            <option>Residential Day 1 (6 hrs)</option>
+            <option>Residential Day 2 (4 hrs)</option>
+          </select>
+        </div>
+        <div class="field">
+          <label>Number of Participants</label>
+          <input type="text" id="s-size" placeholder="e.g. 12">
+        </div>
+      </div>
+      <div class="field">
+        <label>Primary Focus for this Session</label>
+        <div class="radio-group">
+          <label class="radio-option"><input type="radio" name="s-focus" value="Trust building and psychological safety"> <span>Trust &amp; safety</span></label>
+          <label class="radio-option"><input type="radio" name="s-focus" value="Strategic alignment and shared direction"> <span>Strategic alignment</span></label>
+          <label class="radio-option"><input type="radio" name="s-focus" value="Communication and conflict resolution"> <span>Communication</span></label>
+          <label class="radio-option"><input type="radio" name="s-focus" value="Collective leadership and decision-making"> <span>Decision-making</span></label>
+          <label class="radio-option"><input type="radio" name="s-focus" value="Balanced across all dimensions"> <span>Balanced</span></label>
+        </div>
+      </div>
+      <div class="field">
+        <label>Any Specific Requests or Constraints</label>
+        <textarea id="s-constraints" placeholder="e.g. No Myers-Briggs. Must include an outdoor activity. Two participants have limited mobility. Avoid talking about the restructure directly."></textarea>
+      </div>
+
+      <button class="btn-submit" id="btn-session" onclick="runMode('session')">
+        <div class="spinner"></div>
+        <span class="btn-text">Generate Session Design</span>
+      </button>
+    </div>
+
+    <div class="error-box" id="err-session"></div>
+    <div class="draft-wrapper" id="out-session">
+      <div class="draft-banner">
+        <div class="draft-label"><span class="warn">⚠️</span> DRAFT — AI-generated session guide. Facilitator must review and adapt before use.</div>
+        <button class="btn-copy" onclick="copyOutput('session')">Copy Output</button>
+      </div>
+      <div class="draft-output" id="text-session"></div>
+    </div>
+  </div>
+
+  <!-- ══════════════════ MODE 3: FACILITATION PROMPTS ══════════════════ -->
+  <div id="mode-prompts" class="mode-panel">
+    <div class="card">
+      <div class="card-title">💬 Facilitation Prompt Bank</div>
+      <div class="card-desc">Use this in real time during a session. Describe what's happening in the room and get targeted probes, reframes, and closing questions to keep the conversation productive.</div>
+
+      <div class="field">
+        <label>What topic or discussion is underway?</label>
+        <input type="text" id="p-topic" placeholder="e.g. We're discussing alignment on the agency's new operating model">
+      </div>
+      <div class="field">
+        <label>What's happening in the room right now?</label>
+        <textarea id="p-situation" placeholder="e.g. Two deputies are talking past each other — one is pushing for speed, the other for consultation. The rest of the group has gone quiet and is watching to see how it lands."></textarea>
+      </div>
+      <div class="field">
+        <label>What do you need?</label>
+        <div class="radio-group">
+          <label class="radio-option"><input type="radio" name="p-need" value="Probing questions to deepen the discussion"> <span>Probing questions</span></label>
+          <label class="radio-option"><input type="radio" name="p-need" value="Reframes to shift the energy or perspective"> <span>Reframes</span></label>
+          <label class="radio-option"><input type="radio" name="p-need" value="Reflection questions to close this segment"> <span>Closing reflections</span></label>
+          <label class="radio-option"><input type="radio" name="p-need" value="Ways to draw the quieter participants in"> <span>Draw out quiet voices</span></label>
+          <label class="radio-option"><input type="radio" name="p-need" value="De-escalation — tension is rising"> <span>De-escalate tension</span></label>
+        </div>
+      </div>
+      <div class="field">
+        <label>Relevant APS Capability Area (optional)</label>
+        <select id="p-capability">
+          <option value="">Not applicable / don't specify</option>
+          <option>Shapes Strategic Thinking</option>
+          <option>Achieves Results</option>
+          <option>Cultivates Productive Working Relationships</option>
+          <option>Exemplifies Personal Drive and Integrity</option>
+          <option>Communicates with Influence</option>
+        </select>
+      </div>
+
+      <button class="btn-submit" id="btn-prompts" onclick="runMode('prompts')">
+        <div class="spinner"></div>
+        <span class="btn-text">Get Facilitation Prompts</span>
+      </button>
+    </div>
+
+    <div class="error-box" id="err-prompts"></div>
+    <div class="draft-wrapper" id="out-prompts">
+      <div class="draft-banner">
+        <div class="draft-label"><span class="warn">⚠️</span> DRAFT — For facilitator reference only. Use professional judgement before applying.</div>
+        <button class="btn-copy" onclick="copyOutput('prompts')">Copy Output</button>
+      </div>
+      <div class="draft-output" id="text-prompts"></div>
+    </div>
+  </div>
+
+  <!-- ══════════════════ MODE 4: COHESION SNAPSHOT ══════════════════ -->
+  <div id="mode-snapshot" class="mode-panel">
+    <div class="card">
+      <div class="card-title">📊 Cohesion Health Snapshot</div>
+      <div class="card-desc">Based on what you've observed or gathered in your diagnostic, the agent will produce a structured narrative profile of this team's current cohesion health across key dimensions. This is an interpretive tool — not a scored assessment.</div>
+      <div class="aps-badge">🏛 APS ILS Framework Active (EL2 · SES1 · SES2)</div>
+
+      <div class="field">
+        <label>Organisation &amp; Context</label>
+        <input type="text" id="sn-org" placeholder="e.g. Federal agency executive team, 12 members, SES Band 1 level">
+      </div>
+      <div class="field">
+        <label>Trust &amp; Psychological Safety</label>
+        <textarea id="sn-trust" placeholder="What do you observe about the level of trust and openness in this group? Are people willing to disagree, take risks, admit mistakes?"></textarea>
+      </div>
+      <div class="field">
+        <label>Strategic Alignment</label>
+        <textarea id="sn-alignment" placeholder="How aligned is the group on strategic direction and priorities? Are there divergent mental models about where the organisation is heading?"></textarea>
+      </div>
+      <div class="field">
+        <label>Communication &amp; Conflict</label>
+        <textarea id="sn-comms" placeholder="How do people communicate with each other? How is conflict handled? Any unspoken dynamics or elephant-in-the-room issues?"></textarea>
+      </div>
+      <div class="field">
+        <label>Decision-Making &amp; Accountability</label>
+        <textarea id="sn-decisions" placeholder="How are decisions made? Is accountability clear? Do people feel empowered or are decisions pooled upward?"></textarea>
+      </div>
+      <div class="field">
+        <label>Collective Energy &amp; Morale</label>
+        <textarea id="sn-morale" placeholder="What's the overall energy in this group? Are people engaged and motivated? Any signs of burnout, disengagement, or cynicism?"></textarea>
+      </div>
+
+      <button class="btn-submit" id="btn-snapshot" onclick="runMode('snapshot')">
+        <div class="spinner"></div>
+        <span class="btn-text">Generate Cohesion Snapshot</span>
+      </button>
+    </div>
+
+    <div class="error-box" id="err-snapshot"></div>
+    <div class="draft-wrapper" id="out-snapshot">
+      <div class="draft-banner">
+        <div class="draft-label"><span class="warn">⚠️</span> DRAFT — AI-generated cohesion narrative. Requires facilitator interpretation before sharing.</div>
+        <button class="btn-copy" onclick="copyOutput('snapshot')">Copy Output</button>
+      </div>
+      <div class="draft-output" id="text-snapshot"></div>
+    </div>
+  </div>
+
+  <!-- ══════════════════ MODE 5: POST-SESSION SYNTHESIS ══════════════════ -->
+  <div id="mode-synthesis" class="mode-panel">
+    <div class="card">
+      <div class="card-title">📝 Post-Session Synthesis Report</div>
+      <div class="card-desc">After the session, enter your facilitator notes. The agent will produce a polished debrief report with themes, insights, and next steps — ready for your review before sharing with the client.</div>
+
+      <div class="field-row">
+        <div class="field">
+          <label>Organisation</label>
+          <input type="text" id="sy-org" placeholder="Organisation name">
+        </div>
+        <div class="field">
+          <label>Session Date</label>
+          <input type="text" id="sy-date" placeholder="e.g. June 2026">
+        </div>
+      </div>
+      <div class="field">
+        <label>Key Themes That Emerged</label>
+        <textarea id="sy-themes" class="textarea-lg" placeholder="What were the 3–5 significant themes or insights that surfaced during the session? What did the group keep coming back to?"></textarea>
+      </div>
+      <div class="field">
+        <label>Notable Moments or Turning Points</label>
+        <textarea id="sy-moments" placeholder="Any significant moments — breakthroughs, moments of tension resolved, unexpected honesty, or a shift in the room's energy?"></textarea>
+      </div>
+      <div class="field">
+        <label>Individual &amp; Collective Commitments</label>
+        <textarea id="sy-commitments" class="textarea-lg" placeholder="What did participants commit to? Both individual (e.g. 'James will share his team's progress monthly') and collective ('We agreed to run a joint planning day before the budget cycle')."></textarea>
+      </div>
+      <div class="field">
+        <label>What Was Left Unresolved or Needs Follow-up</label>
+        <textarea id="sy-unresolved" placeholder="What didn't get resolved? What needs another session? What's the facilitator still curious about?"></textarea>
+      </div>
+      <div class="field">
+        <label>Recommended Next Steps for the Client</label>
+        <textarea id="sy-nextsteps" placeholder="What would you recommend the client do to sustain momentum? Structures, rituals, follow-up sessions, coaching, etc."></textarea>
+      </div>
+      <div class="field">
+        <label>Tone for the Report</label>
+        <div class="radio-group">
+          <label class="radio-option"><input type="radio" name="sy-tone" value="Formal and structured (suitable for executive sponsor)"> <span>Formal (exec sponsor)</span></label>
+          <label class="radio-option"><input type="radio" name="sy-tone" value="Warm and reflective (suitable for participants)"> <span>Warm (for participants)</span></label>
+          <label class="radio-option"><input type="radio" name="sy-tone" value="Concise and action-oriented"> <span>Concise &amp; action-focused</span></label>
+        </div>
+      </div>
+
+      <button class="btn-submit" id="btn-synthesis" onclick="runMode('synthesis')">
+        <div class="spinner"></div>
+        <span class="btn-text">Generate Post-Session Report</span>
+      </button>
+    </div>
+
+    <div class="error-box" id="err-synthesis"></div>
+    <div class="draft-wrapper" id="out-synthesis">
+      <div class="draft-banner">
+        <div class="draft-label"><span class="warn">⚠️</span> DRAFT — AI-generated report. Review and edit before sharing with the client.</div>
+        <button class="btn-copy" onclick="copyOutput('synthesis')">Copy Output</button>
+      </div>
+      <div class="draft-output" id="text-synthesis"></div>
+    </div>
+  </div>
+
+</div><!-- /main -->
+
+<div class="footer">
+  Built by <a href="https://rockmouse.com.au" target="_blank">RockMouse</a> · All outputs are AI-generated drafts requiring human review · Data is not stored or retained
+</div>
+
+<script>
+// ─────────────────────────────────────────────
+// APS ILS KNOWLEDGE BASE
+// Source: Australian Public Service Commission
+// Integrated Leadership System (ILS)
+// ─────────────────────────────────────────────
+const APS_ILS = `
+APS INTEGRATED LEADERSHIP SYSTEM (ILS) — REFERENCE FRAMEWORK
+Source: Australian Public Service Commission (APSC)
+Covers: Executive Level 2 (EL2), SES Band 1 (SES1), SES Band 2 (SES2)
+
+The ILS has five capability clusters. Use these to frame language, observations, and recommendations
+when working with public sector executive teams.
+
+═══════════════════════════════════════════════════════
+CAPABILITY 1: SHAPES STRATEGIC THINKING
+═══════════════════════════════════════════════════════
+
+Sub-elements and behavioural indicators by level:
+
+1a. INSPIRES A SENSE OF PURPOSE AND DIRECTION
+EL2: Translates strategy into operational goals; creates shared sense of purpose; communicates expected outcomes.
+SES1: Develops strategic direction for business unit; demonstrates how strategy elements fit together; encourages input; articulates need for action.
+SES2: Champions organisation's vision; promotes shared commitment; helps create strategies aligned with government objectives and future requirements.
+
+1b. FOCUSES STRATEGICALLY
+EL2: Links business unit to whole-of-government agenda; considers wide range of issues; develops long-term plans.
+SES1: Considers multiple perspectives; develops plans balancing future needs with immediate requirements; seeks strategic alignment.
+SES2: Considers organisation's role in society; provides advice reflecting broad analysis; considers emerging trends and long-term opportunities.
+
+1c. HARNESSES INFORMATION AND OPPORTUNITIES
+EL2: Gathers from varied sources; probes for gaps; scans for trends affecting business area; explores new ideas.
+SES1: Monitors information channels including media and Hansard; seizes opportunities; addresses critical information gaps; uses organisational knowledge to contextualise for others.
+SES2: Positions organisation to capitalise on opportunities; minimises threats; tailors approaches to different issues.
+
+1d. SHOWS JUDGEMENT, INTELLIGENCE AND COMMONSENSE
+EL2: Objective critical analysis; logical arguments; minimises risks; explores creative alternatives.
+SES1: Applies intellect to weigh complex information; works effectively without complete information; makes sound decisions under pressure; applies lateral thinking.
+SES2: Demonstrates effective judgement to develop realistic solutions; anticipates and addresses risks quickly; capitalises on innovative alternatives.
+
+═══════════════════════════════════════════════════════
+CAPABILITY 2: ACHIEVES RESULTS
+═══════════════════════════════════════════════════════
+
+2a. BUILDS ORGANISATIONAL CAPABILITY AND RESPONSIVENESS
+EL2: Evaluates project performance; instigates continuous improvement; builds teams with complementary skills; allocates resources flexibly.
+SES1: Harnesses technology; succession planning; creates flexible environment; deploys resources astutely; challenges status quo.
+SES2: Focuses on organisational sustainability; nurtures talent; facilitates information sharing; monitors resourcing pressures.
+
+2b. MARSHALS PROFESSIONAL EXPERTISE
+EL2: Values specialist expertise; manages contracts judiciously; contributes own expertise to business unit outcomes.
+SES1: Integrates professional expertise; balances external/internal expertise; taps technical knowledge to improve outcomes.
+SES2: Same as SES1 but at organisational (not business unit) level.
+
+2c. STEERS AND IMPLEMENTS CHANGE AND DEALS WITH UNCERTAINTY
+EL2: Clear plans and timeframes; responds positively to change; helps others adapt.
+SES1: Planned approach to program management; defines high-level objectives; operates effectively in ongoing change; keeps stakeholders informed.
+SES2: Oversees multiple change initiatives; drives implementation; maintains flexibility to achieve objectives.
+
+2d. ENSURES CLOSURE AND DELIVERS ON INTENDED RESULTS
+EL2: Monitors progress; adjusts plans; seeks stakeholder feedback; commits to quality outcomes.
+SES1: Drives culture of achievement; establishes systems to measure accountabilities; manages risks; keeps stakeholders across issues.
+SES2: Removes barriers to success; adopts no-surprises approach; fosters quality focus; reviews progress and stays focused on outcomes.
+
+═══════════════════════════════════════════════════════
+CAPABILITY 3: CULTIVATES PRODUCTIVE WORKING RELATIONSHIPS
+═══════════════════════════════════════════════════════
+
+3a. NURTURES INTERNAL AND EXTERNAL RELATIONSHIPS
+EL2: Builds/sustains networks; recognises shared agendas; responsive to client needs.
+SES1: Builds relationships with Minister's office, across APS, diverse external stakeholders; finds shared agendas; commits to client service.
+SES2: Encourages cross-agency approaches; establishes cross-agency partnerships; capitalises on mutual benefit opportunities.
+
+3b. FACILITATES COOPERATION AND PARTNERSHIPS
+EL2: Brings people together; fosters teamwork; resolves conflict; keeps people informed.
+SES1: Facilitates cooperation between organisations; promotes reciprocal information sharing; resolves conflict managing sensitivities.
+SES2: Consults broadly to obtain buy-in; maintains open communication channels; anticipates and resolves conflict.
+
+3c. VALUES INDIVIDUAL DIFFERENCES AND DIVERSITY
+EL2: Recognises benefits of diversity; harnesses diverse views; tries to see others' perspectives.
+SES1: Capitalises on diversity for business unit benefit; discerns working styles; anticipates reactions.
+SES2: Capitalises on diversity at organisational level; harnesses different viewpoints; anticipates when stakeholders may clash.
+
+3d. GUIDES, MENTORS AND DEVELOPS PEOPLE
+EL2: Empowers through delegation; agrees performance standards; delivers constructive feedback; deals with underperformance promptly.
+SES1: Engages in activities to maintain morale; assists people managing pressure; sets stretching development tasks; delegates with broad parameters.
+SES2: Identifies and nurtures talent; provides targeted development opportunities; celebrates success; delegates to build capability.
+
+═══════════════════════════════════════════════════════
+CAPABILITY 4: EXEMPLIFIES PERSONAL DRIVE AND INTEGRITY
+═══════════════════════════════════════════════════════
+
+4a. DEMONSTRATES PUBLIC SERVICE PROFESSIONALISM AND PROBITY
+EL2: Adheres to APS Values and Code of Conduct; acts professionally and impartially; operates within legal/policy constraints.
+SES1: Leads by example; promotes APS Values in others; presents united leadership voice; supports other leaders.
+SES2: Aligns business processes with APS Values; addresses breaches of protocol and probity.
+
+4b. ENGAGES WITH RISK AND SHOWS PERSONAL COURAGE
+EL2: Impartial and forthright advice; challenges issues constructively; stands by own position; acknowledges mistakes; learns from them.
+SES1: Makes tough corporate decisions; encourages debate on difficult issues; takes ownership for decisions; admits when doesn't know.
+SES2: Confronts difficult issues directly; willing to make unpopular stand; voices own position clearly.
+
+4c. COMMITS TO ACTION
+EL2: Takes personal responsibility; shows initiative; commits energy and drive to goals.
+SES1: Demonstrates personal drive, focus, energy; galvanises others; acts decisively on difficult problems.
+SES2: Uses personal drive to enthuse others; galvanises action; initiates urgent action on significant issues.
+
+4d. DISPLAYS RESILIENCE
+EL2: Persists through difficult circumstances; remains positive; maintains momentum despite criticism or setbacks.
+SES1: Monitors own emotional reactions; maintains optimistic outlook; demonstrates tenacity.
+SES2: Quickly recovers from setbacks; maintains momentum; remains calm under pressure.
+
+4e. DEMONSTRATES SELF-AWARENESS AND COMMITMENT TO PERSONAL DEVELOPMENT
+EL2: Critically analyses own performance; seeks feedback; reflects on impact on others; embraces challenging opportunities.
+SES1: Regularly examines own behaviour; proactively identifies development opportunities; seeks and acts on feedback.
+SES2: High level of self-awareness; adjusts behaviour based on reflection; identifies own strengths and development needs.
+
+═══════════════════════════════════════════════════════
+CAPABILITY 5: COMMUNICATES WITH INFLUENCE
+═══════════════════════════════════════════════════════
+
+5a. COMMUNICATES CLEARLY
+EL2: Clear, concise, articulate; selects appropriate medium; structures written/oral communication.
+SES1: Focuses on key points; explains implications; ensures conclusions are conveyed; limits jargon.
+SES2: Uses analogies and stories to illustrate key points; structures for brevity; presents with precision.
+
+5b. LISTENS, UNDERSTANDS AND ADAPTS TO AUDIENCE
+EL2: Tailors style to audience; listens carefully; checks understanding; doesn't allow misunderstandings to linger.
+SES1: Adjusts on subtle non-verbal cues; anticipates reactions and prepares response; addresses concerns.
+SES2: Reads non-verbal cues; tailors to audience needs; anticipates likely reaction; adjusts approach for maximum impact.
+
+5c. NEGOTIATES PERSUASIVELY
+EL2: Strong grasp of key issues; anticipates other party's position; identifies common ground; develops convincing argument with evidence.
+SES1: Presents convincing and balanced rationale; acknowledges disagreements; engages credible others in support; maintains focus on objectives.
+SES2: Pitches messages to facilitate desired outcomes; uses persuasive techniques; analyses other parties' agendas; identifies potential weak spots; positions case by highlighting merit while acknowledging risks.
+`;
+
+// ─────────────────────────────────────────────
+// SYSTEM PROMPT
+// ─────────────────────────────────────────────
+const SYSTEM_PROMPT = `You are the Executive Cohesion Cybernetic Teammate, a specialist AI facilitator support tool built by RockMouse for Yellow Edge — Performance Architects (www.yellowedge.com.au), based in Canberra, Australia.
+
+Yellow Edge's Executive Cohesion service is designed to forge stronger bonds among top executives, including Boards, facilitating a deeper understanding and alignment of organisational goals, ensuring a united front in strategy and decision-making. Your role is to support Yellow Edge facilitators across five functions of an executive cohesion engagement.
+
+CRITICAL RULE — ALL OUTPUTS ARE DRAFTS:
+Every output you produce is clearly a draft that requires human review and approval by a facilitator before use with any client. Never present outputs as final. Never add recommendations to send anything directly to a client without facilitator review.
+
+YOUR ROLE:
+You are an expert in executive team dynamics, cohesion, trust, strategic alignment, and leadership development. You understand Australian public sector culture deeply. You use clear, professional, respectful language. You write in Australian English (use 'organisation', 'recognise', 'behaviour', 'programme' where appropriate).
+
+APS CONTEXT:
+For public sector clients, you always use the APS Integrated Leadership System (ILS) as your capability reference framework. Frame observations, questions, and recommendations using ILS language and capability clusters. The five ILS capability clusters are: Shapes Strategic Thinking, Achieves Results, Cultivates Productive Working Relationships, Exemplifies Personal Drive and Integrity, and Communicates with Influence.
+
+${APS_ILS}
+
+Our APPROACH:
+Our executive cohesion work facilitates practical discussions that enhance trust, communication, and collaboration — not through abstract theory, but through honest, purposeful engagement. Sessions are experiential and grounded in the client's real strategic context. Yellow Edge is known for depth, substance, and genuine challenge alongside support.
+
+FORMATTING:
+Use clear structure with headers (##), bullet points where appropriate, and plain professional language. Avoid corporate jargon and AI clichés. Write as a seasoned human consultant would.`;
+
+// ─────────────────────────────────────────────
+// MODE SWITCHING
+// ─────────────────────────────────────────────
+function switchMode(mode) {
+  document.querySelectorAll('.mode-panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  document.getElementById('mode-' + mode).classList.add('active');
+  event.currentTarget.classList.add('active');
+}
+
+// ─────────────────────────────────────────────
+// BUILD USER MESSAGES
+// ─────────────────────────────────────────────
+function buildMessage(mode) {
+  const g = id => (document.getElementById(id) || {}).value || '';
+  const r = name => {
+    const el = document.querySelector(`input[name="${name}"]:checked`);
+    return el ? el.value : '';
+  };
+
+  switch (mode) {
+    case 'diagnostic':
+      return `Please produce a structured pre-session diagnostic summary based on the following facilitator inputs.
+
+ORGANISATION: ${g('d-org')}
+PARTICIPANT COUNT: ${g('d-size')}
+PARTICIPANT LEVEL: ${g('d-level')}
+ROLES & COMPOSITION: ${g('d-roles')}
+STRATEGIC PRIORITIES & PRESSURES: ${g('d-priorities')}
+KNOWN TEAM DYNAMICS / TENSIONS: ${g('d-dynamics')}
+SESSION OBJECTIVES: ${g('d-objectives')}
+SESSION FORMAT: ${r('d-format')}
+ADDITIONAL CONTEXT: ${g('d-other')}
+
+Produce a diagnostic summary covering:
+1. Client Context Overview (organisation, team profile, strategic situation)
+2. Team Dynamics Assessment (what we know and what we're working with)
+3. Cohesion Challenges to Address (the key issues this session needs to work on)
+4. Session Focus Recommendations (what to prioritise given the context)
+5. Facilitator Watch Points (what to pay particular attention to in the room)
+
+Where relevant, frame observations against the APS ILS framework. Keep language professional, respectful, and grounded in what the facilitator has actually shared — don't speculate beyond the inputs.`;
+
+    case 'session':
+      return `Please produce a tailored session design guide based on the following approved diagnostic summary and session parameters.
+
+APPROVED DIAGNOSTIC SUMMARY:
+${g('s-diagnostic')}
+
+SESSION DURATION: ${g('s-duration')}
+PARTICIPANTS: ${g('s-size')}
+PRIMARY FOCUS: ${r('s-focus')}
+CONSTRAINTS/REQUESTS: ${g('s-constraints')}
+
+Produce a session guide that includes:
+1. Session Overview (purpose, objectives, intended outcomes)
+2. Session Flow with Timing (each segment with recommended duration)
+3. Discussion Questions (sequenced from lower to higher psychological safety risk, 3–5 per major segment)
+4. Suggested Activities (2–3 specific activities suited to this group size and focus)
+5. Facilitation Notes (key things to watch for in each segment, how to handle likely resistance)
+6. Closing Commitments Structure (how to land the session with concrete next steps)
+
+Ground all questions and activities in the client's actual strategic context from the diagnostic. Where the group is public sector, align language with the APS ILS framework.`;
+
+    case 'prompts':
+      return `I need real-time facilitation support. Here is what's happening:
+
+TOPIC UNDER DISCUSSION: ${g('p-topic')}
+SITUATION IN THE ROOM: ${g('p-situation')}
+WHAT I NEED: ${r('p-need')}
+RELEVANT APS CAPABILITY AREA: ${g('p-capability') || 'Not specified'}
+
+Please provide:
+1. Three specific facilitation prompts (questions, reframes, or moves) for this situation
+2. A brief note on WHY each prompt works in this context
+3. One thing to AVOID doing right now
+
+Keep prompts concise, practical, and grounded in what's actually happening. These should sound like a seasoned facilitator's voice, not an AI.`;
+
+    case 'snapshot':
+      return `Please produce a Cohesion Health Snapshot for this executive team based on the facilitator's observations.
+
+ORGANISATION & CONTEXT: ${g('sn-org')}
+TRUST & PSYCHOLOGICAL SAFETY: ${g('sn-trust')}
+STRATEGIC ALIGNMENT: ${g('sn-alignment')}
+COMMUNICATION & CONFLICT: ${g('sn-comms')}
+DECISION-MAKING & ACCOUNTABILITY: ${g('sn-decisions')}
+COLLECTIVE ENERGY & MORALE: ${g('sn-morale')}
+
+Produce a structured narrative that covers:
+1. Cohesion Profile Overview (a paragraph-length summary of this team's current state)
+2. Strengths to Build On (what this team does well that the session should acknowledge and leverage)
+3. Areas of Development Focus (the most significant cohesion gaps to work on)
+4. ILS Capability Alignment (where the team's dynamics align to and depart from APS leadership expectations — for public sector clients)
+5. Facilitator Implications (what this picture means for how to design and run the session)
+
+This is a facilitator interpretive tool, not a scored instrument. Write in confident but appropriately tentative language — these are working hypotheses to be tested, not diagnoses.`;
+
+    case 'synthesis':
+      return `Please produce a post-session synthesis report based on the facilitator's notes below.
+
+ORGANISATION: ${g('sy-org')}
+SESSION DATE: ${g('sy-date')}
+KEY THEMES THAT EMERGED: ${g('sy-themes')}
+NOTABLE MOMENTS OR TURNING POINTS: ${g('sy-moments')}
+INDIVIDUAL & COLLECTIVE COMMITMENTS: ${g('sy-commitments')}
+WHAT WAS LEFT UNRESOLVED: ${g('sy-unresolved')}
+RECOMMENDED NEXT STEPS: ${g('sy-nextsteps')}
+TONE: ${r('sy-tone')}
+
+Produce a post-session synthesis report that includes:
+1. Executive Summary (2–3 paragraphs capturing the session's significance and outcomes)
+2. Key Themes (the 3–5 significant themes that emerged, with brief elaboration on each)
+3. Moments of Significance (notable turning points or breakthroughs worthy of recognition)
+4. Commitments Made (clearly listed — individual and collective — with owner and timeframe where known)
+5. What Remains Open (unresolved questions or areas for follow-up work)
+6. Recommended Next Steps (specific, actionable recommendations to sustain momentum)
+7. A Closing Note (a brief, warm paragraph acknowledging the work this group did)
+
+Adopt the requested tone throughout. Write this as a document the facilitator would be proud to put their name to.`;
+
+    default: return '';
+  }
+}
+
+// ─────────────────────────────────────────────
+// VALIDATION
+// ─────────────────────────────────────────────
+function validate(mode) {
+  switch (mode) {
+    case 'diagnostic':
+      if (!document.getElementById('d-org').value.trim()) return 'Please enter the organisation name and sector.';
+      if (!document.getElementById('d-objectives').value.trim()) return 'Please describe the session objectives.';
+      return null;
+    case 'session':
+      if (!document.getElementById('s-diagnostic').value.trim()) return 'Please paste the approved diagnostic summary.';
+      return null;
+    case 'prompts':
+      if (!document.getElementById('p-situation').value.trim()) return 'Please describe what is happening in the room.';
+      return null;
+    case 'snapshot':
+      if (!document.getElementById('sn-org').value.trim()) return 'Please enter the organisation and context.';
+      if (!document.getElementById('sn-trust').value.trim()) return 'Please describe the trust and psychological safety observations.';
+      return null;
+    case 'synthesis':
+      if (!document.getElementById('sy-org').value.trim()) return 'Please enter the organisation name.';
+      if (!document.getElementById('sy-themes').value.trim()) return 'Please describe the key themes that emerged.';
+      return null;
+    default: return null;
+  }
+}
+
+// ─────────────────────────────────────────────
+// RUN MODE — API CALL
+// ─────────────────────────────────────────────
+async function runMode(mode) {
+  const errBox = document.getElementById('err-' + mode);
+  const outWrapper = document.getElementById('out-' + mode);
+  const outText = document.getElementById('text-' + mode);
+  const btn = document.getElementById('btn-' + mode);
+
+  // Clear previous
+  errBox.textContent = '';
+  errBox.classList.remove('visible');
+  outWrapper.classList.remove('visible');
+  outText.textContent = '';
+
+  // Validate
+  const err = validate(mode);
+  if (err) {
+    errBox.textContent = err;
+    errBox.classList.add('visible');
+    return;
+  }
+
+  // Loading state
+  btn.classList.add('loading');
+  btn.disabled = true;
+
+  const userMessage = buildMessage(mode);
+
+  try {
+    const response = await fetch('https://rockmouse-agent-proxy.craig-3c4.workers.dev', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        model: 'claude-sonnet-4-6',
+        max_tokens: 3000,
+        system: SYSTEM_PROMPT,
+        messages: [{ role: 'user', content: userMessage }],
+        stream: false
+      })
+    });
+
+    if (!response.ok) {
+      let errMsg = `API error: ${response.status}`;
+      try {
+        const errData = await response.json();
+        errMsg = errData.error?.message || errMsg;
+      } catch(e) {}
+      throw new Error(errMsg);
+    }
+
+    const data = await response.json();
+    const text = data.content?.[0]?.text || data.choices?.[0]?.message?.content || 'No response received.';
+
+    outText.textContent = text;
+    outWrapper.classList.add('visible');
+    outWrapper.scrollIntoView({ behavior: 'smooth', block: 'start' });
+
+  } catch (e) {
+    errBox.textContent = 'Error: ' + e.message + '. Please check your connection and try again.';
+    errBox.classList.add('visible');
+  } finally {
+    btn.classList.remove('loading');
+    btn.disabled = false;
+  }
+}
+
+// ─────────────────────────────────────────────
+// COPY OUTPUT
+// ─────────────────────────────────────────────
+function copyOutput(mode) {
+  const text = document.getElementById('text-' + mode).textContent;
+  const btn = event.currentTarget;
+  navigator.clipboard.writeText(text).then(() => {
+    const orig = btn.textContent;
+    btn.textContent = '✓ Copied!';
+    btn.classList.add('copied');
+    setTimeout(() => {
+      btn.textContent = orig;
+      btn.classList.remove('copied');
+    }, 2000);
+  }).catch(() => {
+    // Fallback
+    const ta = document.createElement('textarea');
+    ta.value = text;
+    document.body.appendChild(ta);
+    ta.select();
+    document.execCommand('copy');
+    document.body.removeChild(ta);
+    btn.textContent = '✓ Copied!';
+    setTimeout(() => btn.textContent = 'Copy Output', 2000);
+  });
+}
+</script>
+</body>
+</html>

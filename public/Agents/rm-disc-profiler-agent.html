@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="en-AU">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DISC Coach | RockMouse AI Agents</title>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --navy:#0a4a4a; --teal:#0d7b7b; --teal-l:#e6f4f4;
+  --bg:#f5f7f5; --white:#fff; --text:#1a2e2e; --muted:#5a7070;
+  --border:#c8dede; --shadow:0 4px 16px rgba(10,74,74,0.12);
+  --font:'Segoe UI',system-ui,-apple-system,sans-serif;
+  --D:#c0392b; --I:#e67e22; --S:#27ae60; --C:#2980b9;
+}
+html,body{height:100%;font-family:var(--font);background:var(--bg);color:var(--text);}
+
+/* Header */
+.site-header{
+  background:#ffffff;padding:10px 20px;
+  border-bottom:3px solid #1e3a8a;
+  display:flex;align-items:center;justify-content:space-between;
+}
+.site-header img{height:30px;width:auto;}
+.site-header-label{font-size:0.72rem;color:rgba(255,255,255,0.7);font-weight:500;}
+
+/* Main layout */
+.page{max-width:760px;margin:0 auto;padding:24px 16px 40px;}
+
+/* Setup card */
+.card{background:var(--white);border-radius:10px;box-shadow:var(--shadow);padding:28px;}
+.card-title{font-size:1.25rem;font-weight:700;color:var(--navy);margin-bottom:6px;}
+.card-sub{font-size:0.88rem;color:var(--muted);margin-bottom:20px;line-height:1.6;}
+
+.name-input{
+  width:100%;border:1.5px solid var(--border);border-radius:8px;
+  padding:10px 14px;font-size:14px;font-family:var(--font);
+  outline:none;margin-bottom:20px;
+}
+.name-input:focus{border-color:var(--teal);}
+
+.disc-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:16px;}
+.disc-card{
+  border:2px solid var(--border);border-radius:8px;padding:14px;
+  cursor:pointer;transition:all 0.15s;
+}
+.disc-card:hover{border-color:var(--teal);background:var(--teal-l);}
+.disc-card.selected{border-color:var(--navy);background:var(--teal-l);}
+.disc-letter{font-size:26px;font-weight:900;margin-bottom:3px;}
+.disc-card[data-s="D"] .disc-letter{color:var(--D);}
+.disc-card[data-s="I"] .disc-letter{color:var(--I);}
+.disc-card[data-s="S"] .disc-letter{color:var(--S);}
+.disc-card[data-s="C"] .disc-letter{color:var(--C);}
+.disc-name{font-size:13px;font-weight:700;color:var(--navy);margin-bottom:2px;}
+.disc-desc{font-size:11px;color:var(--muted);line-height:1.4;}
+
+.unsure-link{font-size:12px;color:var(--teal);cursor:pointer;margin-bottom:20px;display:inline-block;}
+.btn-start{
+  width:100%;padding:12px;background:var(--navy);color:#fff;
+  border:none;border-radius:8px;font-size:15px;font-weight:700;
+  cursor:pointer;font-family:var(--font);transition:background 0.15s;
+}
+.btn-start:hover{background:var(--teal);}
+.btn-start:disabled{background:var(--muted);cursor:not-allowed;}
+
+/* Progress */
+.progress-wrap{margin-bottom:16px;}
+.progress-label{font-size:11px;color:var(--muted);font-weight:700;text-transform:uppercase;letter-spacing:0.04em;margin-bottom:5px;}
+.progress-track{height:4px;background:var(--border);border-radius:4px;}
+.progress-fill{height:4px;background:var(--teal);border-radius:4px;transition:width 0.4s;}
+
+/* Chat */
+.chat-wrap{display:flex;flex-direction:column;gap:14px;margin-bottom:16px;min-height:200px;}
+.msg{display:flex;gap:10px;align-items:flex-start;}
+.msg.user{flex-direction:row-reverse;}
+.msg-av{
+  width:32px;height:32px;border-radius:50%;flex-shrink:0;
+  display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;
+}
+.msg.coach .msg-av{background:var(--navy);color:#fff;}
+.msg.user .msg-av{background:var(--border);color:var(--navy);}
+.msg-bubble{max-width:80%;padding:12px 14px;border-radius:10px;font-size:14px;line-height:1.65;}
+.msg.coach .msg-bubble{background:var(--teal-l);border:1px solid var(--border);border-top-left-radius:3px;}
+.msg.user .msg-bubble{background:var(--navy);color:#fff;border-top-right-radius:3px;}
+.msg-bubble strong{font-weight:700;}
+.msg-bubble em{font-style:italic;}
+
+/* Brief output */
+.brief-box{
+  background:var(--teal-l);border-left:3px solid var(--teal);
+  border-radius:6px;padding:16px;font-size:13px;line-height:1.7;
+  white-space:pre-wrap;margin-bottom:12px;
+}
+
+/* Input */
+.input-row{display:flex;gap:8px;align-items:flex-end;}
+.chat-input{
+  flex:1;border:1.5px solid var(--border);border-radius:8px;
+  padding:10px 12px;font-size:14px;font-family:var(--font);
+  resize:none;outline:none;min-height:44px;max-height:120px;
+}
+.chat-input:focus{border-color:var(--teal);}
+.chat-input:disabled{opacity:0.5;}
+.btn-send{
+  width:44px;height:44px;background:var(--navy);color:#fff;
+  border:none;border-radius:8px;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;flex-shrink:0;
+}
+.btn-send:hover{background:var(--teal);}
+.btn-send:disabled{background:var(--muted);cursor:not-allowed;}
+
+/* Draft banner */
+.draft-banner{
+  background:#fff8e6;border:1px solid #f0c060;border-radius:6px;
+  padding:7px 12px;font-size:12px;color:#7a5a00;margin-top:12px;
+  display:none;
+}
+
+/* Actions */
+.actions{display:flex;gap:8px;margin-top:12px;flex-wrap:wrap;}
+.btn-sec{
+  background:var(--white);border:1px solid var(--teal);color:var(--navy);
+  border-radius:6px;padding:7px 14px;font-size:13px;font-weight:600;cursor:pointer;
+}
+.btn-copy{background:var(--navy);border:none;color:#fff;}
+
+/* Typing */
+.typing-dots span{
+  display:inline-block;width:7px;height:7px;background:var(--teal);
+  border-radius:50%;margin:0 2px;animation:bounce 1.2s infinite;
+}
+.typing-dots span:nth-child(2){animation-delay:0.2s;}
+.typing-dots span:nth-child(3){animation-delay:0.4s;}
+@keyframes bounce{0%,80%,100%{transform:translateY(0)}40%{transform:translateY(-6px)}}
+
+.hidden{display:none !important;}
+
+footer{text-align:center;padding:16px;font-size:11px;color:var(--muted);border-top:1px solid var(--border);}
+footer a{color:var(--teal);text-decoration:none;}
+
+@media(max-width:500px){.disc-grid{grid-template-columns:1fr;}}
+</style>
+</head>
+<body>
+
+<header class="site-header">
+  <div style="display:flex;align-items:center;gap:12px;">
+    <img src="https://rockmouse.live/assets/rockmouse-logo-wide.svg" alt="RockMouse" onerror="this.style.display='none'">
+    <span style="border-left:1px solid #d0d5e0;padding-left:12px;font-size:13px;color:#1e3a8a;font-weight:600;">DISC Coach</span>
+  </div>
+</header>
+
+<div class="page">
+
+  <!-- Setup -->
+  <div id="setup-card" class="card">
+    <div class="card-title">DISC Coach</div>
+    <div class="card-sub">Select your DISC style and work through four targeted coaching questions. You'll receive a personalised Working Style Brief to share with a new manager on Day 1.</div>
+
+    <input type="text" class="name-input" id="name-input" placeholder="Your first name (optional)" maxlength="40">
+
+    <div style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:0.06em;color:var(--navy);margin-bottom:10px;">Your primary DISC style</div>
+    <div class="disc-grid">
+      <div class="disc-card" data-s="D" onclick="selectStyle(this)">
+        <div class="disc-letter">D</div>
+        <div class="disc-name">Dominance</div>
+        <div class="disc-desc">Direct, results-focused, decisive. You move fast and push for outcomes.</div>
+      </div>
+      <div class="disc-card" data-s="I" onclick="selectStyle(this)">
+        <div class="disc-letter">I</div>
+        <div class="disc-name">Influence</div>
+        <div class="disc-desc">Enthusiastic, collaborative, optimistic. You energise people and build relationships.</div>
+      </div>
+      <div class="disc-card" data-s="S" onclick="selectStyle(this)">
+        <div class="disc-letter">S</div>
+        <div class="disc-name">Steadiness</div>
+        <div class="disc-desc">Patient, dependable, supportive. You value stability and follow through.</div>
+      </div>
+      <div class="disc-card" data-s="C" onclick="selectStyle(this)">
+        <div class="disc-letter">C</div>
+        <div class="disc-name">Conscientiousness</div>
+        <div class="disc-desc">Analytical, precise, quality-driven. You think carefully before you act.</div>
+      </div>
+    </div>
+    <span class="unsure-link" onclick="selectUnsure()">Not sure of your style? Click here — the coach will help identify it.</span>
+    <button class="btn-start" id="btn-start" onclick="startSession()" disabled>Start coaching session →</button>
+  </div>
+
+  <!-- Chat -->
+  <div id="chat-card" class="card hidden">
+    <div class="progress-wrap" id="progress-wrap">
+      <div class="progress-label" id="progress-label">Question 1 of 4</div>
+      <div class="progress-track"><div class="progress-fill" id="progress-fill" style="width:25%"></div></div>
+    </div>
+
+    <div class="chat-wrap" id="chat-messages"></div>
+
+    <div class="input-row">
+      <textarea class="chat-input" id="chat-input" rows="1" placeholder="Type your response…" disabled
+        onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();sendMsg();}"></textarea>
+      <button class="btn-send" id="btn-send" onclick="sendMsg()" disabled>
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/>
+        </svg>
+      </button>
+    </div>
+
+    <div class="draft-banner" id="draft-banner">
+      ⚠️ <strong>DRAFT</strong> — AI-generated. Review before use.
+    </div>
+
+    <div class="actions" id="actions" style="display:none;">
+      <button class="btn-sec btn-copy" onclick="copyBrief()">⬇ Copy Working Style Brief</button>
+      <button class="btn-sec" onclick="resetSession()">↺ New session</button>
+    </div>
+  </div>
+
+</div>
+
+<footer>
+  RockMouse AI Agents · DISC Coach · <a href="https://rockmouse.com.au" target="_blank">rockmouse.com.au</a> · For demonstration purposes
+</footer>
+
+<script>
+const API   = 'https://rockmouse-agent-proxy.craig-3c4.workers.dev';
+const TOKEN = 'EvcEETnK9mTErZ90CGguBccMdq2EbCV742tu5Gz4';
+const MODEL = 'claude-sonnet-4-6';
+
+const DISC_INFO = {
+  D:{name:'Dominance',     traits:'direct, results-focused, decisive, fast-paced, competitive, drives for control and outcomes'},
+  I:{name:'Influence',     traits:'enthusiastic, collaborative, optimistic, persuasive, relationship-driven, energetic'},
+  S:{name:'Steadiness',    traits:'patient, dependable, supportive, steady, values stability, consistent, follows through'},
+  C:{name:'Conscientiousness',traits:'analytical, precise, quality-driven, systematic, cautious, thinks carefully before acting'},
+};
+
+let style = null, unsureMode = false, name = '', history = [], qCount = 0, loading = false;
+
+function selectStyle(card) {
+  document.querySelectorAll('.disc-card').forEach(c=>c.classList.remove('selected'));
+  card.classList.add('selected');
+  style = card.dataset.s;
+  unsureMode = false;
+  document.getElementById('btn-start').disabled = false;
+}
+
+function selectUnsure() {
+  document.querySelectorAll('.disc-card').forEach(c=>c.classList.remove('selected'));
+  style = null; unsureMode = true;
+  document.getElementById('btn-start').disabled = false;
+}
+
+function buildSystem() {
+  const n = name || 'the participant';
+  if (unsureMode) return `You are a warm DISC coaching facilitator for RockMouse. ${n} is unsure of their DISC style. Ask 2–3 short practical questions to identify their primary style (D, I, S, or C), then move into coaching mode. In coaching mode, ask 4 coaching questions (one at a time) about: (1) how their style shapes their day-to-day work, (2) how it shows up with different colleagues, (3) where it might create blind spots, (4) what they'd want a new manager to know about them. After Q4, generate a Working Style Brief. Keep responses under 180 words except the brief. Tone: warm, direct, coaching.`;
+  const s = DISC_INFO[style];
+  return `You are a warm DISC coaching facilitator for RockMouse. ${n}'s primary DISC style is ${style} — ${s.name}. Traits: ${s.traits}. Ask exactly 4 coaching questions (one at a time), acknowledging each answer before moving on: (1) What does their ${style} style mean for how they work best day-to-day? (2) How might it show up with people who have very different styles — especially friction points? (3) Where might their ${style} style create blind spots they'll need to manage? (4) What would they want a new manager to know about getting the best out of them? After Q4, generate a Working Style Brief:\n\n---\n**Working Style Brief — ${n}**\n*DISC Style: ${style} — ${s.name}*\n\n**How I work best:**\n[2 sentences]\n\n**When working with others:**\n[2 sentences]\n\n**Watch out for:**\n[1–2 sentences]\n\n**What my manager should know:**\n[2 sentences]\n---\n\nKeep responses under 180 words except the brief. Tone: warm, direct, a little challenging.`;
+}
+
+async function startSession() {
+  name = document.getElementById('name-input').value.trim();
+  document.getElementById('setup-card').classList.add('hidden');
+  document.getElementById('chat-card').classList.remove('hidden');
+
+  const opening = unsureMode
+    ? `Hi${name?' '+name:''}! I'm not sure of my DISC style — can you help me work it out?`
+    : `Hi${name?' '+name:''}! My DISC style is ${style} — ${DISC_INFO[style].name}. I'd love help understanding what that means for me at work.`;
+
+  history.push({role:'user', content:opening});
+  await callAPI();
+}
+
+function addMsg(role, text) {
+  const wrap = document.getElementById('chat-messages');
+  const d = document.createElement('div'); d.className = 'msg ' + role;
+  const av = document.createElement('div'); av.className = 'msg-av';
+  av.textContent = role==='user' ? 'You' : 'DC';
+  const b = document.createElement('div'); b.className = 'msg-bubble';
+  b.innerHTML = md(text);
+  d.appendChild(av); d.appendChild(b); wrap.appendChild(d);
+  wrap.scrollTop = wrap.scrollHeight;
+  return b;
+}
+
+function showTyping() {
+  const wrap = document.getElementById('chat-messages');
+  const d = document.createElement('div'); d.className = 'msg coach'; d.id = 'typing';
+  d.innerHTML = '<div class="msg-av">DC</div><div class="msg-bubble"><div class="typing-dots"><span></span><span></span><span></span></div></div>';
+  wrap.appendChild(d); wrap.scrollTop = wrap.scrollHeight;
+}
+function hideTyping() { const e = document.getElementById('typing'); if(e) e.remove(); }
+
+function updateProgress(q) {
+  const labels=['Question 1 of 4','Question 2 of 4','Question 3 of 4','Question 4 of 4','Complete'];
+  const pcts=[25,50,75,100,100];
+  const i = Math.min(q,4);
+  document.getElementById('progress-label').textContent = labels[i];
+  document.getElementById('progress-fill').style.width = pcts[i]+'%';
+}
+
+async function sendMsg() {
+  const inp = document.getElementById('chat-input');
+  const txt = inp.value.trim();
+  if (!txt || loading) return;
+  inp.value = ''; inp.style.height = 'auto';
+  addMsg('user', txt);
+  history.push({role:'user', content:txt});
+  qCount++;
+  updateProgress(qCount);
+  await callAPI();
+}
+
+async function callAPI() {
+  loading = true;
+  document.getElementById('btn-send').disabled = true;
+  document.getElementById('chat-input').disabled = true;
+  showTyping();
+
+  try {
+    const res = await fetch(API, {
+      method:'POST',
+      headers:{'Content-Type':'application/json','Authorization':'Bearer '+TOKEN},
+      body:JSON.stringify({model:MODEL, max_tokens:1200, system:buildSystem(), messages:history})
+    });
+    if (!res.ok) throw new Error('API error '+res.status);
+    const data = await res.json();
+    const reply = (data.content.find(b=>b.type==='text')||{}).text || '';
+    hideTyping();
+    history.push({role:'assistant', content:reply});
+    addMsg('coach', reply);
+    document.getElementById('draft-banner').style.display = 'block';
+    if (reply.includes('Working Style Brief')) {
+      document.getElementById('actions').style.display = 'flex';
+    }
+  } catch(e) {
+    hideTyping();
+    addMsg('coach','Something went wrong — please try again.');
+  }
+
+  loading = false;
+  document.getElementById('btn-send').disabled = false;
+  document.getElementById('chat-input').disabled = false;
+  document.getElementById('chat-input').focus();
+}
+
+function copyBrief() {
+  const briefs = history.filter(m=>m.content.includes('Working Style Brief'));
+  const text = briefs.length ? briefs[briefs.length-1].content
+    : history.map(m=>`${m.role==='user'?'You':'DISC Coach'}: ${m.content}`).join('\n\n');
+  navigator.clipboard.writeText(text);
+  const btn = document.querySelector('.btn-copy');
+  btn.textContent = '✓ Copied'; setTimeout(()=>btn.textContent='⬇ Copy Working Style Brief',2000);
+}
+
+function resetSession() {
+  history=[]; qCount=0; style=null; unsureMode=false;
+  document.getElementById('chat-card').classList.add('hidden');
+  document.getElementById('setup-card').classList.remove('hidden');
+  document.getElementById('chat-messages').innerHTML='';
+  document.getElementById('draft-banner').style.display='none';
+  document.getElementById('actions').style.display='none';
+  document.querySelectorAll('.disc-card').forEach(c=>c.classList.remove('selected'));
+  document.getElementById('btn-start').disabled=true;
+  document.getElementById('name-input').value='';
+  document.getElementById('progress-fill').style.width='25%';
+}
+
+function md(t) {
+  if (!t) return '';
+  t = t.replace(/---\n([\s\S]*?)\n---/g,'<div class="brief-box">$1</div>');
+  t = t.replace(/\*\*(.+?)\*\*/g,'<strong>$1</strong>');
+  t = t.replace(/\*(.+?)\*/g,'<em>$1</em>');
+  t = t.replace(/\n/g,'<br>');
+  return t;
+}
+</script>
+</body>
+</html>

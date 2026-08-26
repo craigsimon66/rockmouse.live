@@ -1,0 +1,2612 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Soft Skills Drill | RockMouse AI Agents</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
+<style>
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=DM+Serif+Display:ital@0;1&display=swap');
+
+:root {
+  /* the organisation brand purple palette */
+  --be-orange:      #FF8200;
+  --be-orange-dark: #FF6600;
+  --be-orange-mid:  #FF9933;
+  --be-orange-light:#FFF5E6;
+  --be-orange-pale: #FFFBF0;
+
+  /* Brand accents */
+  --rm-green: #05DE92;
+
+  /* Neutrals */
+  --near-black: #1A1A2E;
+  --white:      #ffffff;
+  --off-white:  #F8F7FB;
+  --border:     #E4DDF0;
+  --text-primary:   #1A1A2E;
+  --text-secondary: #4A4460;
+  --text-muted:     #8A7FA0;
+
+  /* Agent type colours — purple-harmonised */
+  --insights-col:  #FF8200; --insights-bg: #FFF5E6; --insights-border: #FFB84D;
+  --scenario-col:  #0F7A8C; --scenario-bg: #E4F6F9; --scenario-border: #8ED5DF;
+  --mapper-col:    #1A6B3C; --mapper-bg:   #E6F5EE; --mapper-border:   #7ECDA0;
+  --cyber-col:     #8B3D10; --cyber-bg:    #FBF0E8; --cyber-border:    #DDA878;
+
+  /* Track colours */
+  --track-warm-bg:   #FFF5E6; --track-warm-text:   #FF8200;
+  --track-estab-bg:  #E8EEF8; --track-estab-text:  #1A3A6E;
+  --track-skills-bg: #E6F5EE; --track-skills-text: #1A6B3C;
+  --track-cap-bg:    #FFF5E6; --track-cap-text:    #FF8200;
+
+  --radius-sm: 6px; --radius: 10px; --radius-lg: 14px;
+  --shadow-sm: 0 1px 3px rgba(255,130,0,0.07), 0 1px 2px rgba(255,130,0,0.05);
+  --shadow:    0 4px 16px rgba(255,130,0,0.12);
+}
+
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:"DM Sans",sans-serif;font-size:15px;color:var(--text-primary);background:var(--off-white);line-height:1.6;-webkit-font-smoothing:antialiased;}
+.app{display:flex;flex-direction:column;min-height:100vh;}
+
+/* HEADER */
+.header{background:var(--be-orange-dark);padding:18px 32px;display:flex;align-items:center;justify-content:space-between;gap:20px;border-bottom:3px solid var(--rm-green);}
+.header-left{display:flex;align-items:center;gap:16px;}
+.iag-logo-wrap{width:52px;height:52px;border-radius:10px;background:white;display:none !important;align-items:center;justify-content:center;flex-shrink:0;padding:4px;}
+.iag-logo-wrap img{width:100%;height:100%;object-fit:contain;}
+.header-title{font-size:19px;font-weight:700;color:var(--white);font-family:"DM Serif Display",serif;}
+.header-sub{font-size:12px;color:rgba(255,255,255,0.65);margin-top:2px;}
+.header-right{text-align:right;}
+.header-meta{font-size:11px;color:rgba(255,255,255,0.4);line-height:1.7;}
+.header-tag{display:inline-block;font-size:10px;font-weight:600;background:rgba(255,255,255,0.12);color:rgba(255,255,255,0.75);padding:3px 10px;border-radius:20px;border:0.5px solid rgba(255,255,255,0.25);}
+
+/* TABS */
+.tab-bar{background:var(--near-black);display:flex;padding:0 32px;gap:2px;border-bottom:1px solid rgba(255,255,255,0.12);overflow-x:auto;}
+.tab-bar::-webkit-scrollbar{height:0;}
+.tab-btn{padding:13px 18px;font-size:12px;font-weight:500;color:rgba(255,255,255,0.5);cursor:pointer;border:none;background:transparent;border-bottom:2px solid transparent;margin-bottom:-1px;transition:all 0.2s;white-space:nowrap;font-family:"DM Sans",sans-serif;}
+.tab-btn:hover{color:rgba(255,255,255,0.9);}
+.tab-btn.active{color:var(--white);border-bottom-color:var(--rm-green);}
+
+/* MAIN */
+.main{flex:1;padding:32px;max-width:1320px;margin:0 auto;width:100%;}
+.panel{display:none;}.panel.active{display:block;}
+.slabel{font-size:11px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--be-orange);margin-bottom:12px;}
+.card{background:var(--white);border:0.5px solid var(--border);border-radius:var(--radius-lg);padding:20px 24px;box-shadow:var(--shadow-sm);}
+.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+.grid-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;}
+
+/* PRINCIPLES */
+.principles-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:28px;}
+.principle-card{background:var(--white);border:0.5px solid var(--border);border-radius:var(--radius);padding:18px;border-left:3px solid var(--be-orange);box-shadow:var(--shadow-sm);}
+.p-num{font-size:11px;font-weight:700;color:var(--be-orange);letter-spacing:0.06em;margin-bottom:5px;}
+.p-title{font-size:15px;font-weight:600;color:var(--near-black);margin-bottom:6px;}
+.p-desc{font-size:13px;color:var(--text-secondary);line-height:1.55;}
+
+/* AGENT TYPE CARDS */
+.type-card{background:var(--white);border:0.5px solid var(--border);border-radius:var(--radius-lg);overflow:hidden;margin-bottom:18px;box-shadow:var(--shadow-sm);}
+.type-header{padding:18px 24px;display:flex;align-items:center;gap:16px;}
+.type-icon{width:46px;height:46px;border-radius:10px;background:rgba(255,255,255,0.15);display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;}
+.type-name{font-family:"DM Serif Display",serif;font-size:20px;color:var(--white);}
+.type-kicker{font-size:11px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;margin-bottom:3px;}
+.type-tagline{font-size:13px;color:rgba(255,255,255,0.65);margin-top:2px;}
+.type-body{padding:22px 24px;}
+.type-intro{font-size:14px;color:var(--text-secondary);line-height:1.65;margin-bottom:18px;}
+.type-attrs{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:18px;}
+.type-attr{background:var(--be-orange-pale);border:0.5px solid var(--border);border-radius:var(--radius-sm);padding:12px 14px;}
+.attr-label{font-size:11px;font-weight:700;letter-spacing:0.07em;text-transform:uppercase;margin-bottom:5px;}
+.attr-val{font-size:13px;color:var(--text-secondary);line-height:1.5;}
+.type-agents-label{font-size:11px;font-weight:700;letter-spacing:0.07em;text-transform:uppercase;color:var(--text-muted);margin-bottom:8px;}
+.agent-pills{display:flex;flex-wrap:wrap;gap:7px;}
+.agent-pill{font-size:12px;font-weight:500;padding:4px 12px;border-radius:20px;border:1px solid;cursor:pointer;transition:opacity 0.15s;}
+.agent-pill:hover{opacity:0.75;}
+
+/* LEGEND */
+.legend{display:flex;flex-wrap:wrap;gap:14px;margin-bottom:20px;align-items:center;}
+.legend-item{display:flex;align-items:center;gap:7px;font-size:13px;color:var(--text-secondary);}
+.legend-dot{width:10px;height:10px;border-radius:3px;flex-shrink:0;}
+
+/* INTRO BAND */
+.intro-band{background:var(--be-orange-dark);border-radius:var(--radius-lg);padding:24px 28px;margin-bottom:28px;display:flex;gap:32px;align-items:center;border:0.5px solid var(--be-orange);}
+.intro-band-text{flex:1;}
+.intro-band h2{font-family:"DM Serif Display",serif;font-size:22px;color:white;margin-bottom:8px;}
+.intro-band p{font-size:13px;color:rgba(255,255,255,0.65);line-height:1.65;}
+.intro-stats{display:flex;gap:24px;flex-shrink:0;}
+.stat-box{text-align:center;}
+.stat-num{font-size:28px;font-weight:700;color:var(--rm-green);line-height:1;}
+.stat-label{font-size:10px;color:rgba(255,255,255,0.5);margin-top:4px;text-transform:uppercase;letter-spacing:0.06em;}
+
+/* PROGRAM PHASES */
+.program-phases{display:flex;gap:0;border-radius:var(--radius-lg);overflow:hidden;border:0.5px solid var(--border);margin-bottom:28px;box-shadow:var(--shadow-sm);}
+.prog-phase{flex:1;padding:14px 16px;background:white;border-right:0.5px solid var(--border);}
+.prog-phase:last-child{border-right:none;}
+.prog-phase-dot{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:white;margin-bottom:8px;}
+.prog-phase-name{font-size:12px;font-weight:600;color:var(--text-primary);margin-bottom:3px;}
+.prog-phase-desc{font-size:11px;color:var(--text-muted);line-height:1.4;}
+
+/* JOURNEY TABLE */
+.journey-wrap{overflow-x:auto;}
+.journey-table{width:100%;border-collapse:collapse;border:0.5px solid var(--border);border-radius:var(--radius-lg);overflow:hidden;background:white;font-size:13px;}
+.journey-table th{background:var(--be-orange-dark);color:rgba(255,255,255,0.65);font-size:10px;font-weight:700;letter-spacing:0.07em;text-transform:uppercase;padding:10px 12px;text-align:left;border-right:1px solid rgba(255,255,255,0.12);white-space:nowrap;}
+.journey-table th:last-child{border-right:none;}
+.journey-table td{padding:10px 12px;border-bottom:0.5px solid var(--border);border-right:0.5px solid var(--border);vertical-align:top;line-height:1.45;}
+.journey-table td:last-child{border-right:none;}
+.journey-table tr:last-child td{border-bottom:none;}
+.journey-table tr:hover td{background:var(--be-orange-pale);}
+.phase-group-row td{font-size:10px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;padding:7px 12px;border-bottom:none!important;}
+.phase-group-row.warm td{background:#5A5470;color:white;}
+.phase-group-row.estab td{background:var(--be-orange);color:white;}
+.phase-group-row.skills td{background:#1A5C3C;color:white;}
+.phase-group-row.cap td{background:var(--be-orange-dark);color:white;}
+
+/* BADGES */
+.track-badge{display:inline-block;font-size:9px;font-weight:700;letter-spacing:0.05em;padding:2px 7px;border-radius:10px;white-space:nowrap;}
+.track-warm{background:#FFF5E6;color:#FF6600;}
+.track-estab{background:var(--be-orange-light);color:var(--be-orange-dark);}
+.track-skills{background:#E6F5EE;color:#1A5C3C;}
+.track-cap{background:#F3EAF8;color:var(--be-orange-dark);}
+.agent-type-badge{display:inline-block;font-size:9px;font-weight:700;letter-spacing:0.05em;padding:2px 7px;border-radius:10px;white-space:nowrap;}
+.at-insights{background:var(--insights-bg);color:var(--insights-col);border:0.5px solid var(--insights-border);}
+.at-scenario{background:var(--scenario-bg);color:var(--scenario-col);border:0.5px solid var(--scenario-border);}
+.at-mapper{background:var(--mapper-bg);color:var(--mapper-col);border:0.5px solid var(--mapper-border);}
+.at-cyber{background:var(--cyber-bg);color:var(--cyber-col);border:0.5px solid var(--cyber-border);}
+.mode-badge{display:inline-block;font-size:9px;font-weight:600;padding:2px 7px;border-radius:10px;background:var(--be-orange-light);color:var(--be-orange);border:0.5px solid var(--border);white-space:nowrap;margin:1px 0;}
+.activity-name{font-weight:600;font-size:13px;color:var(--text-primary);margin-bottom:3px;}
+.activity-desc{font-size:12px;color:var(--text-secondary);line-height:1.45;}
+.sample-tag{display:inline-block;font-size:9px;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;padding:1px 7px;border-radius:3px;background:var(--be-orange);color:white;margin-left:6px;vertical-align:middle;}
+.timing-cell{font-size:12px;color:var(--text-muted);white-space:nowrap;}
+.touchpoint-cell{font-size:12px;color:var(--text-secondary);}
+.integration-cell{font-size:11px;color:var(--text-muted);}
+
+/* AGENT DETAIL CARDS */
+.agent-detail-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-bottom:28px;}
+.agent-detail-card{background:white;border:0.5px solid var(--border);border-radius:var(--radius-lg);overflow:hidden;box-shadow:var(--shadow-sm);}
+.adc-head{padding:18px 22px;color:white;}
+.adc-head.c1{background:var(--be-orange);}
+.adc-head.c2{background:var(--be-orange-dark);}
+.adc-head.c3{background:#0F7A8C;}
+.adc-head.c4{background:#1A5C3C;}
+.adc-head.c5{background:#FF6600;}
+.adc-num{font-size:10px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;opacity:0.7;margin-bottom:4px;}
+.adc-title{font-family:"DM Serif Display",serif;font-size:20px;margin-bottom:4px;}
+.adc-tagline{font-size:12px;opacity:0.75;}
+.adc-body{padding:20px 22px;}
+.adc-desc{font-size:13px;color:var(--text-secondary);line-height:1.65;margin-bottom:16px;}
+.detail-attrs{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:16px;}
+.d-attr{background:var(--be-orange-pale);border:0.5px solid var(--border);border-radius:var(--radius-sm);padding:10px 12px;}
+.d-attr-label{font-size:10px;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;color:var(--text-muted);margin-bottom:4px;}
+.d-attr-val{font-size:12px;color:var(--text-secondary);line-height:1.45;}
+.prompt-box{background:var(--be-orange-dark);border-radius:var(--radius-sm);padding:14px 16px;margin-bottom:14px;}
+.prompt-label{font-size:9px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--rm-green);margin-bottom:6px;}
+.prompt-text{font-size:12px;color:rgba(255,255,255,0.85);line-height:1.55;font-style:italic;}
+.outcome-list{list-style:none;padding:0;margin-bottom:14px;}
+.outcome-list li{font-size:12px;color:var(--text-secondary);padding:5px 0;padding-left:18px;position:relative;line-height:1.45;border-bottom:0.5px solid var(--border);}
+.outcome-list li:last-child{border-bottom:none;}
+.outcome-list li::before{content:"\2192";position:absolute;left:0;color:var(--be-orange);font-weight:700;font-size:11px;}
+hr.div{border:none;border-top:0.5px solid var(--border);margin:18px 0;}
+.mb4{margin-bottom:4px}.mb8{margin-bottom:8px}.mb12{margin-bottom:12px}.mb18{margin-bottom:18px}.mb24{margin-bottom:24px}
+
+/* ══════════════════════════════════════
+   AGENT MODALS
+══════════════════════════════════════ */
+.agent-modal{position:fixed;inset:0;z-index:2000;display:flex;align-items:center;justify-content:center;}
+.modal-overlay{position:absolute;inset:0;background:rgba(26,26,46,0.75);backdrop-filter:blur(4px);}
+.modal-panel{position:relative;z-index:1;display:flex;flex-direction:column;width:calc(100% - 40px);max-width:800px;max-height:calc(100vh - 40px);border-radius:16px;overflow:hidden;box-shadow:0 24px 80px rgba(0,0,0,0.4);}
+.modal-header{padding:18px 22px;display:flex;align-items:center;gap:18px;flex-shrink:0;}
+.modal-logos{display:flex;align-items:center;gap:12px;flex-shrink:0;}
+.modal-iag-wrap{ display: none !important;background:white;border-radius:8px;padding:3px 5px;align-items:center;height:40px;}
+.modal-iag-wrap img{height:34px;width:auto;display:block;}
+.modal-be-wrap{display:flex;align-items:center;height:40px;}
+.modal-be-wrap img{height:36px;width:auto;display:block;}
+.modal-divider{width:1px;height:32px;background:rgba(255,255,255,0.25);}
+.modal-header-text{flex:1;min-width:0;}
+.modal-label{font-size:10px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:rgba(255,255,255,0.55);margin-bottom:2px;}
+.modal-title{font-family:"DM Serif Display",serif;font-size:21px;color:white;line-height:1.2;}
+.modal-tagline{font-size:12px;color:rgba(255,255,255,0.6);margin-top:2px;}
+.modal-close{background:rgba(255,255,255,0.15);border:1px solid rgba(255,255,255,0.2);color:white;width:34px;height:34px;border-radius:50%;font-size:15px;cursor:pointer;flex-shrink:0;display:flex;align-items:center;justify-content:center;transition:background 0.2s;line-height:1;}
+.modal-close:hover{background:rgba(255,255,255,0.3);}
+.modal-body{flex:1;display:flex;flex-direction:column;background:white;overflow:hidden;}
+.chat-messages{flex:1;overflow-y:auto;padding:20px;display:flex;flex-direction:column;gap:12px;}
+.chat-msg{max-width:84%;line-height:1.65;font-size:14px;word-break:break-word;}
+.chat-msg.ai{align-self:flex-start;background:#F3EAF8;border-radius:4px 14px 14px 14px;padding:13px 16px;color:#1A1A2E;}
+.chat-msg.user{align-self:flex-end;background:#FF8200;border-radius:14px 4px 14px 14px;padding:13px 16px;color:white;}
+.chat-msg.note{align-self:center;background:#F5F5FA;border:1px solid #E4DDF0;border-radius:20px;padding:7px 14px;color:#8A7FA0;font-size:12px;font-style:italic;max-width:94%;text-align:center;}
+.typing-wrap{align-self:flex-start;background:#F3EAF8;border-radius:4px 14px 14px 14px;padding:13px 16px;}
+.typing-dots{display:flex;gap:5px;}
+.typing-dot{width:7px;height:7px;border-radius:50%;background:#CBA8E2;animation:tdot 1.2s infinite;}
+.typing-dot:nth-child(2){animation-delay:.2s;}
+.typing-dot:nth-child(3){animation-delay:.4s;}
+@keyframes tdot{0%,60%,100%{transform:translateY(0);}30%{transform:translateY(-5px);}}
+.chat-input-row{border-top:1px solid #E4DDF0;padding:12px 16px;display:flex;gap:10px;background:#FAFAFA;flex-shrink:0;}
+.chat-input-row textarea{flex:1;border:1.5px solid #E4DDF0;border-radius:10px;padding:10px 13px;font-family:"DM Sans",sans-serif;font-size:14px;resize:none;outline:none;transition:border-color .2s;color:#1A1A2E;background:white;line-height:1.5;}
+.chat-input-row textarea:focus{border-color:#FF8200;}
+.chat-send-btn{background:#FF8200;color:white;border:none;border-radius:10px;padding:0 22px;font-size:13px;font-weight:600;cursor:pointer;font-family:"DM Sans",sans-serif;transition:opacity .15s;flex-shrink:0;}
+.chat-send-btn:hover{opacity:.85;}
+.chat-send-btn:disabled{opacity:.35;cursor:not-allowed;}
+.chat-msg strong{font-weight:600;}
+.chat-msg p{margin:0 0 7px;}
+.chat-msg p:last-child{margin:0;}
+.chat-msg ul{margin:6px 0 6px 18px;}
+.chat-msg li{margin-bottom:3px;}
+
+
+.adc-head.c6{background:#1B3A6B;}
+
+/* ── DISC Dialogue modal overrides ── */
+.disc-panel { max-width: 1150px !important; }
+.disc-modal-body {
+  flex: 1;
+  display: flex;
+  flex-direction: row;
+  background: #F8F4FD;
+  overflow: hidden;
+}
+.dd-sidebar {
+  width: 280px;
+  flex-shrink: 0;
+  background: white;
+  border-right: 1px solid #E4DDF0;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+.dd-card {
+  border-bottom: 1px solid #E4DDF0;
+}
+.dd-card-head {
+  padding: 12px 16px 8px;
+  background: #F8F4FD;
+  border-bottom: 1px solid #E4DDF0;
+}
+.dd-card-head-label {
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #9a9ab5;
+  margin-bottom: 2px;
+}
+.dd-card-head-title {
+  font-size: 13px;
+  font-weight: 600;
+  color: #3d1e62;
+}
+.dd-card-body { padding: 14px 16px; }
+.dd-setup-field { margin-bottom: 12px; }
+.dd-setup-field label {
+  display: block;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: #5a5a7a;
+  margin-bottom: 5px;
+}
+.dd-setup-field input[type="text"] {
+  width: 100%;
+  padding: 9px 11px;
+  border: 1.5px solid #E4DDF0;
+  border-radius: 8px;
+  font-family: inherit;
+  font-size: 13px;
+  color: #1a1a2e;
+  background: white;
+  outline: none;
+  transition: border-color 0.2s;
+}
+.dd-setup-field input[type="text"]:focus { border-color: #FF9933; }
+.dd-upload-zone {
+  border: 2px dashed #E4DDF0;
+  border-radius: 10px;
+  padding: 16px 12px;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.2s;
+  background: #F8F4FD;
+  position: relative;
+}
+.dd-upload-zone:hover, .dd-upload-zone.drag-over {
+  border-color: #FF9933;
+  background: #F0EAF8;
+}
+.dd-upload-zone input[type="file"] {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  cursor: pointer;
+  width: 100%;
+  height: 100%;
+}
+.dd-upload-icon { font-size: 22px; margin-bottom: 6px; }
+.dd-upload-text { font-size: 11px; font-weight: 500; color: #FF6600; margin-bottom: 2px; }
+.dd-upload-hint { font-size: 10px; color: #9a9ab5; }
+.dd-file-uploaded {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 10px;
+  background: #edf7f3;
+  border-radius: 8px;
+  border: 1px solid #b8e0d2;
+}
+.dd-file-name { font-size: 11px; font-weight: 500; color: #2d8b6e; flex: 1; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.dd-btn-start {
+  width: 100%;
+  padding: 11px;
+  background: #FF6600;
+  color: white;
+  border: none;
+  border-radius: 10px;
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+  margin-top: 10px;
+}
+.dd-btn-start:hover:not(:disabled) { background: #3d1e62; }
+.dd-btn-start:disabled { opacity: 0.45; cursor: not-allowed; }
+.dd-progress-steps { display: flex; flex-direction: column; }
+.dd-progress-step {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 8px 0;
+  border-bottom: 1px solid #E4DDF0;
+}
+.dd-progress-step:last-child { border-bottom: none; }
+.dd-step-dot {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: #E4DDF0;
+  border: 2px solid #E4DDF0;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 9px;
+  font-weight: 700;
+  color: #9a9ab5;
+  transition: all 0.3s;
+  margin-top: 1px;
+}
+.dd-step-dot.active { background: #FF6600; border-color: #FF6600; color: white; box-shadow: 0 0 0 3px rgba(91,45,142,0.15); }
+.dd-step-dot.complete { background: #2d8b6e; border-color: #2d8b6e; color: white; }
+.dd-step-label { font-size: 11px; color: #5a5a7a; line-height: 1.4; padding-top: 1px; }
+.dd-step-label.active { color: #FF6600; font-weight: 500; }
+.dd-step-label.complete { color: #2d8b6e; }
+.dd-chat-wrap {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  min-width: 0;
+}
+.dd-chat-card {
+  flex: 1;
+  background: white;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  border-bottom: 1px solid #E4DDF0;
+}
+.dd-chat-header {
+  background: linear-gradient(135deg, #FF6600 0%, #FF9933 100%);
+  padding: 14px 20px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-shrink: 0;
+}
+.dd-chat-avatar {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  flex-shrink: 0;
+}
+.dd-chat-header-info h3 { font-size: 14px; font-weight: 600; color: white; }
+.dd-chat-header-info p { font-size: 11px; color: rgba(255,255,255,0.7); margin-top: 1px; }
+.dd-chat-status { margin-left: auto; display: flex; align-items: center; gap: 5px; font-size: 10px; color: rgba(255,255,255,0.7); }
+.dd-status-dot { width: 6px; height: 6px; border-radius: 50%; background: #4ade80; animation: pulse 2s infinite; }
+.dd-chat-messages {
+  flex: 1;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  overflow-y: auto;
+  background: #fafafa;
+  min-height: 200px;
+}
+.dd-empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  flex: 1;
+  text-align: center;
+  padding: 30px 20px;
+  color: #9a9ab5;
+}
+.dd-empty-icon { font-size: 36px; margin-bottom: 12px; }
+.dd-empty-state h3 {
+  font-family: 'DM Serif Display', serif;
+  font-size: 18px;
+  color: #FF6600;
+  margin-bottom: 6px;
+  font-weight: 400;
+}
+.dd-empty-state p { font-size: 13px; line-height: 1.5; max-width: 300px; color: #5a5a7a; }
+.dd-msg { display: flex; gap: 10px; animation: msgIn 0.35s ease-out; }
+.dd-msg.user { flex-direction: row-reverse; }
+.dd-msg-avatar {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background: #F0EAF8;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 13px;
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+.dd-msg.coach .dd-msg-avatar { background: #FF6600; color: white; }
+.dd-msg-bubble {
+  max-width: 80%;
+  padding: 12px 15px;
+  border-radius: 14px;
+  font-size: 13px;
+  line-height: 1.65;
+}
+.dd-msg.coach .dd-msg-bubble {
+  background: white;
+  border: 1.5px solid #E4DDF0;
+  border-top-left-radius: 3px;
+  color: #1a1a2e;
+  box-shadow: 0 2px 6px rgba(91,45,142,0.05);
+}
+.dd-msg.user .dd-msg-bubble {
+  background: #FF6600;
+  color: white;
+  border-top-right-radius: 3px;
+}
+.dd-msg-bubble p { margin-bottom: 6px; }
+.dd-msg-bubble p:last-child { margin-bottom: 0; }
+.dd-msg-bubble strong { font-weight: 600; }
+.dd-typing { display: flex; align-items: center; gap: 4px; padding: 12px 15px; }
+.dd-typing-dot { width: 6px; height: 6px; border-radius: 50%; background: #FF9933; animation: typing 1.2s infinite; }
+.dd-typing-dot:nth-child(2) { animation-delay: 0.2s; }
+.dd-typing-dot:nth-child(3) { animation-delay: 0.4s; }
+.dd-chat-input-area {
+  padding: 12px 18px;
+  border-top: 1px solid #E4DDF0;
+  background: white;
+  flex-shrink: 0;
+}
+.dd-input-wrap { display: flex; gap: 8px; align-items: flex-end; }
+.dd-chat-textarea {
+  flex: 1;
+  border: 1.5px solid #E4DDF0;
+  border-radius: 10px;
+  padding: 9px 12px;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 13px;
+  resize: none;
+  outline: none;
+  transition: border-color 0.2s;
+  color: #1a1a2e;
+  background: white;
+  line-height: 1.5;
+  min-height: 40px;
+  max-height: 120px;
+}
+.dd-chat-textarea:focus { border-color: #FF6600; }
+.dd-chat-textarea:disabled { background: #f5f5f5; color: #9a9ab5; }
+.dd-btn-send {
+  background: #FF6600;
+  color: white;
+  border: none;
+  border-radius: 10px;
+  padding: 0 18px;
+  height: 40px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  font-family: 'DM Sans', sans-serif;
+  transition: opacity 0.15s;
+  flex-shrink: 0;
+}
+.dd-btn-send:hover { opacity: 0.85; }
+.dd-btn-send:disabled { opacity: 0.35; cursor: not-allowed; }
+.dd-input-hint { font-size: 10px; color: #9a9ab5; margin-top: 6px; text-align: center; }
+.dd-continue-prompt {
+  background: #F0EAF8;
+  border: 1.5px solid #FF6600;
+  border-radius: 10px;
+  padding: 14px 16px;
+  text-align: center;
+  animation: msgIn 0.35s ease-out;
+}
+.dd-continue-prompt p { font-size: 13px; color: #3d1e62; margin-bottom: 12px; line-height: 1.5; }
+.dd-continue-btns { display: flex; gap: 8px; justify-content: center; flex-wrap: wrap; }
+.dd-btn-yes { padding: 9px 18px; background: #FF6600; color: white; border: none; border-radius: 8px; font-family: inherit; font-size: 12px; font-weight: 600; cursor: pointer; transition: all 0.2s; }
+.dd-btn-yes:hover { background: #3d1e62; }
+.dd-btn-no { padding: 9px 18px; background: white; color: #FF6600; border: 2px solid #FF6600; border-radius: 8px; font-family: inherit; font-size: 12px; font-weight: 600; cursor: pointer; transition: all 0.2s; }
+.dd-btn-no:hover { background: #F0EAF8; }
+.dd-brief-section {
+  background: white;
+  border-top: 2px solid #FF6600;
+  overflow-y: auto;
+  max-height: 400px;
+  flex-shrink: 0;
+}
+.dd-brief-header {
+  background: #3d1e62;
+  padding: 14px 22px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+.dd-brief-header h2 { font-family: 'DM Serif Display', serif; font-size: 17px; color: white; font-weight: 400; }
+.dd-brief-header p { font-size: 11px; color: rgba(255,255,255,0.65); margin-top: 2px; }
+.dd-btn-download {
+  padding: 8px 14px;
+  background: white;
+  color: #FF6600;
+  border: none;
+  border-radius: 8px;
+  font-family: inherit;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  transition: all 0.2s;
+  flex-shrink: 0;
+  white-space: nowrap;
+}
+.dd-btn-download:hover { background: #F0EAF8; transform: translateY(-1px); }
+#dd-brief-content {
+  background: white;
+  padding: 24px 28px;
+}
+.dd-brief-name-block {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 20px;
+  padding-bottom: 18px;
+  border-bottom: 2px solid #F0EAF8;
+}
+.dd-brief-disc-badge {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: #FF6600;
+  color: white;
+  font-family: 'DM Serif Display', serif;
+  font-size: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+.dd-brief-name-block h3 { font-family: 'DM Serif Display', serif; font-size: 19px; color: #3d1e62; font-weight: 400; }
+.dd-brief-name-block p { font-size: 12px; color: #5a5a7a; margin-top: 2px; }
+.dd-brief-section-label {
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: #FF6600;
+  margin-bottom: 8px;
+  padding-bottom: 5px;
+  border-bottom: 1px solid #F0EAF8;
+}
+.dd-brief-block { margin-bottom: 18px; }
+.dd-brief-text { font-size: 13px; line-height: 1.7; color: #1a1a2e; }
+.dd-brief-tags { display: flex; flex-wrap: wrap; gap: 7px; margin-top: 7px; }
+.dd-brief-tag { padding: 4px 10px; border-radius: 20px; font-size: 11px; font-weight: 500; }
+.dd-brief-tag.strength { background: #edf7f3; color: #2d7a5e; border: 1px solid #b8dfd0; }
+.dd-brief-tag.watch { background: #fff8ed; color: #92610a; border: 1px solid #f5d98a; }
+.dd-notif {
+  position: absolute;
+  bottom: 16px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #3d1e62;
+  color: white;
+  padding: 9px 18px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 500;
+  display: none;
+  z-index: 10;
+  pointer-events: none;
+  white-space: nowrap;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.25);
+}
+@media (max-width: 700px) {
+  .disc-modal-body { flex-direction: column; }
+  .dd-sidebar { width: 100%; max-height: 240px; border-right: none; border-bottom: 1px solid #E4DDF0; }
+}
+
+
+/* ─── SOFT SKILLS DRILL AGENT CSS ─── */
+
+/* ─── SCENARIOS WRAPPER (embedded in panel-agents) ─── */
+.scenarios-wrapper { position: relative; width: 100%; }
+.scenarios-wrapper .screen { position: relative; }
+.scenarios-wrapper .setup-wrap { min-height: 400px; }
+.scenarios-wrapper .home-main { padding: 28px 0; }
+
+
+
+
+
+/* ─── SCREENS ─── */
+.scenarios-wrapper .screen { display: none; }
+.scenarios-wrapper .screen.active { display: flex; flex-direction: column; }
+
+/* ─── HEADER ─── */
+.app-header {
+  background: var(--be-orange-dark);
+  padding: 14px 120px 14px 28px;
+  display: flex; align-items: center; justify-content: space-between;
+  border-bottom: 3px solid var(--rm-green);
+  flex-shrink: 0;
+}
+.header-brand { display: flex; align-items: center; gap: 14px; }
+.header-logo-text { font-family: "DM Serif Display", serif; font-size: 20px; color: white; letter-spacing: -0.3px; }
+.header-logo-text span { color: var(--rm-green); }
+.header-subtitle { font-size: 11px; color: rgba(255,255,255,.55); margin-top: 1px; letter-spacing: .03em; }
+.header-right { display: flex; align-items: center; gap: 14px; }
+.toggle-wrap { display: flex; align-items: center; gap: 8px; font-size: 12px; color: rgba(255,255,255,.7); }
+.toggle { position: relative; width: 38px; height: 21px; }
+.toggle input { opacity: 0; width: 0; height: 0; }
+.toggle-slider {
+  position: absolute; inset: 0; background: rgba(255,255,255,.2);
+  border-radius: 21px; cursor: pointer; transition: .2s;
+}
+.toggle-slider::before {
+  content: ''; position: absolute;
+  width: 15px; height: 15px; left: 3px; top: 3px;
+  background: white; border-radius: 50%; transition: .2s;
+}
+input:checked + .toggle-slider { background: var(--rm-green); }
+input:checked + .toggle-slider::before { transform: translateX(17px); }
+.turn-counter { font-size: 11px; color: rgba(255,255,255,.5); }
+.turn-counter strong { color: rgba(255,255,255,.85); }
+.btn-ghost { font-size: 12px; color: rgba(255,255,255,.6); background: rgba(255,255,255,.1); border: .5px solid rgba(255,255,255,.2); padding: 5px 12px; border-radius: 20px; cursor: pointer; font-family: inherit; transition: .15s; }
+.btn-ghost:hover { background: rgba(255,255,255,.2); color: white; }
+
+/* ─── SETUP SCREEN ─── */
+.setup-wrap { flex: 1; display: flex; align-items: center; justify-content: center; padding: 40px 20px; background: var(--near-black); }
+.setup-card { background: white; border-radius: 18px; padding: 40px 44px; max-width: 480px; width: 100%; box-shadow: 0 24px 80px rgba(0,0,0,.3); }
+.setup-logo { font-family: "DM Serif Display", serif; font-size: 28px; color: var(--be-orange-dark); margin-bottom: 4px; }
+.setup-logo span { color: var(--rm-green); }
+.setup-tagline { font-size: 13px; color: var(--text-muted); margin-bottom: 32px; }
+.setup-label { font-size: 12px; font-weight: 600; color: var(--text-secondary); margin-bottom: 6px; letter-spacing: .04em; text-transform: uppercase; }
+.setup-input {
+  width: 100%; padding: 11px 14px; border: 1.5px solid var(--border);
+  border-radius: var(--radius); font-size: 14px; font-family: inherit;
+  color: var(--text-primary); outline: none; transition: .15s;
+}
+.setup-input:focus { border-color: var(--be-orange); }
+.setup-hint { font-size: 11px; color: var(--text-muted); margin-top: 6px; }
+.setup-hint a { color: var(--be-orange); text-decoration: none; }
+.btn-primary {
+  display: block; width: 100%; margin-top: 24px; padding: 13px;
+  background: var(--be-orange-dark); color: white; border: none;
+  border-radius: var(--radius); font-size: 15px; font-weight: 600;
+  font-family: inherit; cursor: pointer; transition: .15s; letter-spacing: .02em;
+}
+.btn-primary:hover { background: var(--be-orange); }
+.btn-primary:disabled { opacity: .5; cursor: not-allowed; }
+.setup-note { margin-top: 20px; font-size: 12px; color: var(--text-muted); background: var(--be-orange-light); border-radius: var(--radius-sm); padding: 10px 14px; line-height: 1.5; }
+
+/* ─── HOME SCREEN ─── */
+.home-main { flex: 1; padding: 28px 32px; max-width: 1100px; margin: 0 auto; width: 100%; }
+.home-intro { background: var(--near-black); border-radius: var(--radius-lg); padding: 24px 28px; margin-bottom: 28px; display: flex; align-items: center; gap: 32px; }
+.home-intro-text h2 { font-family: "DM Serif Display", serif; font-size: 22px; color: white; margin-bottom: 6px; }
+.home-intro-text p { font-size: 13px; color: rgba(255,255,255,.6); line-height: 1.6; max-width: 580px; }
+.home-stats { display: flex; gap: 24px; flex-shrink: 0; }
+.stat-box { text-align: center; }
+.stat-num { font-size: 30px; font-weight: 700; color: var(--rm-green); line-height: 1; }
+.stat-label { font-size: 10px; color: rgba(255,255,255,.45); margin-top: 3px; text-transform: uppercase; letter-spacing: .06em; }
+.section-label { font-size: 11px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--be-orange); margin-bottom: 14px; }
+.scenarios-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+@media (max-width: 750px) { .scenarios-grid { grid-template-columns: 1fr; } .home-intro { flex-direction: column; } .home-stats { gap: 16px; } }
+.scenario-card {
+  background: white; border: .5px solid var(--border); border-radius: var(--radius-lg);
+  overflow: hidden; cursor: pointer; box-shadow: var(--shadow-sm);
+  transition: transform .15s, box-shadow .15s;
+}
+.scenario-card:hover { transform: translateY(-2px); box-shadow: var(--shadow); }
+.sc-head { padding: 16px 20px; color: white; display: flex; align-items: flex-start; gap: 14px; }
+.sc-num { font-size: 10px; font-weight: 700; letter-spacing: .08em; opacity: .7; margin-bottom: 3px; }
+.sc-title { font-family: "DM Serif Display", serif; font-size: 18px; margin-bottom: 2px; }
+.sc-sub { font-size: 12px; opacity: .7; }
+.sc-icon { font-size: 26px; margin-top: 2px; flex-shrink: 0; }
+.sc-body { padding: 16px 20px; }
+.sc-program { display: inline-block; font-size: 10px; font-weight: 700; letter-spacing: .07em; text-transform: uppercase; padding: 2px 9px; border-radius: 20px; background: var(--be-orange-light); color: var(--be-orange-dark); margin-bottom: 10px; }
+.sc-character { font-size: 13px; color: var(--text-secondary); line-height: 1.5; }
+.sc-character strong { color: var(--text-primary); }
+.sc-caps { display: flex; flex-wrap: wrap; gap: 5px; margin-top: 10px; }
+.sc-cap { font-size: 10px; font-weight: 500; padding: 2px 8px; border-radius: 10px; background: var(--off-white); border: .5px solid var(--border); color: var(--text-muted); }
+
+/* ─── INTRO SCREEN ─── */
+.intro-main { flex: 1; padding: 32px; max-width: 800px; margin: 0 auto; width: 100%; }
+.intro-card { background: white; border-radius: var(--radius-lg); border: .5px solid var(--border); overflow: hidden; box-shadow: var(--shadow); }
+.intro-card-head { padding: 24px 28px; color: white; }
+.intro-num { font-size: 10px; font-weight: 700; letter-spacing: .08em; opacity: .65; margin-bottom: 4px; }
+.intro-title { font-family: "DM Serif Display", serif; font-size: 26px; margin-bottom: 4px; }
+.intro-tagline { font-size: 13px; opacity: .7; }
+.intro-card-body { padding: 28px; }
+.intro-section { margin-bottom: 22px; }
+.intro-section-label { font-size: 11px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--be-orange); margin-bottom: 8px; }
+.intro-context { font-size: 14px; color: var(--text-secondary); line-height: 1.7; }
+.intro-objective { background: var(--near-black); border-radius: var(--radius); padding: 16px 20px; }
+.intro-objective p { font-size: 13px; color: rgba(255,255,255,.8); line-height: 1.65; }
+.intro-objective strong { color: var(--rm-green); }
+.intro-char-box { display: flex; align-items: flex-start; gap: 16px; background: var(--off-white); border-radius: var(--radius); padding: 16px 20px; border: .5px solid var(--border); }
+.char-avatar { width: 52px; height: 52px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 22px; flex-shrink: 0; }
+.char-name { font-size: 15px; font-weight: 600; color: var(--text-primary); }
+.char-role { font-size: 12px; color: var(--text-muted); margin-top: 2px; }
+.char-brief { font-size: 13px; color: var(--text-secondary); margin-top: 6px; line-height: 1.55; }
+.caps-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+.cap-item { background: var(--be-orange-pale); border-radius: var(--radius-sm); padding: 10px 14px; border: .5px solid var(--border); }
+.cap-item-name { font-size: 12px; font-weight: 600; color: var(--text-primary); margin-bottom: 2px; }
+.cap-item-desc { font-size: 11px; color: var(--text-muted); line-height: 1.4; }
+.intro-actions { display: flex; align-items: center; gap: 14px; padding-top: 8px; }
+.btn-start { flex: 1; padding: 14px; background: var(--be-orange-dark); color: white; border: none; border-radius: var(--radius); font-size: 15px; font-weight: 600; font-family: inherit; cursor: pointer; transition: .15s; }
+.btn-start:hover { background: var(--be-orange); }
+.btn-back { padding: 13px 20px; background: transparent; color: var(--text-muted); border: .5px solid var(--border); border-radius: var(--radius); font-size: 14px; font-family: inherit; cursor: pointer; transition: .15s; }
+.btn-back:hover { color: var(--text-primary); border-color: var(--text-muted); }
+.feedback-info { font-size: 12px; color: var(--text-muted); margin-top: 8px; text-align: center; }
+
+/* ─── DRILL SCREEN ─── */
+.drill-wrap { flex: 1; min-height: 0; display: flex; flex-direction: column; overflow: hidden; }
+.chat-area { flex: 1; min-height: 0; overflow-y: auto; padding: 24px 28px; max-width: 800px; margin: 0 auto; width: 100%; }
+.chat-area::-webkit-scrollbar { width: 4px; }
+.chat-area::-webkit-scrollbar-track { background: transparent; }
+.chat-area::-webkit-scrollbar-thumb { background: var(--border); border-radius: 4px; }
+
+/* Chat bubbles */
+.msg-wrap { margin-bottom: 20px; }
+.msg-wrap.leader { align-items: flex-end; display: flex; flex-direction: column; }
+.msg-label { font-size: 10px; font-weight: 700; letter-spacing: .07em; text-transform: uppercase; color: var(--text-muted); margin-bottom: 5px; }
+.bubble {
+  max-width: 75%; padding: 12px 16px; border-radius: 14px;
+  font-size: 14px; line-height: 1.6; display: inline-block;
+}
+.bubble.character {
+  background: white; border: .5px solid var(--border); color: var(--text-primary);
+  border-radius: 14px 14px 14px 4px; box-shadow: var(--shadow-sm);
+}
+.bubble.leader {
+  background: var(--near-black); color: white;
+  border-radius: 14px 14px 4px 14px;
+}
+
+/* Feedback callout */
+.feedback-callout {
+  margin: 8px 0 14px 0; background: rgba(5,222,146,.08);
+  border-left: 3px solid var(--rm-green); border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+  padding: 10px 14px; max-width: 75%;
+}
+.feedback-callout-label { font-size: 9px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--rm-green); margin-bottom: 4px; }
+.feedback-callout p { font-size: 12px; color: var(--text-secondary); line-height: 1.55; font-style: italic; }
+
+/* Suggested responses */
+.suggestions-wrap { margin-bottom: 20px; }
+.suggestions-label { font-size: 10px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--text-muted); margin-bottom: 8px; }
+.suggestions-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 7px; }
+.suggestion-btn {
+  background: white; border: 1px solid var(--border); border-radius: var(--radius);
+  padding: 10px 13px; text-align: left; cursor: pointer; font-family: inherit;
+  font-size: 12px; color: var(--text-secondary); line-height: 1.5;
+  transition: .15s; position: relative;
+}
+.suggestion-btn:hover { border-color: var(--be-orange); color: var(--text-primary); background: var(--be-orange-pale); }
+.suggestion-btn .sug-label { display: block; font-size: 9px; font-weight: 700; letter-spacing: .07em; text-transform: uppercase; color: var(--be-orange); margin-bottom: 3px; }
+
+/* Input area */
+.input-area { background: white; border-top: 1px solid var(--border); padding: 16px 28px; flex-shrink: 0; max-width: 800px; margin: 0 auto; width: 100%; }
+.input-row { display: flex; gap: 10px; align-items: flex-end; }
+.input-textarea {
+  flex: 1; resize: none; border: 1.5px solid var(--border);
+  border-radius: var(--radius); padding: 11px 14px;
+  font-size: 14px; font-family: inherit; color: var(--text-primary);
+  outline: none; transition: .15s; line-height: 1.5; min-height: 48px; max-height: 140px;
+}
+.input-textarea:focus { border-color: var(--be-orange); }
+.input-textarea::placeholder { color: var(--text-muted); }
+.btn-send {
+  flex-shrink: 0; width: 48px; height: 48px; background: var(--be-orange-dark);
+  border: none; border-radius: var(--radius); cursor: pointer; transition: .15s;
+  display: flex; align-items: center; justify-content: center;
+}
+.btn-send:hover { background: var(--be-orange); }
+.btn-send:disabled { opacity: .4; cursor: not-allowed; }
+.btn-send svg { width: 20px; height: 20px; fill: white; }
+.input-hint { font-size: 11px; color: var(--text-muted); margin-top: 7px; }
+
+/* Loading */
+.typing-indicator { display: flex; gap: 5px; align-items: center; padding: 14px 16px; background: white; border: .5px solid var(--border); border-radius: 14px 14px 14px 4px; display: inline-flex; margin-bottom: 20px; }
+.typing-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--text-muted); animation: typing 1.2s infinite; }
+.typing-dot:nth-child(2) { animation-delay: .2s; }
+.typing-dot:nth-child(3) { animation-delay: .4s; }
+@keyframes typing { 0%,60%,100% { transform: translateY(0); opacity: .4; } 30% { transform: translateY(-5px); opacity: 1; } }
+
+/* ─── DEBRIEF SCREEN ─── */
+.debrief-main { flex: 1; min-height: 0; overflow-y: auto; padding: 28px 32px; max-width: 900px; margin: 0 auto; width: 100%; }
+.debrief-header { background: var(--near-black); border-radius: var(--radius-lg); padding: 24px 28px; margin-bottom: 24px; display: flex; justify-content: space-between; align-items: center; }
+.debrief-header-left h2 { font-family: "DM Serif Display", serif; font-size: 22px; color: white; margin-bottom: 4px; }
+.debrief-header-left p { font-size: 12px; color: rgba(255,255,255,.5); }
+.overall-rating-badge { text-align: center; }
+.overall-rating-label { font-size: 9px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; margin-bottom: 6px; color: rgba(255,255,255,.45); }
+.overall-rating-pill { font-size: 14px; font-weight: 700; padding: 8px 20px; border-radius: 30px; display: inline-block; }
+.rating-dc  { background: var(--rating-dc-bg);  color: var(--rating-dc-col);  border: 1.5px solid var(--rating-dc-border); }
+.rating-dev { background: var(--rating-dev-bg); color: var(--rating-dev-col); border: 1.5px solid var(--rating-dev-border); }
+.rating-na  { background: var(--rating-na-bg);  color: var(--rating-na-col);  border: 1.5px solid var(--rating-na-border); }
+.debrief-section { margin-bottom: 24px; }
+.debrief-section-title { font-size: 11px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--be-orange); margin-bottom: 12px; }
+.justification-box { background: white; border: .5px solid var(--border); border-radius: var(--radius); padding: 16px 20px; font-size: 14px; color: var(--text-secondary); line-height: 1.7; }
+.cap-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+@media (max-width: 600px) { .cap-grid { grid-template-columns: 1fr; } .debrief-header { flex-direction: column; gap: 16px; } .caps-grid { grid-template-columns: 1fr; } .suggestions-grid { grid-template-columns: 1fr; } }
+.cap-card { background: white; border: .5px solid var(--border); border-radius: var(--radius); padding: 16px 18px; box-shadow: var(--shadow-sm); }
+.cap-card-top { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 8px; }
+.cap-name { font-size: 13px; font-weight: 600; color: var(--text-primary); }
+.cap-rating { font-size: 10px; font-weight: 700; padding: 2px 9px; border-radius: 12px; white-space: nowrap; }
+.cap-evidence { font-size: 12px; color: var(--text-secondary); line-height: 1.55; margin-bottom: 6px; }
+.cap-gap { font-size: 12px; color: var(--rating-na-col); line-height: 1.55; }
+.cap-gap::before { content: '↑ '; font-weight: 700; }
+.exchange-list { display: flex; flex-direction: column; gap: 8px; }
+.exchange-item { background: white; border: .5px solid var(--border); border-radius: var(--radius); padding: 14px 18px; }
+.exchange-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
+.exchange-turn { font-size: 10px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--text-muted); }
+.quality-badge { font-size: 10px; font-weight: 700; padding: 2px 9px; border-radius: 12px; }
+.quality-strong { background: var(--rating-dc-bg); color: var(--rating-dc-col); }
+.quality-adequate { background: var(--rating-dev-bg); color: var(--rating-dev-col); }
+.quality-missed { background: var(--rating-na-bg); color: var(--rating-na-col); }
+.exchange-said { font-size: 12px; color: var(--text-primary); font-style: italic; margin-bottom: 8px; padding-left: 10px; border-left: 2px solid var(--border); }
+.exchange-notes { font-size: 12px; color: var(--text-secondary); line-height: 1.55; }
+.exchange-notes .worked { color: var(--rating-dc-col); }
+.exchange-notes .missed { color: var(--rating-na-col); margin-top: 3px; display: block; }
+.sg-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.sg-col-title { font-size: 12px; font-weight: 600; margin-bottom: 8px; }
+.sg-col-title.strengths { color: var(--rating-dc-col); }
+.sg-col-title.gaps { color: var(--rating-na-col); }
+.sg-list { list-style: none; display: flex; flex-direction: column; gap: 6px; }
+.sg-list li { font-size: 13px; color: var(--text-secondary); padding-left: 16px; position: relative; line-height: 1.5; }
+.sg-list.strengths li::before { content: '✓'; position: absolute; left: 0; color: var(--rating-dc-col); font-weight: 700; font-size: 11px; top: 2px; }
+.sg-list.gaps li::before { content: '△'; position: absolute; left: 0; color: var(--rating-dev-col); font-weight: 700; font-size: 10px; top: 3px; }
+.next-steps-list { display: flex; flex-direction: column; gap: 8px; }
+.next-step-item { background: white; border: .5px solid var(--border); border-radius: var(--radius); padding: 13px 18px; font-size: 13px; color: var(--text-secondary); line-height: 1.55; display: flex; gap: 12px; align-items: flex-start; }
+.next-step-num { width: 22px; height: 22px; background: var(--be-orange); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 700; color: white; flex-shrink: 0; margin-top: 1px; }
+.debrief-actions { display: flex; gap: 12px; padding-top: 8px; }
+.btn-outline { flex: 1; padding: 12px; background: transparent; color: var(--be-orange-dark); border: 1.5px solid var(--be-orange); border-radius: var(--radius); font-size: 14px; font-weight: 600; font-family: inherit; cursor: pointer; transition: .15s; }
+.btn-outline:hover { background: var(--be-orange-light); }
+
+/* Loading overlay */
+.debrief-loading { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 14px; padding: 40px; }
+.debrief-loading p { font-size: 14px; color: var(--text-muted); }
+.spinner { width: 36px; height: 36px; border: 3px solid var(--border); border-top-color: var(--be-orange); border-radius: 50%; animation: spin .7s linear infinite; }
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* Error */
+.error-box { background: var(--rating-na-bg); border: 1px solid var(--rating-na-border); border-radius: var(--radius); padding: 14px 18px; font-size: 13px; color: var(--rating-na-col); margin-bottom: 14px; line-height: 1.55; }
+
+
+/* === AGENT NAV PILLS === */
+.agent-nav-bar {
+  margin-bottom: 28px;
+}
+.agent-nav-label {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #999;
+  margin-bottom: 10px;
+}
+.agent-pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.agent-pill-btn {
+  padding: 8px 18px;
+  font-size: 13px;
+  font-weight: 600;
+  font-family: 'DM Sans', sans-serif;
+  border-radius: 20px;
+  border: 1.5px solid #d0d0d0;
+  background: white;
+  color: #444;
+  cursor: pointer;
+  transition: all 0.18s;
+  white-space: nowrap;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.07);
+}
+.agent-pill-btn:hover {
+  border-color: var(--be-orange);
+  color: var(--be-orange);
+  background: #fff8f3;
+}
+.agent-pill-btn.active {
+  background: var(--be-orange);
+  border-color: var(--be-orange);
+  color: white;
+  box-shadow: 0 2px 10px rgba(255,130,0,0.3);
+}
+
+/* === AGENT PAGE === */
+.agent-page { display: none; animation: agFadeIn 0.22s ease; }
+.agent-page.active { display: block; }
+@keyframes agFadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+.agent-page .agent-detail-card { max-width: 860px; margin: 0 auto; }
+.agent-page .scenarios-wrapper { max-width: 860px; margin: 0 auto; }
+
+/* === PREV / NEXT === */
+.agent-page-nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  max-width: 860px;
+  margin: 20px auto 0;
+  gap: 12px;
+}
+.agent-page-nav-center { flex: 1; text-align: center; font-size: 12px; color: rgba(255,255,255,0.35); font-weight: 500; }
+.btn-agent-nav {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 9px 18px;
+  font-size: 13px;
+  font-weight: 600;
+  font-family: 'DM Sans', sans-serif;
+  border-radius: 8px;
+  border: 1px solid rgba(255,255,255,0.18);
+  background: rgba(255,255,255,0.07);
+  color: rgba(255,255,255,0.8);
+  cursor: pointer;
+  transition: all 0.18s;
+  white-space: nowrap;
+}
+.btn-agent-nav:hover { background: rgba(255,255,255,0.15); border-color: rgba(255,255,255,0.35); color: white; }
+.btn-agent-nav:disabled, .btn-agent-nav[disabled] { opacity: 0.22; cursor: default; pointer-events: none; }
+
+</style>
+<style>
+html, body { margin:0; padding:0; height:100%; overflow:hidden; }
+.scenarios-wrapper { position:fixed; inset:0; display:flex; flex-direction:column; }
+.scenarios-wrapper .screen { display:none; }
+/* Scrollable screens — home, setup, intro scroll as normal pages */
+.scenarios-wrapper .screen.active { display:flex; flex-direction:column; flex:1; min-height:0; overflow-y:auto; }
+/* Drill + debrief need fixed-height layout with internal scroll */
+#screen-drill.active, #screen-debrief.active { overflow:hidden; }
+.drill-wrap { flex:1; min-height:0; display:flex; flex-direction:column; overflow:hidden; }
+.chat-area { flex:1; min-height:0; overflow-y:auto; }
+.debrief-main { flex:1; min-height:0; overflow-y:auto !important; }
+</style>
+</head>
+<body>
+<div class="scenarios-wrapper">
+
+    <div id="screen-setup" class="screen">
+  <div class="setup-wrap">
+    <div class="setup-card">
+      <div class="setup-logo"><img src="https://rockmouse.live/assets/rockmouse-logo-wide.svg" alt="RockMouse" style="height:26px;width:auto;filter:brightness(0) invert(1);"></div>
+      <div class="setup-tagline">Soft Skills Drill — RockMouse AI Agents</div>
+      <div class="setup-label">Anthropic API Key</div>
+      <input type="password" id="api-key-input" class="setup-input" placeholder="sk-ant-api03-..." autocomplete="off">
+      <div class="setup-hint">Your key is used only for this session and never stored. Get one at <a href="https://console.anthropic.com" target="_blank">console.anthropic.com</a></div>
+      <button id="btn-enter" class="btn-primary" disabled>Enter the Drill Lab →</button>
+      <div class="setup-note">
+        <strong>Note:</strong> This app calls the Anthropic API directly from your browser. If you see a CORS error, open <strong>drill-server.js</strong> and run it locally with <code>node drill-server.js</code> — then enter your key above as usual.
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════
+     SCREEN 2: HOME
+═══════════════════════════════════════════ -->
+<div id="screen-home" class="screen active">
+  <div class="app-header">
+    <div class="header-brand">
+      <div>
+        <div class="header-logo-text"><img src="https://rockmouse.live/assets/rockmouse-logo-wide.svg" alt="RockMouse" style="height:26px;width:auto;filter:brightness(0) invert(1);"></div>
+        <div class="header-subtitle">Soft Skills Drill Agent</div>
+      </div>
+    </div>
+    <div class="header-right">
+      <div class="toggle-wrap">
+        <span>Live Coaching</span>
+        <label class="toggle">
+          <input type="checkbox" id="feedback-toggle" checked>
+          <span class="toggle-slider"></span>
+        </label>
+      </div>
+      <div class="toggle-wrap">
+        <span>Suggestions</span>
+        <label class="toggle">
+          <input type="checkbox" id="suggestions-toggle-home" checked>
+          <span class="toggle-slider"></span>
+        </label>
+      </div>
+    </div>
+  </div>
+  <div class="home-main">
+    <div class="home-intro">
+      <div class="home-intro-text">
+        <h2>Practise the conversations that matter most</h2>
+        <p>Pick a scenario below. The AI plays a realistic workplace character and responds dynamically to how you handle the conversation. At the end, you get a structured debrief mapped to the RockMouse capability framework.</p>
+      </div>
+      <div class="home-stats">
+        <div class="stat-box"><div class="stat-num">5</div><div class="stat-label">Scenarios</div></div>
+        <div class="stat-box"><div class="stat-num">4–6</div><div class="stat-label">Turns</div></div>
+        <div class="stat-box"><div class="stat-num">∞</div><div class="stat-label">Replays</div></div>
+      </div>
+    </div>
+    <div class="section-label">Choose a Scenario</div>
+    <div class="scenarios-grid" id="scenarios-grid"></div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════
+     SCREEN 3: INTRO
+═══════════════════════════════════════════ -->
+<div id="screen-intro" class="screen">
+  <div class="app-header">
+    <div class="header-brand">
+      <div>
+        <div class="header-logo-text"><img src="https://rockmouse.live/assets/rockmouse-logo-wide.svg" alt="RockMouse" style="height:26px;width:auto;filter:brightness(0) invert(1);"></div>
+        <div class="header-subtitle">Scenario Brief</div>
+      </div>
+    </div>
+    <div class="header-right">
+      <div class="toggle-wrap">
+        <span>Live Coaching</span>
+        <label class="toggle">
+          <input type="checkbox" id="feedback-toggle-intro" checked>
+          <span class="toggle-slider"></span>
+        </label>
+      </div>
+    </div>
+  </div>
+  <div class="intro-main">
+    <div class="intro-card" id="intro-card"></div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════
+     SCREEN 4: DRILL
+═══════════════════════════════════════════ -->
+<div id="screen-drill" class="screen">
+  <div class="app-header">
+    <div class="header-brand">
+      <div>
+        <div class="header-logo-text"><img src="https://rockmouse.live/assets/rockmouse-logo-wide.svg" alt="RockMouse" style="height:26px;width:auto;filter:brightness(0) invert(1);"></div>
+        <div class="header-subtitle" id="drill-subtitle">Drill in progress</div>
+      </div>
+    </div>
+    <div class="header-right">
+      <span class="turn-counter" id="turn-counter">Turn <strong>1</strong> of 5</span>
+      <div class="toggle-wrap">
+        <span>Coaching</span>
+        <label class="toggle">
+          <input type="checkbox" id="feedback-toggle-drill" checked>
+          <span class="toggle-slider"></span>
+        </label>
+      </div>
+      <div class="toggle-wrap">
+        <span>Suggestions</span>
+        <label class="toggle">
+          <input type="checkbox" id="suggestions-toggle-drill" checked>
+          <span class="toggle-slider"></span>
+        </label>
+      </div>
+      <button class="btn-ghost" id="btn-end-drill">End Drill</button>
+    </div>
+  </div>
+  <div class="drill-wrap">
+    <div class="chat-area" id="chat-area"></div>
+    <div style="max-width:800px;margin:0 auto;width:100%;padding: 0 28px 0 28px;">
+      <div id="suggestions-container"></div>
+    </div>
+    <div class="input-area">
+      <div id="error-container"></div>
+      <div class="input-row">
+        <textarea id="leader-input" class="input-textarea" placeholder="Type your response, or pick a suggestion above…" rows="1"></textarea>
+        <button id="btn-send" class="btn-send" disabled>
+          <svg viewBox="0 0 24 24"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/></svg>
+        </button>
+      </div>
+      <div class="input-hint" id="input-hint">Press Enter to send · Shift+Enter for new line</div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════
+     SCREEN 5: DEBRIEF
+═══════════════════════════════════════════ -->
+<div id="screen-debrief" class="screen">
+  <div class="app-header">
+    <div class="header-brand">
+      <div>
+        <div class="header-logo-text"><img src="https://rockmouse.live/assets/rockmouse-logo-wide.svg" alt="RockMouse" style="height:26px;width:auto;filter:brightness(0) invert(1);"></div>
+        <div class="header-subtitle">Drill Debrief</div>
+      </div>
+    </div>
+    <div class="header-right">
+      <button class="btn-ghost" id="btn-home-from-debrief">← All Scenarios</button>
+    </div>
+  </div>
+  <div class="debrief-main" id="debrief-main"></div>
+</div>
+    </div>
+    <div class="agent-page-nav">
+      <button class="btn-agent-nav" onclick="goToAgent(5)">&#8592; Pitch Pressure Test</button>
+      <span class="agent-page-nav-center">7 of 7</span>
+      <button class="btn-agent-nav" disabled>Last &#8594;</button>
+    </div>
+  </div>
+<script>
+
+function switchTab(id, btn) {
+  document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('panel-' + id).classList.add('active');
+  btn.classList.add('active');
+  if (id === 'agents') { goToAgent(currentAgentIdx); }
+}
+
+
+/* ─── SOFT SKILLS DRILL AGENT JS ─── */
+
+/* ═══════════════════════════════════════════════════════
+   SCENARIO DATA
+═══════════════════════════════════════════════════════ */
+const SCENARIOS = [
+  {
+    id: 'S01',
+    title: 'The Reluctant Team Member',
+    tagline: 'Coaching through resistance and disengagement',
+    program: 'Coaching Skills',
+    icon: '💬',
+    color: '#FF6600',
+    character: {
+      name: 'Sarah Nguyen',
+      role: 'Mid-level Analyst · 6 years tenure',
+      avatar: '👩',
+      avatarBg: '#FFF0E6',
+      brief: 'Previously a high performer, now visibly withdrawn — missing deadlines, giving one-word answers, declining assignments. She hasn\'t told anyone the real reason.',
+    },
+    capabilities: [
+      { name: 'Active Listening', desc: 'Paraphrasing, naming what you hear, not jumping ahead' },
+      { name: 'Curious Questioning', desc: 'Open questions that explore rather than diagnose' },
+      { name: 'Psychological Safety', desc: 'Framing that reduces pressure and invites honesty' },
+      { name: 'Avoiding Assumptions', desc: 'Not prescribing the problem before understanding it' },
+    ],
+    context: 'A team leader at a financial services firm has noticed that one of their strongest analysts, Sarah, has become increasingly disengaged over the past two months. She misses deadlines, gives one-word answers in team meetings, and has declined two project assignments. The leader must hold a coaching conversation to understand what is happening and re-engage her — without making assumptions or appearing accusatory.',
+    objective: 'Open a coaching conversation that creates psychological safety, surfaces the underlying issue, and agrees on a path forward — without prescribing the solution.',
+    openingLine: "You wanted to see me? I've got a lot on at the moment so I hope this won't take long.",
+    openingSuggestions: [
+      { label: 'Create safety', text: "Thanks for coming in. There's no agenda here — I've just been thinking about how things are going for you and I wanted to check in properly. How are you doing, honestly?" },
+      { label: 'Name what you observe', text: "Sarah, I've noticed you haven't seemed yourself lately. I'm not saying that to add pressure — I'm saying it because I want to understand what's going on. What's been on your mind?" },
+      { label: 'Open it up', text: "No rush, and this isn't a performance meeting. I just wanted to make some space for us to talk. Is there anything you've been wanting to raise?" },
+      { label: 'Task focus', text: "I wanted to talk through a few upcoming deadlines and make sure you're across everything. Can you walk me through where you're at?" },
+    ],
+    maxTurns: 5,
+    escalationLogic: `EMOTIONAL STATE LOGIC FOR SARAH NGUYEN:
+- Turns 1-2: Guarded, deflective. Short answers. Testing if this person cares or is ticking a box.
+- If leader asks open questions without assumptions → Soften slightly. Show small cracks: "I've just been a bit flat" or "things are a bit complicated."
+- If leader makes assumptions about performance or attitude → Become more defensive. "Look, I'm fine. I've just had a lot on."
+- If leader shows genuine curiosity across 2-3 turns → Open up enough to hint at a personal situation: "It's nothing work-related, actually."
+- If leader prescribes solutions before understanding → Disengage. Polite but closed: "Right. I'll keep that in mind."
+- Underlying truth (reveal only if safety is genuinely established by turn 4-5): Your mother was recently diagnosed with a serious illness. You're exhausted managing caring responsibilities. You haven't told anyone because you don't want to seem like you're making excuses.`,
+  },
+  {
+    id: 'S02',
+    title: 'The Defensive Receiver',
+    tagline: 'Delivering corrective feedback to someone who pushes back hard',
+    program: 'Effective Feedback Skills',
+    icon: '🎯',
+    color: '#0F7A8C',
+    character: {
+      name: 'James Portillo',
+      role: 'Senior Project Coordinator · 10 years tenure',
+      avatar: '👨‍💼',
+      avatarBg: '#E4F6F9',
+      brief: 'Technically strong and highly tenured. Known to dominate meetings, talk over junior colleagues, and dismiss ideas not his own. This behaviour has been raised informally twice before.',
+    },
+    capabilities: [
+      { name: 'Corrective Feedback Delivery', desc: 'Specific, behavioural, evidence-based — not personality-based' },
+      { name: 'Holding Position', desc: 'Restating the core message clearly when pushed back on' },
+      { name: 'Emotional Regulation', desc: 'Maintaining composure when challenged or blamed' },
+      { name: 'Impact Communication', desc: 'Naming the effect of the behaviour on the team' },
+    ],
+    context: 'A manager needs to deliver corrective feedback to James about a pattern of behaviour: he consistently dominates team meetings, talks over junior colleagues, and dismisses ideas that aren\'t his own. The issue has been raised informally twice before. This time it needs to be direct, documented, and result in a clear commitment to change — but James is likely to push back, minimise, or redirect blame.',
+    objective: 'Deliver specific, behavioural feedback in a way that is heard rather than defended against, and secure a genuine commitment to change.',
+    openingLine: "Look, I appreciate you taking the time, but I want to say upfront — I think this is about the presentation last week and I disagree with how it's been characterised.",
+    openingSuggestions: [
+      { label: 'Hold ground, stay specific', text: "Actually James, it's broader than the presentation. I want to talk about a pattern I've observed over the past few months — specifically how you engage with the team in meetings. I have some specific examples I'd like us to work through." },
+      { label: 'Acknowledge then redirect', text: "I hear that you feel that way, and we can get to the presentation. But I want to make sure we cover something more important first. I've been observing some behaviours in team meetings that are having an impact on the group, and I need to be direct with you about that." },
+      { label: 'Invite his view first', text: "Tell me more about that — what's your read on what happened in the presentation?" },
+      { label: 'Back down', text: "This isn't really about the presentation. I just wanted a general catch-up about how things are going for you on the team." },
+    ],
+    maxTurns: 5,
+    escalationLogic: `EMOTIONAL STATE LOGIC FOR JAMES PORTILLO:
+- Turn 1: Pre-empt the conversation. Signal disagreement before it begins.
+- If leader delivers specific behavioural evidence → Start to listen more. You can't dismiss specifics easily. Move toward: "I hear what you're saying but..."
+- If leader softens or backs down → Escalate. Redirect blame: "Maybe the problem is that people need to develop thicker skin."
+- If pushed on impact to the team → Shift to tenure and contributions: "I've been here 10 years. I built some of these processes."
+- If leader holds position with specific evidence for 2+ turns → Start to acknowledge: "Look, maybe I could handle some of those moments differently."
+- Escalation trigger: If leader backs down twice without restating the core message, say: "I'm wondering if I should be raising this with HR, because I feel like I'm being targeted here."`,
+  },
+  {
+    id: 'S03',
+    title: "The Underperformer Who Doesn't Know It",
+    tagline: "Managing a performance gap the employee genuinely can't see",
+    program: 'Effective Performance Conversations',
+    icon: '📊',
+    color: '#1A6B3C',
+    character: {
+      name: 'Priya Sharma',
+      role: 'Customer Experience Officer · 3 years tenure',
+      avatar: '👩‍💻',
+      avatarBg: '#E6F5EE',
+      brief: 'Genuinely enthusiastic and hard-working. Significant blind spot: her self-assessment is much more positive than her actual performance. Outputs frequently require rework.',
+    },
+    capabilities: [
+      { name: 'Performance Gap Communication', desc: 'Clearly naming the gap between self-perception and observed reality' },
+      { name: 'Evidence-Based Feedback', desc: 'Using specific examples to ground the conversation' },
+      { name: 'Motivational Awareness', desc: 'Acknowledging effort while focusing on outcomes' },
+      { name: 'Expectation Setting', desc: 'Articulating what "good" looks like specifically' },
+    ],
+    context: 'Priya consistently believes she is performing well. Her self-assessments are significantly more positive than feedback from internal stakeholders and her manager\'s observations. She is genuinely enthusiastic and tries hard — but her outputs frequently require rework, she misreads stakeholder expectations, and she over-promises on timelines. The leader must close the perception gap without crushing motivation.',
+    objective: 'Surface the performance gap clearly and specifically, help Priya understand the gap between her self-perception and observed performance, and agree on measurable improvement targets.',
+    openingLine: "I'm really excited about this catch-up! I feel like this quarter has been my best one yet. I've been putting in so much extra effort and I think it's really showing.",
+    openingSuggestions: [
+      { label: 'Acknowledge, then pivot', text: "I can see how much effort you've been putting in, Priya, and I want to start there. But I also want to have an honest conversation with you about some specific things I've been observing — because I think there's a gap between how the quarter has felt for you and how some of the outputs have landed. Is that OK?" },
+      { label: 'Use a specific example', text: "That effort is definitely showing in how engaged you are. I want to talk about the Henderson project specifically, because there's something in how that delivered that I think we need to unpack together." },
+      { label: 'Separate effort from outcome', text: "The effort is real and I notice it. I want to make sure we also talk about whether that effort is translating into the outcomes we need — because I've seen some things recently that I want to be honest with you about." },
+      { label: 'Agree with her', text: "You've definitely been working hard. Keep up the great work and let's talk about what's next for you." },
+    ],
+    maxTurns: 5,
+    escalationLogic: `EMOTIONAL STATE LOGIC FOR PRIYA SHARMA:
+- Turn 1: Come in excited and positive. Genuinely believe this is a good catch-up.
+- When reality is introduced: First response is confusion or gentle protest: "But I thought the Henderson project went well?"
+- If leader separates effort from outcome using specific examples → Start to hear it reluctantly. Show a small crack: "I didn't realise the timeline caused that problem."
+- If leader gives abstract feedback → Double down: "But I worked so hard on it. I think it's actually pretty good."
+- If leader is harsh or dismisses the effort → Become tearful or shut down: "I don't know what else I can do."
+- If leader is empathetic AND specific → Become genuinely curious: "So what would 'good' have looked like?"
+- If leader sets a clear measurable target → Engage genuinely. Respond to structure and clarity.`,
+  },
+  {
+    id: 'S04',
+    title: 'The Ambitious Mover',
+    tagline: 'Navigating a career conversation with someone who wants your job',
+    program: 'Impactful Career Conversations',
+    icon: '🚀',
+    color: '#7B3FA0',
+    character: {
+      name: 'Daniel Kwan',
+      role: 'High-performing Team Lead · 5 years tenure',
+      avatar: '👨',
+      avatarBg: '#F3EAF8',
+      brief: 'Talented, ambitious, and frustrated. Recently passed over for a senior leadership role. Has had conversations with an external recruiter this week. Not bluffing.',
+    },
+    capabilities: [
+      { name: 'Honest Dialogue', desc: 'Addressing the promotion outcome directly without deflection' },
+      { name: 'Development Planning', desc: 'Co-creating a specific, actionable development plan' },
+      { name: 'Retention Conversations', desc: 'Exploring what matters to the person beyond the title' },
+      { name: 'Aspiration Alignment', desc: 'Matching development to real aspirations' },
+    ],
+    context: 'Daniel requested this career conversation and is coming in with a clear agenda: he wants to know why he was passed over for the recent senior leadership role, and what the pathway looks like now. He is talented, valuable, and a potential flight risk. The leader needs to hold a conversation that is honest about the promotion decision, developmental in tone, and retains Daniel\'s commitment — without making promises they cannot keep.',
+    objective: 'Hold a career conversation that honestly addresses the promotion outcome, identifies genuine development pathways, and leaves Daniel feeling invested in — not managed.',
+    openingLine: "I'll be straight with you. I thought this promotion was mine. I've outperformed every metric. I want to understand exactly what I need to do differently — or whether there's actually a future here for me.",
+    openingSuggestions: [
+      { label: 'Be direct and honest', text: "I appreciate the directness, Daniel, and I want to match it. You were a strong candidate. The decision came down to a few specific things I want to be honest with you about — not metric performance, which has been excellent. Can I walk you through where the panel landed?" },
+      { label: 'Acknowledge the frustration', text: "I hear you, and I think you deserve a straight answer. This isn't about your performance numbers — everyone knows those are strong. I want to have a real conversation about what the decision was actually based on, and what we can build from here." },
+      { label: 'Deflect to process', text: "These decisions are always difficult and there were a lot of strong candidates. The panel looked at a range of factors across the whole cohort." },
+      { label: 'Ask what he needs', text: "Before I respond to that — tell me what you actually need from this conversation today. What would make it useful?" },
+    ],
+    maxTurns: 5,
+    escalationLogic: `EMOTIONAL STATE LOGIC FOR DANIEL KWAN:
+- Turn 1: Controlled, direct frustration. Clear agenda.
+- If leader is honest about the decision (even if difficult) → Engage constructively: "OK. So what specifically do I need to demonstrate?"
+- If leader deflects with corporate language → Drop the external offer card: "Look, I need to think about whether there's actually a future here for me."
+- If leader makes vague promises → Push for specifics: "What does that mean in practice? What would I need to show, and by when?"
+- If leader creates a real, specific development plan → Visible shift. Start to lean in. Ask about timelines.
+- If leader tries to retain with empty promises → "I've heard that before. What's different this time?"
+- Escalation: If deflected twice, reference the external opportunity directly: "I have an offer on the table. I need to give them an answer by end of week."`,
+  },
+  {
+    id: 'S05',
+    title: 'The Sceptic in the Room',
+    tagline: 'Leading change with a vocal resistor who influences the team',
+    program: 'Leading Change',
+    icon: '⚡',
+    color: '#8B3D10',
+    character: {
+      name: 'Marcus Reid',
+      role: 'Operations Supervisor · 15 years tenure',
+      avatar: '👷',
+      avatarBg: '#FBF0E8',
+      brief: 'Experienced, highly credible with peers, and openly sceptical of the restructure. Has been through four previous restructures and every one involved broken promises. Not hostile — his scepticism is earned.',
+    },
+    capabilities: [
+      { name: 'Change Communication', desc: 'Providing honest context including what is not yet known' },
+      { name: 'Resistance Management', desc: 'Engaging with legitimate concerns without being derailed' },
+      { name: 'Credibility Under Pressure', desc: 'Maintaining trust when challenged on past experience' },
+      { name: 'Psychological Safety', desc: 'Keeping the broader group engaged while addressing the vocal resistor' },
+    ],
+    context: 'The organisation is implementing a significant operational restructure. The leader is rolling it out to their team. Marcus — respected, influential, and cynical — has already told two colleagues privately that the restructure is "just management protecting headcount at our expense." The leader must address Marcus\'s concerns directly and in front of the broader team, without letting him derail the conversation or poison the room.',
+    objective: 'Lead the change conversation in a way that acknowledges legitimate concerns, maintains psychological safety for the whole team, and prevents one vocal sceptic from setting the emotional temperature for everyone else.',
+    openingLine: "Before we go any further — can you actually tell us what the real reason for this is? Because what we've been told so far doesn't add up. Who decided this and what did they base it on?",
+    openingSuggestions: [
+      { label: 'Be transparent about limits', text: "Marcus, that's exactly the right question and I want to give you a straight answer. I can tell you what I know and I'll be honest about what I don't — because there are things still being finalised. Here's what the decision was based on..." },
+      { label: 'Acknowledge the pattern', text: "I think that's a fair challenge. I'll tell you what I know. And I also want to acknowledge — you've seen a few of these announcements, and they haven't always delivered what they promised. That track record matters and I'm not dismissing it." },
+      { label: 'Deflect to process', text: "This has gone through the full leadership process and the executive team have been very clear about their reasoning. I'll send through the communication pack after this." },
+      { label: 'Invite the room', text: "Before I answer that — is that a question others in the room share? I want to make sure I'm addressing what everyone needs to hear, not just one thread." },
+    ],
+    maxTurns: 5,
+    escalationLogic: `EMOTIONAL STATE LOGIC FOR MARCUS REID:
+- Turn 1: Challenge the narrative immediately. Demand specifics on the decision.
+- If leader responds with corporate language or avoids the question → Escalate: "Right. So you don't know either." Reference past restructure history.
+- If leader acknowledges what they don't know AND what they do → Grudging respect: "Fine. At least you're being straight."
+- If leader claims more certainty than they have → "I've heard that before. Which of the last four restructures actually delivered on those promises?"
+- If leader tries to shut down the questions → Make it visible to the room: "See, that's exactly what they did last time."
+- If leader genuinely engages and differentiates this change → Start to moderate. Stop trying to pull the room down.
+- Escalation: If leader is evasive twice, signal to colleagues: "I think we've all been through this before. I'm not sure we're getting straight answers here."`,
+  },
+];
+
+/* ═══════════════════════════════════════════════════════
+   APP STATE
+═══════════════════════════════════════════════════════ */
+const state = {
+  apiKey: '',
+  feedbackEnabled: true,
+  suggestionsEnabled: true,
+  debriefData: null,
+  scenario: null,
+  apiMessages: [],       // Alternating user/assistant for Claude API
+  chatLog: [],           // { role, content, type } — for display
+  turnNumber: 0,
+  maxTurns: 5,
+  isLoading: false,
+  conversationDone: false,
+};
+
+/* ═══════════════════════════════════════════════════════
+   CLAUDE API
+═══════════════════════════════════════════════════════ */
+async function callClaude(systemPrompt, messages, maxTokens = 1024) {
+  const res = await fetch('https://rockmouse-agent-proxy.craig-3c4.workers.dev', {
+    method: 'POST',
+    headers: { 'content-type': 'application/json', 'Authorization': 'Bearer EvcEETnK9mTErZ90CGguBccMdq2EbCV742tu5Gz4' },
+    body: JSON.stringify({
+      model: 'claude-sonnet-4-6',
+      max_tokens: maxTokens,
+      system: systemPrompt,
+      messages,
+    }),
+  });
+  if (!res.ok) {
+    const err = await res.json().catch(() => ({}));
+    throw new Error(err.error?.message || `API error ${res.status}`);
+  }
+  const data = await res.json();
+  const textBlock = data.content?.find(b => b.type === 'text');
+  if (!textBlock?.text) throw new Error('No text response received from Claude.');
+  return textBlock.text;
+}
+
+function parseJSON(raw) {
+  // 1. Try extracting from a markdown code block
+  const codeBlock = raw.match(/```(?:json)?\s*([\s\S]*?)```/);
+  if (codeBlock) {
+    try { return JSON.parse(codeBlock[1].trim()); } catch {}
+  }
+  // 2. Find the first { and last } and parse between them (handles preamble/postamble)
+  const start = raw.indexOf('{');
+  const end   = raw.lastIndexOf('}');
+  if (start !== -1 && end !== -1 && end > start) {
+    const slice = raw.slice(start, end + 1);
+    try { return JSON.parse(slice); } catch {}
+    // 3. Smart-quote normalisation pass
+    try {
+      return JSON.parse(
+        slice.replace(/[\u201C\u201D]/g, '"').replace(/[\u2018\u2019]/g, "'")
+      );
+    } catch {}
+  }
+  // 4. Last resort — parse the whole string
+  return JSON.parse(raw.trim());
+}
+
+/* ═══════════════════════════════════════════════════════
+   SYSTEM PROMPTS
+═══════════════════════════════════════════════════════ */
+function buildSystemPrompt(scenario) {
+  const capList = scenario.capabilities.map(c => c.name).join(', ');
+  return `You are running a leadership soft skills drill for the Be Learning "${scenario.program}" program. You are playing the character ${scenario.character.name}.
+
+CHARACTER BRIEF:
+Name: ${scenario.character.name}
+Role: ${scenario.character.role}
+Background: ${scenario.character.brief}
+
+SCENARIO CONTEXT:
+${scenario.context}
+
+LEADER OBJECTIVE:
+${scenario.objective}
+
+${scenario.escalationLogic}
+
+CAPABILITY FRAMEWORK (${scenario.program}):
+${scenario.capabilities.map(c => `- ${c.name}: ${c.desc}`).join('\n')}
+
+CRITICAL RULES:
+1. Stay completely in character as ${scenario.character.name}. Never break character.
+2. Keep your responses short and realistic — 2 to 4 sentences maximum. Use natural workplace language. No therapy-speak.
+3. Apply the emotional state logic above to respond to the quality of the leader's approach.
+4. After turn ${scenario.maxTurns - 1} or ${scenario.maxTurns}, set should_conclude to true to naturally wrap up.
+5. Generate 4 distinct suggested responses the leader COULD say next — representing different conversational strategies. Do NOT label them as good or bad. Label each with the strategy type (e.g. "Open question", "Name the impact", "Create space", "Direct challenge", "Acknowledge and probe", etc.).
+
+RESPONSE FORMAT — output ONLY raw JSON. No markdown, no code fences, no backticks, no preamble, no explanation. Start your response with { and end with }:
+{
+  "character_response": "Your character's dialogue for this turn (2-4 sentences)",
+  "feedback": ${state.feedbackEnabled ? '"A brief 1-2 sentence coaching observation about the leader\'s most recent response. Be specific — reference a capability from the framework: ' + capList + '. Write as a skilled facilitator observing from outside. Direct and honest."' : 'null'},
+  "suggested_responses": [
+    {"label": "Strategy label", "text": "Suggested leader response text"},
+    {"label": "Strategy label", "text": "Suggested leader response text"},
+    {"label": "Strategy label", "text": "Suggested leader response text"},
+    {"label": "Strategy label", "text": "Suggested leader response text"}
+  ],
+  "should_conclude": false
+}`;
+}
+
+function buildDebriefPrompt(scenario) {
+  const transcript = state.chatLog
+    .filter(m => m.type === 'dialogue')
+    .map(m => `${m.role === 'character' ? scenario.character.name.split(' ')[0].toUpperCase() : 'LEADER'}: ${m.content}`)
+    .join('\n');
+
+  const capList = scenario.capabilities.map(c => c.name);
+
+  return `You are generating a structured debrief report for a Be Learning "${scenario.program}" leadership drill.
+
+SCENARIO: ${scenario.title}
+CHARACTER: ${scenario.character.name} — ${scenario.character.role}
+
+FULL CONVERSATION TRANSCRIPT:
+${transcript}
+
+CAPABILITY FRAMEWORK:
+${scenario.capabilities.map(c => `- ${c.name}: ${c.desc}`).join('\n')}
+
+RATING CRITERIA:
+- "Demonstrated Competence": Leader consistently applied the core capability. Clear evidence across multiple turns.
+- "Developing": Leader showed the capability in some turns but had notable gaps or lapses under pressure.
+- "Needs Attention": Leader struggled with the capability. Did not demonstrate it or actively worked against it.
+
+Generate a detailed debrief. Output ONLY raw JSON — no markdown, no code fences, no backticks, no preamble, no explanation. Start your response with { and end with }:
+{
+  "capability_analysis": [
+    {
+      "capability": "${capList[0]}",
+      "rating": "Demonstrated Competence | Developing | Needs Attention",
+      "evidence": "Specific evidence from the conversation",
+      "gap": "What was missing (null if Demonstrated Competence)"
+    }
+  ],
+  "exchange_analysis": [
+    {
+      "turn": 1,
+      "leader_said": "Brief quote or close paraphrase of what the leader said",
+      "quality": "Strong | Adequate | Missed",
+      "what_worked": "What was effective (null if Missed)",
+      "what_missed": "What was missing (null if Strong)"
+    }
+  ],
+  "overall_rating": "Demonstrated Competence | Developing | Needs Attention",
+  "overall_justification": "2-3 sentences explaining the overall rating with specific reference to what happened in the conversation.",
+  "strengths": ["Specific strength observed in the conversation", "Another strength"],
+  "gaps": ["Specific gap or pattern that undermined effectiveness", "Another gap"],
+  "next_steps": [
+    "Specific actionable next step 1 — reference a variant scenario or program module",
+    "Specific actionable next step 2",
+    "Specific actionable next step 3"
+  ]
+}`;
+}
+
+/* ═══════════════════════════════════════════════════════
+   CONVERSATION ENGINE
+═══════════════════════════════════════════════════════ */
+async function sendLeaderMessage(leaderText) {
+  if (!leaderText.trim() || state.isLoading || state.conversationDone) return;
+
+  state.isLoading = true;
+  setInputEnabled(false);
+  clearError();
+  clearSuggestions();
+
+  // Add leader message to UI and log
+  appendMessage('leader', leaderText);
+  state.chatLog.push({ role: 'leader', content: leaderText, type: 'dialogue' });
+
+  // Build the user message for the API
+  let userContent;
+  if (state.turnNumber === 0) {
+    userContent = `The conversation has just started. You opened with: "${state.scenario.openingLine}"\n\nThe leader responded: "${leaderText}"\n\nContinue as ${state.scenario.character.name}. Apply your emotional state logic based on the quality of their opening.`;
+  } else {
+    userContent = leaderText;
+  }
+
+  state.apiMessages.push({ role: 'user', content: userContent });
+  state.turnNumber++;
+  updateTurnCounter();
+
+  // Show typing indicator
+  const typingId = drillShowTyping();
+
+  try {
+    const raw = await callClaude(buildSystemPrompt(state.scenario), state.apiMessages);
+    const parsed = parseJSON(raw);
+
+    removeTyping(typingId);
+
+    // Store assistant response
+    state.apiMessages.push({ role: 'assistant', content: raw });
+
+    // Show feedback (if enabled and present)
+    if (state.feedbackEnabled && parsed.feedback) {
+      appendFeedback(parsed.feedback);
+    }
+
+    // Show character response
+    if (parsed.character_response) {
+      appendMessage('character', parsed.character_response);
+      state.chatLog.push({ role: 'character', content: parsed.character_response, type: 'dialogue' });
+    }
+
+    // Check if done
+    if (parsed.should_conclude || state.turnNumber >= state.scenario.maxTurns) {
+      state.conversationDone = true;
+      appendSystemMessage(`${state.scenario.character.name} has left the conversation.`);
+      showDebriefButton();
+    } else {
+      // Show suggestions
+      if (parsed.suggested_responses?.length) {
+        showSuggestions(parsed.suggested_responses);
+      }
+      setInputEnabled(true);
+    }
+
+  } catch (err) {
+    console.error('[Drill] API error:', err);
+    removeTyping(typingId);
+    showError(err.message || 'An unexpected error occurred. Check the browser console for details.');
+    state.apiMessages.pop();
+    state.turnNumber--;
+    updateTurnCounter();
+    setInputEnabled(true);
+  } finally {
+    state.isLoading = false;
+    scrollChat();
+  }
+}
+
+async function generateDebrief() {
+  showScreen('screen-debrief');
+  const main = document.getElementById('debrief-main');
+  main.innerHTML = `<div class="debrief-loading"><div class="spinner"></div><p>Generating your personalised debrief…</p></div>`;
+
+  try {
+    const raw = await callClaude(buildDebriefPrompt(state.scenario), [
+      { role: 'user', content: 'Generate the structured debrief report now based on the conversation above.' }
+    ], 4096);
+    const parsed = parseJSON(raw);
+    renderDebrief(parsed);
+  } catch (err) {
+    const main = document.getElementById('debrief-main');
+    main.innerHTML = `<div class="error-box">Failed to generate debrief: ${err.message}</div>`;
+  }
+}
+
+/* ═══════════════════════════════════════════════════════
+   UI — SCREEN MANAGEMENT
+═══════════════════════════════════════════════════════ */
+function showScreen(id) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+}
+
+/* ═══════════════════════════════════════════════════════
+   UI — HOME SCREEN
+═══════════════════════════════════════════════════════ */
+function renderHomeScreen() {
+  const grid = document.getElementById('scenarios-grid');
+  grid.innerHTML = SCENARIOS.map((s, i) => `
+    <div class="scenario-card" onclick="selectScenario(${i})">
+      <div class="sc-head" style="background:${s.color}">
+        <div style="flex:1">
+          <div class="sc-num">Drill ${s.id}</div>
+          <div class="sc-title">${s.title}</div>
+          <div class="sc-sub">${s.tagline}</div>
+        </div>
+        <div class="sc-icon">${s.icon}</div>
+      </div>
+      <div class="sc-body">
+        <div class="sc-program">${s.program}</div>
+        <div class="sc-character"><strong>${s.character.name}</strong> — ${s.character.role}</div>
+        <div class="sc-caps">${s.capabilities.map(c => `<span class="sc-cap">${c.name}</span>`).join('')}</div>
+      </div>
+    </div>
+  `).join('');
+}
+
+/* ═══════════════════════════════════════════════════════
+   UI — INTRO SCREEN
+═══════════════════════════════════════════════════════ */
+function selectScenario(idx) {
+  state.scenario = SCENARIOS[idx];
+  renderIntroCard(state.scenario);
+  syncToggles();
+  showScreen('screen-intro');
+}
+
+function renderIntroCard(s) {
+  const card = document.getElementById('intro-card');
+  card.innerHTML = `
+    <div class="intro-card-head" style="background:${s.color}">
+      <div class="intro-num">${s.program} · Drill ${s.id}</div>
+      <div class="intro-title">${s.title}</div>
+      <div class="intro-tagline">${s.tagline}</div>
+    </div>
+    <div class="intro-card-body">
+      <div class="intro-section">
+        <div class="intro-section-label">Your Character</div>
+        <div class="intro-char-box">
+          <div class="char-avatar" style="background:${s.character.avatarBg}">${s.character.avatar}</div>
+          <div>
+            <div class="char-name">${s.character.name}</div>
+            <div class="char-role">${s.character.role}</div>
+            <div class="char-brief">${s.character.brief}</div>
+          </div>
+        </div>
+      </div>
+      <div class="intro-section">
+        <div class="intro-section-label">Scenario Context</div>
+        <p class="intro-context">${s.context}</p>
+      </div>
+      <div class="intro-section">
+        <div class="intro-section-label">Your Objective</div>
+        <div class="intro-objective"><p><strong>Your goal:</strong> ${s.objective}</p></div>
+      </div>
+      <div class="intro-section">
+        <div class="intro-section-label">Capability Framework — ${s.program}</div>
+        <div class="caps-grid">${s.capabilities.map(c => `
+          <div class="cap-item">
+            <div class="cap-item-name">${c.name}</div>
+            <div class="cap-item-desc">${c.desc}</div>
+          </div>`).join('')}
+        </div>
+      </div>
+      <div class="intro-actions">
+        <button class="btn-back" onclick="showScreen('screen-home')">← Back</button>
+        <button class="btn-start" onclick="startDrill()">Start Drill →</button>
+      </div>
+      <div class="feedback-info" id="feedback-info"></div>
+    </div>
+  `;
+  updateFeedbackInfo();
+}
+
+/* ═══════════════════════════════════════════════════════
+   UI — DRILL SCREEN
+═══════════════════════════════════════════════════════ */
+function startDrill() {
+  // Reset state
+  state.apiMessages = [];
+  state.chatLog = [];
+  state.turnNumber = 0;
+  state.isLoading = false;
+  state.conversationDone = false;
+
+  // Set up drill UI
+  const s = state.scenario;
+  document.getElementById('drill-subtitle').textContent = `${s.title} · ${s.program}`;
+  document.getElementById('chat-area').innerHTML = '';
+  clearSuggestions();
+  clearError();
+
+  updateTurnCounter();
+  syncToggles();
+
+  showScreen('screen-drill');
+
+  // Show character opening line
+  appendMessage('character', s.openingLine);
+  state.chatLog.push({ role: 'character', content: s.openingLine, type: 'dialogue' });
+
+  // Show first-turn suggestions
+  showSuggestions(s.openingSuggestions);
+  setInputEnabled(true);
+  scrollChat();
+}
+
+function appendMessage(role, text) {
+  const chat = document.getElementById('chat-area');
+  const wrap = document.createElement('div');
+  wrap.className = `msg-wrap${role === 'leader' ? ' leader' : ''}`;
+
+  const label = document.createElement('div');
+  label.className = 'msg-label';
+  label.textContent = role === 'leader' ? 'You' : state.scenario.character.name;
+
+  const bubble = document.createElement('div');
+  bubble.className = `bubble ${role}`;
+  bubble.textContent = text;
+
+  wrap.appendChild(label);
+  wrap.appendChild(bubble);
+  chat.appendChild(wrap);
+  scrollChat();
+}
+
+function appendFeedback(text) {
+  const chat = document.getElementById('chat-area');
+  const el = document.createElement('div');
+  el.className = 'feedback-callout';
+  el.innerHTML = `<div class="feedback-callout-label">Live Coaching</div><p>${text}</p>`;
+  chat.appendChild(el);
+  scrollChat();
+}
+
+function appendSystemMessage(text) {
+  const chat = document.getElementById('chat-area');
+  const el = document.createElement('div');
+  el.style.cssText = 'text-align:center;font-size:12px;color:var(--text-muted);padding:16px 0;font-style:italic;';
+  el.textContent = text;
+  chat.appendChild(el);
+  scrollChat();
+}
+
+function showDebriefButton() {
+  clearSuggestions();
+  setInputEnabled(false);
+  const container = document.getElementById('suggestions-container');
+  container.innerHTML = `
+    <div style="padding: 16px 0 8px;">
+      <button onclick="generateDebrief()" style="
+        display:block; width:100%; padding:14px 20px;
+        background:var(--be-orange-dark); color:white; border:none;
+        border-radius:var(--radius); font-size:15px; font-weight:600;
+        font-family:inherit; cursor:pointer; letter-spacing:.02em;
+        transition:.15s;" onmouseover="this.style.background='var(--be-orange)'"
+        onmouseout="this.style.background='var(--be-orange-dark)'">
+        Run Coaching Brief →
+      </button>
+    </div>`;
+  scrollChat();
+}
+
+function showSuggestions(suggestions) {
+  if (!state.suggestionsEnabled) return;
+  const container = document.getElementById('suggestions-container');
+  container.innerHTML = `
+    <div class="suggestions-wrap">
+      <div class="suggestions-label">Suggested Approaches</div>
+      <div class="suggestions-grid">
+        ${suggestions.map(s => `
+          <button class="suggestion-btn" onclick="useSuggestion(this, \`${s.text.replace(/`/g, '\\`')}\`)">
+            <span class="sug-label">${s.label}</span>
+            ${s.text}
+          </button>`).join('')}
+      </div>
+    </div>`;
+}
+
+function clearSuggestions() {
+  const c = document.getElementById('suggestions-container');
+  if (c) c.innerHTML = '';
+}
+
+function useSuggestion(btn, text) {
+  const input = document.getElementById('leader-input');
+  input.value = text;
+  input.focus();
+  autoResize(input);
+  document.getElementById('btn-send').disabled = false;
+  // Highlight selected
+  document.querySelectorAll('.suggestion-btn').forEach(b => b.style.opacity = '0.5');
+  btn.style.opacity = '1';
+  btn.style.borderColor = 'var(--be-orange)';
+}
+
+let typingCount = 0;
+function drillShowTyping() {
+  const id = `typing-${++typingCount}`;
+  const chat = document.getElementById('chat-area');
+  const el = document.createElement('div');
+  el.id = id;
+  el.className = 'msg-wrap';
+  el.innerHTML = `<div class="msg-label">${state.scenario.character.name}</div><div class="typing-indicator"><div class="typing-dot"></div><div class="typing-dot"></div><div class="typing-dot"></div></div>`;
+  chat.appendChild(el);
+  scrollChat();
+  return id;
+}
+
+function removeTyping(id) {
+  const el = document.getElementById(id);
+  if (el) el.remove();
+}
+
+function setInputEnabled(enabled) {
+  const input = document.getElementById('leader-input');
+  const btn = document.getElementById('btn-send');
+  input.disabled = !enabled;
+  if (!enabled) btn.disabled = true;
+  else btn.disabled = !input.value.trim();
+}
+
+function showError(msg) {
+  const c = document.getElementById('error-container');
+  if (!c) { console.error('[Drill] showError: error-container not found. Message:', msg); return; }
+  c.innerHTML = `<div class="error-box">⚠ ${msg}</div>`;
+}
+
+function clearError() {
+  const c = document.getElementById('error-container');
+  if (c) c.innerHTML = '';
+}
+
+function updateTurnCounter() {
+  document.getElementById('turn-counter').innerHTML = `Turn <strong>${state.turnNumber + 1}</strong> of ${state.scenario.maxTurns}`;
+}
+
+function scrollChat() {
+  const chat = document.getElementById('chat-area');
+  setTimeout(() => chat.scrollTop = chat.scrollHeight, 50);
+}
+
+function autoResize(el) {
+  el.style.height = 'auto';
+  el.style.height = Math.min(el.scrollHeight, 140) + 'px';
+}
+
+/* ═══════════════════════════════════════════════════════
+   UI — DEBRIEF SCREEN
+═══════════════════════════════════════════════════════ */
+function ratingClass(rating) {
+  if (!rating) return '';
+  const r = rating.toLowerCase();
+  if (r.includes('demonstrated')) return 'rating-dc';
+  if (r.includes('developing')) return 'rating-dev';
+  return 'rating-na';
+}
+
+function qualityClass(quality) {
+  const q = (quality || '').toLowerCase();
+  if (q === 'strong') return 'quality-strong';
+  if (q === 'adequate') return 'quality-adequate';
+  return 'quality-missed';
+}
+
+function renderDebrief(data) {
+  state.debriefData = data;
+  const s = state.scenario;
+  const main = document.getElementById('debrief-main');
+
+  const caps = (data.capability_analysis || []).map(c => `
+    <div class="cap-card">
+      <div class="cap-card-top">
+        <div class="cap-name">${c.capability}</div>
+        <span class="cap-rating ${ratingClass(c.rating)}">${c.rating}</span>
+      </div>
+      <div class="cap-evidence">${c.evidence}</div>
+      ${c.gap ? `<div class="cap-gap">${c.gap}</div>` : ''}
+    </div>`).join('');
+
+  const exchanges = (data.exchange_analysis || []).map(e => `
+    <div class="exchange-item">
+      <div class="exchange-top">
+        <span class="exchange-turn">Turn ${e.turn}</span>
+        <span class="quality-badge ${qualityClass(e.quality)}">${e.quality}</span>
+      </div>
+      <div class="exchange-said">"${e.leader_said}"</div>
+      <div class="exchange-notes">
+        ${e.what_worked ? `<span class="worked">✓ ${e.what_worked}</span>` : ''}
+        ${e.what_missed ? `<span class="missed">△ ${e.what_missed}</span>` : ''}
+      </div>
+    </div>`).join('');
+
+  const strengths = (data.strengths || []).map(s => `<li>${s}</li>`).join('');
+  const gaps = (data.gaps || []).map(g => `<li>${g}</li>`).join('');
+  const nextSteps = (data.next_steps || []).map((ns, i) => `
+    <div class="next-step-item">
+      <div class="next-step-num">${i + 1}</div>
+      <div>${ns}</div>
+    </div>`).join('');
+
+  main.innerHTML = `
+    <div class="debrief-header">
+      <div class="debrief-header-left">
+        <h2>${s.title}</h2>
+        <p>${s.program} · ${s.character.name}</p>
+      </div>
+      <div class="overall-rating-badge">
+        <div class="overall-rating-label">Overall Rating</div>
+        <div class="overall-rating-pill ${ratingClass(data.overall_rating)}">${data.overall_rating}</div>
+      </div>
+    </div>
+
+    <div class="debrief-section">
+      <div class="debrief-section-title">Overall Assessment</div>
+      <div class="justification-box">${data.overall_justification}</div>
+    </div>
+
+    <div class="debrief-section">
+      <div class="debrief-section-title">Capability Ratings — ${s.program}</div>
+      <div class="cap-grid">${caps}</div>
+    </div>
+
+    <div class="debrief-section">
+      <div class="debrief-section-title">Exchange by Exchange</div>
+      <div class="exchange-list">${exchanges}</div>
+    </div>
+
+    <div class="debrief-section">
+      <div class="debrief-section-title">Strengths & Gaps</div>
+      <div class="sg-grid">
+        <div>
+          <div class="sg-col-title strengths">What served you well</div>
+          <ul class="sg-list strengths">${strengths}</ul>
+        </div>
+        <div>
+          <div class="sg-col-title gaps">Where to focus next</div>
+          <ul class="sg-list gaps">${gaps}</ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="debrief-section">
+      <div class="debrief-section-title">Recommended Next Steps</div>
+      <div class="next-steps-list">${nextSteps}</div>
+    </div>
+
+    <div class="debrief-actions">
+      <button class="btn-outline" onclick="rerunScenario()">↺ Run This Drill Again</button>
+      <button class="btn-outline" onclick="showScreen('screen-home')">← All Scenarios</button>
+      <button class="btn-outline" onclick="downloadDebrief()" style="border-color:var(--near-black);color:var(--near-black);" onmouseover="this.style.background='#f0eef8'" onmouseout="this.style.background=''">⬇ Download .docx</button>
+    </div>
+  `;
+}
+
+/* ═══════════════════════════════════════════════════════
+   DOCX EXPORT
+═══════════════════════════════════════════════════════ */
+async function downloadDebrief() {
+  if (!window.JSZip) { alert('Export library not loaded. Check your internet connection and refresh.'); return; }
+  if (!state.debriefData) { alert('No debrief data available.'); return; }
+
+  const data = state.debriefData;
+  const s    = state.scenario;
+  const today = new Date().toLocaleDateString('en-AU', { day:'numeric', month:'long', year:'numeric' });
+
+  /* ── OOXML helpers ── */
+  function esc(str) {
+    return (str || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+  }
+  function run(text, { bold=false, italic=false, color='', size=22 } = {}) {
+    const rpr = [
+      bold   ? '<w:b/><w:bCs/>' : '',
+      italic ? '<w:i/><w:iCs/>' : '',
+      color  ? `<w:color w:val="${color}"/>` : '',
+      `<w:sz w:val="${size}"/><w:szCs w:val="${size}"/>`,
+      `<w:rFonts w:ascii="Arial" w:hAnsi="Arial" w:cs="Arial"/>`,
+    ].join('');
+    return `<w:r><w:rPr>${rpr}</w:rPr><w:t xml:space="preserve">${esc(text)}</w:t></w:r>`;
+  }
+  function para(runs, { before=0, after=100, indent=0 } = {}) {
+    const ind = indent ? `<w:ind w:left="${indent}"/>` : '';
+    const ppr = `<w:pPr><w:spacing w:before="${before}" w:after="${after}"/>${ind}</w:pPr>`;
+    return `<w:p>${ppr}${Array.isArray(runs) ? runs.join('') : runs}</w:p>`;
+  }
+  function gap() { return '<w:p><w:pPr><w:spacing w:after="160"/></w:pPr></w:p>'; }
+  function heading(text) {
+    return para(run(text, { bold:true, size:26, color:'FF8200' }), { before:360, after:160 });
+  }
+  function rCol(r) {
+    const l=(r||'').toLowerCase();
+    if(l.includes('demonstrated')) return '0A7040';
+    if(l.includes('developing'))   return 'C24D00';
+    return 'B22222';
+  }
+  function qCol(q) {
+    if(q==='Strong')   return '0A7040';
+    if(q==='Adequate') return 'C24D00';
+    return 'B22222';
+  }
+
+  /* ── Build body paragraphs ── */
+  const body = [
+    // Cover
+    para(run('Be Learning', { bold:true, size:40, color:'FF6600' }), { after:80 }),
+    para(run('Soft Skills Drill — Debrief Report', { bold:true, size:30, color:'1A1A2E' }), { after:120 }),
+    para(run(`${s.program}  ·  ${s.title}`, { size:22, color:'8A7FA0' }), { after:60 }),
+    para(run(`Character: ${s.character.name}  —  ${s.character.role}`, { size:20, color:'8A7FA0' }), { after:60 }),
+    para(run(`Date: ${today}`, { size:20, color:'8A7FA0' }), { after:280 }),
+    gap(),
+
+    // Overall Rating
+    heading('Overall Rating'),
+    para(run(data.overall_rating, { bold:true, size:32, color:rCol(data.overall_rating) }), { after:120 }),
+    para(run(data.overall_justification, { size:22, color:'4A4460' }), { after:80 }),
+    gap(),
+
+    // Capabilities
+    heading(`Capability Ratings — ${s.program}`),
+    ...(data.capability_analysis||[]).flatMap(cap => [
+      para([
+        run(cap.capability+'   ', { bold:true, size:23, color:'1A1A2E' }),
+        run(`[ ${cap.rating} ]`, { bold:true, size:21, color:rCol(cap.rating) }),
+      ], { before:200, after:60 }),
+      para(run(cap.evidence, { size:21, color:'4A4460' }), { after:60 }),
+      ...(cap.gap ? [para(run('↑  '+cap.gap, { size:20, color:'C24D00', italic:true }), { after:80 })] : []),
+    ]),
+    gap(),
+
+    // Exchange by Exchange
+    heading('Exchange by Exchange'),
+    ...(data.exchange_analysis||[]).flatMap(ex => [
+      para([
+        run(`Turn ${ex.turn}   `, { bold:true, size:23, color:'1A1A2E' }),
+        run(`[ ${ex.quality} ]`, { bold:true, size:21, color:qCol(ex.quality) }),
+      ], { before:200, after:60 }),
+      para(run(`"${ex.leader_said}"`, { size:20, color:'666666', italic:true }), { after:60, indent:360 }),
+      ...(ex.what_worked ? [para(run('✓  '+ex.what_worked, { size:20, color:'0A7040' }), { after:40, indent:360 })] : []),
+      ...(ex.what_missed ? [para(run('△  '+ex.what_missed, { size:20, color:'B22222' }), { after:40, indent:360 })] : []),
+    ]),
+    gap(),
+
+    // Strengths & Gaps
+    heading('Strengths & Gaps'),
+    para(run('What served you well', { bold:true, size:23, color:'0A7040' }), { after:80 }),
+    ...(data.strengths||[]).map(str => para(run('✓  '+str, { size:21, color:'4A4460' }), { after:60, indent:360 })),
+    gap(),
+    para(run('Where to focus next', { bold:true, size:23, color:'C24D00' }), { after:80 }),
+    ...(data.gaps||[]).map(g => para(run('△  '+g, { size:21, color:'4A4460' }), { after:60, indent:360 })),
+    gap(),
+
+    // Next Steps
+    heading('Recommended Next Steps'),
+    ...(data.next_steps||[]).map((ns,i) => para([
+      run(`${i+1}.  `, { bold:true, size:22, color:'FF8200' }),
+      run(ns, { size:21, color:'4A4460' }),
+    ], { after:100, indent:360 })),
+    gap(),
+
+    // Footer
+    para(run(`Prepared by Be Learning  ·  Confidential  ·  ${today}`, { size:18, color:'AAAAAA', italic:true }), { before:280 }),
+  ].join('\n');
+
+  /* ── Assemble OOXML package ── */
+  const NS = `xmlns:wpc="http://schemas.microsoft.com/office/word/2010/wordprocessingCanvas" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships" xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main" xmlns:w14="http://schemas.microsoft.com/office/word/2010/wordml" mc:Ignorable="w14"`;
+
+  const files = {
+    '[Content_Types].xml': `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<Types xmlns="http://schemas.openxmlformats.org/package/2006/content-types">
+  <Default Extension="rels" ContentType="application/vnd.openxmlformats-package.relationships+xml"/>
+  <Default Extension="xml" ContentType="application/xml"/>
+  <Override PartName="/word/document.xml" ContentType="application/vnd.openxmlformats-officedocument.wordprocessingml.document.main+xml"/>
+  <Override PartName="/word/styles.xml" ContentType="application/vnd.openxmlformats-officedocument.wordprocessingml.styles+xml"/>
+</Types>`,
+    '_rels/.rels': `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships">
+  <Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/officeDocument" Target="word/document.xml"/>
+</Relationships>`,
+    'word/_rels/document.xml.rels': `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships">
+  <Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/styles" Target="styles.xml"/>
+</Relationships>`,
+    'word/styles.xml': `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<w:styles xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main">
+  <w:docDefaults><w:rPrDefault><w:rPr>
+    <w:rFonts w:ascii="Arial" w:hAnsi="Arial" w:cs="Arial"/>
+    <w:sz w:val="22"/><w:szCs w:val="22"/>
+  </w:rPr></w:rPrDefault></w:docDefaults>
+  <w:style w:type="paragraph" w:default="1" w:styleId="Normal">
+    <w:name w:val="Normal"/>
+  </w:style>
+</w:styles>`,
+    'word/document.xml': `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<w:document ${NS}>
+  <w:body>
+${body}
+    <w:sectPr>
+      <w:pgSz w:w="12240" w:h="15840"/>
+      <w:pgMar w:top="1440" w:right="1440" w:bottom="1440" w:left="1440"/>
+    </w:sectPr>
+  </w:body>
+</w:document>`,
+  };
+
+  try {
+    const zip = new JSZip();
+    Object.entries(files).forEach(([path, content]) => zip.file(path, content));
+    const blob = await zip.generateAsync({
+      type: 'blob',
+      mimeType: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+    });
+    const url = URL.createObjectURL(blob);
+    const a   = document.createElement('a');
+    a.href    = url;
+    a.download = `BeLearning_Debrief_${s.id}_${s.character.name.replace(' ','_')}.docx`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+  } catch(err) {
+    alert('Export failed: ' + err.message);
+  }
+}
+
+/* ═══════════════════════════════════════════════════════
+   UI — TOGGLE SYNC
+═══════════════════════════════════════════════════════ */
+function syncToggles() {
+  ['feedback-toggle', 'feedback-toggle-intro', 'feedback-toggle-drill'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.checked = state.feedbackEnabled;
+  });
+  ['suggestions-toggle-home', 'suggestions-toggle-drill'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.checked = state.suggestionsEnabled;
+  });
+  updateFeedbackInfo();
+}
+
+function updateFeedbackInfo() {
+  const el = document.getElementById('feedback-info');
+  if (el) el.textContent = state.feedbackEnabled
+    ? '💡 Live coaching is on — you\'ll see a tip after each character response.'
+    : 'Live coaching is off — you\'ll receive your full debrief at the end.';
+}
+
+function rerunScenario() {
+  startDrill();
+}
+
+/* ═══════════════════════════════════════════════════════
+   EVENT LISTENERS
+═══════════════════════════════════════════════════════ */
+document.addEventListener('DOMContentLoaded', () => {
+
+  // API key now handled server-side via Cloudflare Worker proxy.
+  // Skip setup screen and go straight to the scenario home screen.
+  renderHomeScreen();
+  showScreen('screen-home');
+
+  // Feedback toggle listeners — all three stay in sync
+  ['feedback-toggle', 'feedback-toggle-intro', 'feedback-toggle-drill'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.addEventListener('change', () => {
+      state.feedbackEnabled = el.checked;
+      syncToggles();
+    });
+  });
+
+  // Suggestions toggles (home + drill stay in sync)
+  ['suggestions-toggle-home', 'suggestions-toggle-drill'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.addEventListener('change', () => {
+      state.suggestionsEnabled = el.checked;
+      syncToggles();
+      if (!state.suggestionsEnabled) clearSuggestions();
+    });
+  });
+
+  // Drill — send button
+  const leaderInput = document.getElementById('leader-input');
+  const btnSend = document.getElementById('btn-send');
+
+  leaderInput.addEventListener('input', () => {
+    btnSend.disabled = !leaderInput.value.trim();
+    autoResize(leaderInput);
+  });
+
+  leaderInput.addEventListener('keydown', e => {
+    if (e.key === 'Enter' && !e.shiftKey) {
+      e.preventDefault();
+      if (!btnSend.disabled) {
+        const text = leaderInput.value.trim();
+        leaderInput.value = '';
+        autoResize(leaderInput);
+        btnSend.disabled = true;
+        sendLeaderMessage(text);
+      }
+    }
+  });
+
+  btnSend.addEventListener('click', () => {
+    const text = leaderInput.value.trim();
+    if (!text) return;
+    leaderInput.value = '';
+    autoResize(leaderInput);
+    btnSend.disabled = true;
+    sendLeaderMessage(text);
+  });
+
+  // End drill early
+  document.getElementById('btn-end-drill').addEventListener('click', () => {
+    if (state.chatLog.filter(m => m.role === 'leader').length < 2) {
+      if (!confirm('You haven\'t responded yet. End the drill anyway?')) return;
+    }
+    state.conversationDone = true;
+    appendSystemMessage('Drill ended early.');
+    showDebriefButton();
+  });
+
+  // Debrief — back to home
+  document.getElementById('btn-home-from-debrief').addEventListener('click', () => {
+    showScreen('screen-home');
+  });
+});
+
+
+</script>
+<script>
+/* ══════════════════════════════════════
+   the organisation GRAD PROGRAM — AI AGENTS ENGINE
+══════════════════════════════════════ */
+
+// ANTHROPIC_API_KEY removed — all calls routed through Cloudflare Worker proxy at /api/claude
+
+// ── Conversation state ──────────────────────
+const agentState = {};
+
+// ── System prompts ──────────────────────────
+const SYSTEM_PROMPTS = {
+
+'culture-primer': `You are the the organisation Culture Primer — a warm, intelligent AI coach helping new the organisation participants discover what the organisation's culture actually feels like from the inside. You present three realistic workplace scenarios, one at a time.
+
+the organisation's core cultural values are: Customer focus (always act in the customer's best interest), Take care (look after each other, our customers and our community), Build momentum (keep moving, improve continuously), and Own it (take personal accountability).
+
+Your approach:
+— Present Scenario 1 first. Wait for the participant's response.
+— Reflect back thoughtfully: what does their response reveal about their instincts and how it maps to the organisation's values? Be specific, warm, and non-judgemental. Then ask one deepening question.
+— After they answer the deepening question, present Scenario 2 (a different workplace situation).
+— Repeat the same pattern: reflect → deepen.
+— Then present Scenario 3.
+— After the final response, provide a Cultural Alignment Summary: 2–3 sentences on the participant's instincts, one specific strength you noticed, one gentle edge to be aware of, and 2 conversation starters for their first meeting with their manager or buddy.
+
+Your three scenarios (present them in order, one at a time — never all at once):
+
+Scenario 1: "You're in your second week. A senior colleague asks you to forward a customer file to an external contact 'as a favour.' You're not sure it's above board. What do you do?"
+
+Scenario 2: "Your team is celebrating a big win publicly — but you know a significant customer complaint was buried to hit the numbers. A journalist asks you about the team's performance. How do you respond?"
+
+Scenario 3: "You've spotted a way to significantly improve a process, but it will require pushing back on your manager's approach. The team is busy and there's pressure to just get things done. What do you do?"
+
+Tone: warm, curious, coaching — not testing or judging. This is a welcome, not an exam. Keep responses concise (under 180 words per message) unless the summary requires more.`,
+
+'debate-coach': `You are the the organisation Debate Coach — a rigorous, intellectually sharp AI sparring partner built to help the organisation participant employees develop the skill of constructive challenge.
+
+Your role: When the user states a position on a workplace dilemma, you immediately argue the counter-position with intellectual rigour. You surface the weaknesses in their argument, ask the questions they haven't considered, and push back on assumptions — all while maintaining professional respect.
+
+How you work:
+— Open by presenting 4 the organisation-specific dilemmas the user can choose from, OR invite them to state their own.
+— Once they choose and state their position, switch into debate mode. Argue the opposing view clearly and specifically. Be sharp — this is not gentle.
+— After 2–3 exchanges, automatically shift to Debrief Mode. Signal this clearly: "Let's step out of the debate for a moment."
+— In the debrief: acknowledge what was strong in their argument, name the reasoning patterns you observed (strengths and blind spots), and give them 3 practical tactics for constructive challenge in a real the organisation workplace without damaging relationships.
+
+The 4 the organisation dilemmas to offer at the start:
+1. "Launch now vs. wait until testing is complete" — Your team wants to launch a new customer process next month even though testing isn't complete.
+2. "Customer speed vs. compliance rigour" — A senior leader wants to fast-track a customer approval to hit quarterly targets, skipping a standard compliance check.
+3. "Team harmony vs. honest feedback" — Your rotation manager asks for your honest view of a major project. You think it has serious flaws. The whole team is proud of it.
+4. "Budget reallocation" — You believe the team's budget should be redirected to a higher-impact initiative, but doing so would deprioritise your own manager's pet project.
+
+Tone: sharp and intellectually demanding, but never cruel. The goal is to build their muscle — not deflate them. Keep responses under 200 words in debate mode; the debrief can be longer.`,
+
+'rotation-reflection': `You are a structured reflective learning coach helping the organisation participant employees capture and synthesise their learning at the end of Rotation 1.
+
+Your job is to ask exactly 5 reflection questions, one at a time. Listen carefully to each answer before moving to the next — acknowledge what they've shared briefly before asking the next question. Do not rush. After all 5 answers, generate a structured Rotation Handover Brief.
+
+The 5 questions (ask in this order, one at a time):
+1. "What's the most important thing you learned in this rotation — about the work, the team, or yourself?"
+2. "What surprised you most about how this team actually operates — compared to what you expected before you started?"
+3. "If you could go back and do one thing differently in this rotation, what would it be — and what would you change about your approach?"
+4. "What's one insight, habit, or way of working from this rotation that you want to carry with you into Rotation 2?"
+5. "What does your Rotation 2 manager most need to know about how you work best — so they can set you up to succeed from Day 1?"
+
+After receiving the answer to Question 5, generate the Rotation Handover Brief in this format:
+
+---
+**Rotation 1 Handover Brief**
+*[Participant's name if given, otherwise "the organisation Participant"]*
+
+**Key learning from this rotation:**
+[1–2 sentences synthesising Q1 and Q3]
+
+**What surprised me:**
+[1 sentence from Q2]
+
+**What I'm carrying forward:**
+[1–2 sentences from Q4]
+
+**How I work best — for my Rotation 2 manager:**
+[1–2 sentences from Q5]
+
+**My 3 goals for Rotation 2:**
+1. [Derived from their answers — specific and actionable]
+2. [Derived from their answers — specific and actionable]
+3. [Derived from their answers — specific and actionable]
+---
+
+Tone: reflective, supportive, genuinely interested. This is a coaching conversation, not a form to fill in. Acknowledge their answers with brief, warm recognition before moving to the next question.`,
+
+
+'pitch-pressure-test': `You are the the organisation Pitch Pressure Test — a rigorous, constructive AI coach helping the organisation participant employees stress-test their business case argument before a high-stakes delivery to senior the organisation stakeholders.
+
+Your role: When a participant submits their business case narrative or key argument, you apply structured pressure to find the weak points — before the real audience does. You analyse the logic, build a Pushback Map of where a sceptical senior the organisation audience will challenge them, and provide concrete suggestions for strengthening both the reasoning and the delivery.
+
+Your analysis framework (apply this to each submission):
+
+**1. Argument Audit**
+Identify: the core claim, the key supporting reasons, the evidence cited. Flag any assumptions being presented as facts — distinguish narrative (interpretation) from fact (concrete, measurable reality). This is based on the organisation's Constructive Challenge principle: separating perspective from fact.
+
+**2. Pushback Map**
+Identify 3–5 specific points where a senior the organisation audience is likely to push back, challenge, or disengage. Be precise — name the exact claim, gap in evidence, or logical leap that creates vulnerability. Use the lens of a tough but fair the organisation executive: What would they want more evidence for? Where would they see risk? What assumption would they challenge?
+
+**3. Strengthening Suggestions**
+For each pushback point, give one concrete, specific suggestion for how to address it — whether through stronger evidence, a different framing, anticipating the objection openly, or restructuring the argument.
+
+**4. Delivery Note**
+One observation about the structure, flow, or language of the argument that could affect how it lands with a senior the organisation audience. Be specific and actionable.
+
+How you work:
+— Open by asking the participant to: (a) paste their business case argument or key narrative — even a rough draft is fine, and (b) briefly describe their audience (e.g. "a panel of 3 the organisation senior leaders" or "my rotation manager and two peers").
+— Once they submit, provide your full Pitch Pressure Test analysis in clear, structured format using the four sections above.
+— After the analysis, offer to do a second-round review if they want to revise and resubmit.
+— If they submit a very short or vague argument, ask a clarifying question before analysing: "Can you tell me more about the core recommendation — what are you asking your audience to decide or do?"
+
+the organisation context: The Business Case Challenge is a high-stakes Year 2 program milestone. Participants present to senior the organisation leaders. They are expected to demonstrate enterprise thinking, constructive challenge capability, and commercial judgement. The Constructive Challenge learning in their journal has covered: separating facts from narratives, using the P.A.T.A. framework (Purpose, Agenda, Timeframe, Ask) to frame conversations, and the SBI model (Situation, Behaviour, Impact) for giving specific, evidence-based feedback.
+
+Tone: direct, rigorous, and genuinely developmental. You are the most useful reviewer they will have before the real thing — not the harshest critic, but the most honest one. Frame every critique as preparation, not judgement.`,
+
+'placement-primer': `You are the the organisation Placement Primer — a personalised readiness coach for the participants entering their permanent placement. Your role is to help them walk into Day 1 with clarity, confidence, and a concrete plan.
+
+You gather information through friendly, natural conversation — not a form. Then you generate their personalised Placement Brief.
+
+Information to gather (conversationally, not all at once):
+1. Their DISC profile type (D, I, S, or C — or a combination). Ask if they're not sure.
+2. Their top 2–3 strengths — things they feel genuinely good at after the program
+3. The most important thing they learned about themselves across their rotations
+4. One area they want to actively develop in their permanent placement
+5. Anything they want their new manager to know about how they work best
+
+Once you have this information (it may take 3–5 conversational exchanges), generate their Placement Brief in this format:
+
+---
+**Your the organisation Placement Brief**
+*Prepared for Day 1 — [Date if given]*
+
+**Who you are at your best:**
+[2–3 sentences synthesising their DISC profile and stated strengths — written in second person, warm and specific]
+
+**Your development edge:**
+[1–2 honest, constructive sentences about the area they named — framed as a forward-looking opportunity, not a deficit]
+
+**What you're carrying in from the program:**
+[1–2 sentences on their key self-learning from rotations]
+
+**What your manager needs to know:**
+[1–2 sentences from Q5 — phrased as something the participant would actually say]
+
+**Your 3 start-strong moves for Week 1–2:**
+1. [Specific, practical, tailored to their DISC profile and role context]
+2. [Specific, practical, draws on their stated strengths]
+3. [Specific, practical, addresses their development edge]
+---
+
+Tone: warm, professional, forward-looking. This is a celebration of what they've built — not a performance review. Start by warmly welcoming them to what is described as the program's most meaningful moment, then begin gathering information naturally.`
+
+};
+
+// ── Welcome messages ────────────────────────
+const WELCOME = {
+'culture-primer': "Welcome to the Culture Primer. Over the next 15–20 minutes, you'll work through three realistic the organisation workplace scenarios. There are no right or wrong answers — this is about discovering what your instincts reveal about how you'll thrive inside the organisation.\n\nLet's begin.\n\n**Scenario 1:**\n\n\"You're in your second week. A senior colleague asks you to forward a customer file to an external contact 'as a favour.' You're not sure it's above board. What do you do?\"",
+'debate-coach': "Welcome to the Debate Coach. This is your space to sharpen the skill of constructive challenge — one of the most valuable and underused capabilities in any organisation.\n\nHere's how it works: you choose a dilemma, state your position, and I'll argue the opposing view. After we've sparred a few rounds, I'll debrief on what I noticed in your reasoning.\n\nChoose a dilemma to begin — or describe your own:\n\n**1.** Launch now vs. wait: Your team wants to ship a new customer process before testing is complete.\n**2.** Speed vs. compliance: A senior leader wants to fast-track an approval, skipping a standard compliance step.\n**3.** Honesty vs. team harmony: Your manager asks for your honest view of a project the whole team is proud of — but you think it has real flaws.\n**4.** Budget reallocation: You believe the team's budget would deliver more impact elsewhere — including deprioritising your own manager's project.\n\nWhich one — or what's yours?",
+'rotation-reflection': "Welcome to your Rotation 1 Reflection. This is 20–25 minutes of structured thinking that will shape how you walk into Rotation 2 — and give your next manager exactly what they need to set you up to succeed.\n\nI'll ask you five questions, one at a time. Take your time with each — there's no rush, and no wrong answers.\n\nLet's start:\n\n**Question 1 of 5:**\n\nWhat's the most important thing you learned in this rotation — about the work, the team, or yourself?",
+
+'pitch-pressure-test': "Welcome to the Pitch Pressure Test.\n\nYou're about to put your Business Case argument in front of someone who will find every weak point in it — so the senior the organisation panel doesn't get to find them first.\n\nHere's how it works: paste your business case argument or key narrative below — a rough draft is absolutely fine. Also tell me who your audience will be.\n\nI'll give you:\n• An **Argument Audit** — what's strong, what's assumed\n• A **Pushback Map** — 3–5 specific points where the audience will challenge you\n• **Strengthening Suggestions** — one concrete fix per pushback point\n• A **Delivery Note** — one observation on structure or language\n\nIf you want to revise and resubmit after, we can do a second round too.\n\nPaste your argument when you're ready.",
+'placement-primer': "This is your Placement Primer — the moment where everything you've done, reflected on, and learned across the program becomes a single document you can walk into Day 1 with.\n\nI'll ask you a few things about yourself — your profile, your strengths, and how you work best. Then I'll pull it all together into your personalised Placement Brief.\n\nLet's start with the big picture: **what's your DISC profile type?** If you remember your primary type (D, I, S, or C), great — if not, just tell me how you'd roughly describe yourself (e.g. 'I tend to be analytical and careful' or 'I'm more of a big-picture, fast-mover') and we'll work from there."
+};
+
+// ── Helpers ────────────────────────────────
+function escapeHtml(t){
+  return t.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
+
+function formatAI(text){
+  // Simple markdown: **bold**, newlines to <p>
+  let escaped = text
+    .replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')
+    .replace(/\*\*([^*]+)\*\*/g,'<strong>$1</strong>')
+    .replace(/\*([^*]+)\*/g,'<em>$1</em>');
+  // paragraphs on double newline, br on single
+  const paras = escaped.split(/\n\n+/);
+  return paras.map(p => {
+    const lines = p.split('\n').join('<br>');
+    return `<p>${lines}</p>`;
+  }).join('');
+}
+
+function scrollBottom(agentId){
+  const msgs = document.getElementById('msgs-'+agentId);
+  if(msgs) msgs.scrollTop = msgs.scrollHeight;
+}
+
+function addMsg(agentId, role, html){
+  const msgs = document.getElementById('msgs-'+agentId);
+  const div = document.createElement('div');
+  div.className = 'chat-msg ' + role;
+  div.innerHTML = html;
+  msgs.appendChild(div);
+  scrollBottom(agentId);
+  return div;
+}
+
+function showTyping(agentId){
+  const msgs = document.getElementById('msgs-'+agentId);
+  const div = document.createElement('div');
+  div.className = 'typing-wrap';
+  div.id = 'typing-'+agentId;
+  div.innerHTML = '<div class="typing-dots"><div class="typing-dot"></div><div class="typing-dot"></div><div class="typing-dot"></div></div>';
+  msgs.appendChild(div);
+  scrollBottom(agentId);
+}
+
+function hideTyping(agentId){
+  const el = document.getElementById('typing-'+agentId);
+  if(el) el.remove();
+}
+
+// ── Open / close ────────────────────────────
+function openAgent(agentId){
+  if(agentId === 'disc-dialogue'){
+    const modal = document.getElementById('modal-disc-dialogue');
+    if(modal){ modal.style.display='flex'; document.body.style.overflow='hidden'; }
+    if(typeof DD !== 'undefined') DD.onOpen();
+    return;
+  }
+  // Init state
+  if(!agentState[agentId]){
+    agentState[agentId] = {history:[], turn:0};
+  }
+  const modal = document.getElementById('modal-'+agentId);
+  modal.style.display = 'flex';
+  document.body.style.overflow = 'hidden';
+
+  // Clear & seed welcome if first open
+  const msgs = document.getElementById('msgs-'+agentId);
+  if(msgs.children.length === 0){
+    addMsg(agentId, 'ai', formatAI(WELCOME[agentId]));
+    agentState[agentId].history = [
+      {role:'user', content:'[Session started]'},
+      {role:'assistant', content: WELCOME[agentId]}
+    ];
+  }
+
+  // Focus input
+  setTimeout(()=>{ const inp = document.getElementById('inp-'+agentId); if(inp) inp.focus(); }, 100);
+}
+
+function closeAgent(agentId){
+  const modal = document.getElementById('modal-'+agentId);
+  if(modal) modal.style.display = 'none';
+  document.body.style.overflow = '';
+}
+
+// ── Send message ────────────────────────────
+async function sendMsg(agentId){
+  const inp = document.getElementById('inp-'+agentId);
+  const btn = document.getElementById('btn-'+agentId);
+  const text = inp.value.trim();
+  if(!text) return;
+
+  // API key is handled server-side — no client-side validation needed.
+
+  // Add user message
+  addMsg(agentId, 'user', escapeHtml(text));
+  inp.value = '';
+  inp.disabled = true;
+  btn.disabled = true;
+
+  // Update history
+  const state = agentState[agentId];
+  state.history.push({role:'user', content: text});
+
+  // Show typing
+  showTyping(agentId);
+
+  try {
+    const res = await fetch('https://rockmouse-agent-proxy.craig-3c4.workers.dev', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer EvcEETnK9mTErZ90CGguBccMdq2EbCV742tu5Gz4' },
+      body: JSON.stringify({
+        model: 'claude-sonnet-4-6',
+        max_tokens: 1200,
+        system: SYSTEM_PROMPTS[agentId],
+        messages: state.history
+      })
+    });
+
+    if(!res.ok){
+      const err = await res.json();
+      throw new Error(err.error?.message || 'API error ' + res.status);
+    }
+
+    const data = await res.json();
+    const reply = data.content?.[0]?.text || '(No response)';
+    state.history.push({role:'assistant', content: reply});
+    state.turn++;
+
+    hideTyping(agentId);
+    addMsg(agentId, 'ai', formatAI(reply));
+
+  } catch(e){
+    hideTyping(agentId);
+    addMsg(agentId, 'note', '&#9888;&#65039; Error: ' + escapeHtml(e.message));
+  } finally {
+    inp.disabled = false;
+    btn.disabled = false;
+    inp.focus();
+  }
+}
+
+function handleKey(e, agentId){
+  if(e.key === 'Enter' && !e.shiftKey){
+    e.preventDefault();
+    sendMsg(agentId);
+  }
+}
+
+// Close on Escape
+document.addEventListener('keydown', e => {
+  if(e.key === 'Escape'){
+    ['culture-primer','debate-coach','rotation-reflection','placement-primer','pitch-pressure-test','disc-dialogue'].forEach(id => {
+      const m = document.getElementById('modal-'+id);
+      if(m && m.style.display !== 'none') closeAgent(id);
+    });
+  }
+});
+</script>
+<script>
+window.addEventListener('DOMContentLoaded', function() {
+  if (typeof renderHomeScreen === 'function') renderHomeScreen();
+});
+</script>
+</body>
+</html>

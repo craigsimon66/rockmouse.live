@@ -1,0 +1,527 @@
+<!DOCTYPE html>
+<html lang="en-AU">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Expert Practitioner Coach | RockMouse AI Agents</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --navy:   #0a4a4a;
+      --teal:   #0d7b7b;
+      --teal-l: #e6f4f4;
+      --light:  #f5f7f5;
+      --border: #c8dede;
+      --text:   #1a2e2e;
+      --muted:  #5a7070;
+      --white:  #ffffff;
+      --shadow: 0 4px 16px rgba(10,74,74,0.12);
+      --radius: 10px;
+      --font:   'Segoe UI', system-ui, -apple-system, sans-serif;
+    }
+
+    html, body { height: 100%; font-family: var(--font); background: var(--light); color: var(--text); }
+
+    .site-header {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      background: var(--white); border-bottom: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 1.5rem; height: 56px; box-shadow: 0 1px 4px rgba(10,74,74,0.08);
+    }
+    .site-header img { height: 34px; width: auto; }
+    .site-header-label { font-size: 0.75rem; color: var(--muted); text-align: right; }
+    .site-header-label strong { display: block; color: var(--navy); font-size: 0.82rem; }
+
+    #role-screen {
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      min-height: 100vh; padding: 5rem 1rem 2rem;
+      background: linear-gradient(160deg, var(--navy) 0%, var(--teal) 100%);
+    }
+
+    .role-card {
+      background: var(--white); border-radius: var(--radius); box-shadow: var(--shadow);
+      padding: 2.5rem 2rem; max-width: 560px; width: 100%;
+    }
+    .role-card h1 { font-size: 1.5rem; font-weight: 700; color: var(--navy); margin-bottom: 0.4rem; }
+    .role-card .tagline { font-size: 0.9rem; color: var(--muted); margin-bottom: 1.75rem; line-height: 1.5; }
+    .role-label { font-size: 0.78rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; color: var(--navy); margin-bottom: 0.75rem; }
+
+    .stage-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; margin-bottom: 1.5rem; }
+
+    .stage-btn {
+      background: var(--white); border: 2px solid var(--border); border-radius: 8px;
+      padding: 0.85rem 0.75rem; cursor: pointer; text-align: left;
+      transition: all 0.15s; font-family: var(--font);
+    }
+    .stage-btn:hover { border-color: var(--teal); background: var(--teal-l); }
+    .stage-btn.selected { border-color: var(--navy); background: var(--teal-l); }
+    .stage-btn .stage-name { font-weight: 700; font-size: 0.875rem; color: var(--navy); display: block; margin-bottom: 0.2rem; }
+    .stage-btn .stage-cert { font-size: 0.72rem; color: var(--teal); font-weight: 600; display: block; margin-bottom: 0.3rem; }
+    .stage-btn .stage-desc { font-size: 0.72rem; color: var(--muted); line-height: 1.4; }
+
+    .start-btn {
+      width: 100%; padding: 0.9rem; background: var(--navy); color: var(--white);
+      border: none; border-radius: 8px; font-size: 0.95rem; font-weight: 700;
+      cursor: pointer; transition: background 0.15s; font-family: var(--font);
+    }
+    .start-btn:hover { background: var(--teal); }
+    .start-btn:disabled { background: var(--muted); cursor: not-allowed; }
+
+    .role-footer { margin-top: 1.25rem; text-align: center; font-size: 0.72rem; color: var(--muted); }
+    .role-footer a { color: var(--teal); text-decoration: none; }
+
+    #chat-screen {
+      display: none; flex-direction: column; height: 100vh;
+      max-width: 900px; margin: 0 auto; background: var(--white);
+      box-shadow: var(--shadow); padding-top: 56px;
+    }
+
+    .chat-header {
+      background: var(--navy); color: var(--white); padding: 0.9rem 1.25rem;
+      display: flex; align-items: center; justify-content: space-between; flex-shrink: 0;
+    }
+    .chat-header-left { display: flex; align-items: center; gap: 0.75rem; }
+    .agent-avatar {
+      width: 38px; height: 38px; background: var(--teal); border-radius: 50%;
+      display: flex; align-items: center; justify-content: center; font-size: 1.1rem; flex-shrink: 0;
+    }
+    .agent-name { font-weight: 700; font-size: 0.95rem; }
+    .agent-stage-badge {
+      font-size: 0.7rem; background: rgba(255,255,255,0.15); border-radius: 20px;
+      padding: 0.15rem 0.55rem; margin-top: 0.15rem; display: inline-block;
+    }
+    .header-actions { display: flex; gap: 0.5rem; }
+    .header-btn {
+      background: rgba(255,255,255,0.15); border: none; color: var(--white);
+      border-radius: 6px; padding: 0.4rem 0.7rem; font-size: 0.75rem;
+      cursor: pointer; font-family: var(--font); transition: background 0.15s;
+    }
+    .header-btn:hover { background: rgba(255,255,255,0.28); }
+
+    .domain-bar {
+      background: var(--teal-l); border-bottom: 1px solid var(--border);
+      padding: 0.45rem 1.25rem; display: flex; gap: 0.5rem; align-items: center;
+      overflow-x: auto; flex-shrink: 0;
+    }
+    .domain-bar-label { font-size: 0.68rem; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: 0.05em; white-space: nowrap; margin-right: 0.25rem; }
+    .domain-chip { font-size: 0.68rem; padding: 0.2rem 0.55rem; border-radius: 20px; background: var(--white); border: 1px solid var(--border); color: var(--navy); white-space: nowrap; font-weight: 500; }
+
+    .chat-messages {
+      flex: 1; overflow-y: auto; padding: 1.5rem 1.25rem;
+      display: flex; flex-direction: column; gap: 1rem;
+    }
+
+    .message { display: flex; gap: 0.75rem; max-width: 82%; }
+    .message.user { align-self: flex-end; flex-direction: row-reverse; }
+    .message.agent { align-self: flex-start; }
+
+    .msg-avatar {
+      width: 32px; height: 32px; border-radius: 50%; flex-shrink: 0;
+      display: flex; align-items: center; justify-content: center; font-size: 0.72rem; font-weight: 700;
+    }
+    .agent .msg-avatar { background: var(--navy); color: var(--white); }
+    .user  .msg-avatar { background: var(--teal); color: var(--white); }
+
+    .msg-bubble { padding: 0.85rem 1rem; border-radius: var(--radius); font-size: 0.9rem; line-height: 1.65; }
+    .agent .msg-bubble { background: var(--teal-l); border: 1px solid var(--border); border-top-left-radius: 3px; color: var(--text); }
+    .user  .msg-bubble { background: var(--navy); color: var(--white); border-top-right-radius: 3px; }
+    .msg-bubble strong { font-weight: 700; }
+    .msg-bubble em { font-style: italic; }
+    .msg-bubble p { margin-bottom: 0.55rem; }
+    .msg-bubble p:last-child { margin-bottom: 0; }
+    .msg-bubble ul, .msg-bubble ol { padding-left: 1.2rem; margin-bottom: 0.55rem; }
+    .msg-bubble li { margin-bottom: 0.25rem; }
+    .msg-bubble h3 { font-size: 0.92rem; font-weight: 700; margin-bottom: 0.35rem; color: var(--navy); }
+
+    .typing-indicator { display: flex; gap: 0.3rem; align-items: center; padding: 0.2rem 0; }
+    .typing-dot { width: 7px; height: 7px; background: var(--muted); border-radius: 50%; animation: pulse 1.2s ease-in-out infinite; }
+    .typing-dot:nth-child(2) { animation-delay: 0.2s; }
+    .typing-dot:nth-child(3) { animation-delay: 0.4s; }
+    @keyframes pulse { 0%,80%,100%{opacity:.3;transform:scale(.85)} 40%{opacity:1;transform:scale(1)} }
+
+    .draft-banner {
+      background: #fff8e6; border-top: 1px solid #f0c060;
+      padding: 6px 1.25rem; font-size: 0.72rem; color: #7a5a00;
+      display: none; align-items: center; gap: 6px; flex-shrink: 0;
+    }
+    .draft-banner.visible { display: flex; }
+
+    .chat-input-area { border-top: 1px solid var(--border); padding: 1rem 1.25rem; background: var(--white); flex-shrink: 0; }
+    .quick-starters { display: flex; gap: 0.5rem; flex-wrap: wrap; margin-bottom: 0.75rem; }
+    .qs-btn {
+      background: var(--teal-l); border: 1px solid var(--border); border-radius: 20px;
+      padding: 0.35rem 0.75rem; font-size: 0.75rem; color: var(--navy);
+      cursor: pointer; font-family: var(--font); transition: all 0.15s;
+    }
+    .qs-btn:hover { background: var(--teal); color: var(--white); border-color: var(--teal); }
+
+    .input-row { display: flex; gap: 0.6rem; align-items: flex-end; }
+    .chat-textarea {
+      flex: 1; min-height: 44px; max-height: 140px; padding: 0.65rem 0.9rem;
+      border: 1.5px solid var(--border); border-radius: 8px; font-family: var(--font);
+      font-size: 0.9rem; color: var(--text); resize: none; outline: none; transition: border-color 0.15s; line-height: 1.5;
+    }
+    .chat-textarea:focus { border-color: var(--teal); }
+    .chat-textarea::placeholder { color: var(--muted); }
+
+    .send-btn {
+      width: 44px; height: 44px; background: var(--navy); color: var(--white); border: none;
+      border-radius: 8px; cursor: pointer; display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0; transition: background 0.15s;
+    }
+    .send-btn:hover { background: var(--teal); }
+    .send-btn:disabled { background: var(--muted); cursor: not-allowed; }
+    .send-btn svg { width: 18px; height: 18px; }
+
+    .input-hint { margin-top: 0.4rem; font-size: 0.7rem; color: var(--muted); text-align: center; }
+
+    .powered-by {
+      text-align: center; font-size: 0.65rem; color: var(--muted);
+      padding: 0.35rem; background: var(--teal-l); border-top: 1px solid var(--border); flex-shrink: 0;
+    }
+    .powered-by a { color: var(--teal); text-decoration: none; }
+
+    .chat-messages::-webkit-scrollbar { width: 5px; }
+    .chat-messages::-webkit-scrollbar-thumb { background: var(--border); border-radius: 10px; }
+
+    @media (max-width: 600px) {
+      .stage-grid { grid-template-columns: 1fr; }
+      .message { max-width: 95%; }
+    }
+  </style>
+</head>
+<body>
+
+<header class="site-header">
+  <div style="display:flex; align-items:center; gap:12px;">
+    <img src="https://rockmouse.live/assets/rockmouse-logo-wide.svg" alt="RockMouse"
+         onerror="this.style.display='none'">
+    <span style="font-size:0.82rem; font-weight:600; color:var(--navy); border-left:1px solid var(--border); padding-left:12px;">Expert Practitioner Coach</span>
+  </div>
+</header>
+
+<div id="role-screen">
+  <div class="role-card">
+    <h1>Welcome to your practice environment</h1>
+    <p class="tagline">Select your HR career stage to begin. The coach calibrates its challenge level, language, and feedback to where you are.</p>
+    <div class="role-label">Your career stage</div>
+    <div class="stage-grid">
+      <button class="stage-btn" data-stage="Early Career" onclick="selectStage(this)">
+        <span class="stage-name">Early Career</span>
+        <span class="stage-cert">Student / Associate member</span>
+        <span class="stage-desc">Building foundational HR knowledge and first-role experience</span>
+      </button>
+      <button class="stage-btn" data-stage="Professional (PAHRI)" onclick="selectStage(this)">
+        <span class="stage-name">Professional</span>
+        <span class="stage-cert">PAHRI certified</span>
+        <span class="stage-desc">Competent practitioner managing real HR situations day-to-day</span>
+      </button>
+      <button class="stage-btn" data-stage="Certified (CPHR)" onclick="selectStage(this)">
+        <span class="stage-name">Certified</span>
+        <span class="stage-cert">CPHR certified</span>
+        <span class="stage-desc">Strategic HR thinker influencing senior leaders and business outcomes</span>
+      </button>
+      <button class="stage-btn" data-stage="Fellow / Fellow Certified (FAHRI)" onclick="selectStage(this)">
+        <span class="stage-name">Fellow</span>
+        <span class="stage-cert">FAHRI / Fellow Certified</span>
+        <span class="stage-desc">Senior HR leader operating at enterprise and board level</span>
+      </button>
+    </div>
+    <button class="start-btn" id="start-btn" onclick="startSession()" disabled>Start your practice session →</button>
+    <div class="role-footer">
+      Anchored to the Australian HR Capability Framework (AHRCF) ·
+      Developed by <a href="https://www.rockmouse.com.au" target="_blank">RockMouse</a>
+    </div>
+  </div>
+</div>
+
+<div id="chat-screen">
+  <div class="chat-header">
+    <div class="chat-header-left">
+      <div class="agent-avatar">🧠</div>
+      <div>
+        <div class="agent-name">Expert Practitioner</div>
+        <div class="agent-stage-badge" id="stage-badge">-</div>
+      </div>
+    </div>
+    <div class="header-actions">
+      <button class="header-btn" id="btn-copy" onclick="copyTranscript()">⬇ Copy transcript</button>
+      <button class="header-btn" onclick="clearChat()">New session</button>
+      <button class="header-btn" onclick="resetToRoleScreen()">Change stage</button>
+    </div>
+  </div>
+
+  <div class="domain-bar">
+    <span class="domain-bar-label">AHRCF Domains:</span>
+    <span class="domain-chip">Business Strategist</span>
+    <span class="domain-chip">Workforce Designer</span>
+    <span class="domain-chip">Culture &amp; Change</span>
+    <span class="domain-chip">Org Enabler</span>
+    <span class="domain-chip">Trusted Partner</span>
+  </div>
+
+  <div class="chat-messages" id="messages"></div>
+
+  <div class="draft-banner" id="draftBanner">
+    ⚠️ <strong>DRAFT</strong> — AI-generated output. Review before use.
+  </div>
+
+  <div class="chat-input-area">
+    <div class="quick-starters" id="quick-starters"></div>
+    <div class="input-row">
+      <textarea id="chat-input" class="chat-textarea" placeholder="Describe a situation, or pick a quick starter above…"
+        rows="1" onkeydown="handleKey(event)" oninput="autoResize(this)"></textarea>
+      <button class="send-btn" id="send-btn" onclick="sendMessage()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="22" y1="2" x2="11" y2="13"></line>
+          <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
+        </svg>
+      </button>
+    </div>
+    <div class="input-hint">Press Enter to send · Shift+Enter for new line</div>
+  </div>
+
+  <div class="powered-by">
+    RockMouse AI Agent Suite · Expert Practitioner ·
+    <a href="https://rockmouse.com.au" target="_blank">rockmouse.com.au</a> ·
+    For demonstration purposes · Not legal or certification advice
+  </div>
+</div>
+
+<script>
+const API_URL   = 'https://rockmouse-agent-proxy.craig-3c4.workers.dev';
+const API_TOKEN = 'EvcEETnK9mTErZ90CGguBccMdq2EbCV742tu5Gz4';
+const MODEL     = 'claude-sonnet-4-6';
+const MAX_TOKENS = 1500;
+
+const SYSTEM_PROMPT = `You are the Expert Practitioner — an AI learning agent in the RockMouse AI Learning Agent Suite.
+
+## Your Identity and Purpose
+
+You are NOT a chatbot or information tool. You are a practice environment and coaching partner for HR practitioners across Australia. Your role is to help HR professionals build real capability through doing — through roleplay, coached practice, structured challenge, and meaningful reflection.
+
+You are always-on, intellectually rigorous, warm in approach, and deeply knowledgeable across the full breadth of HR practice and the Australian HR Capability Framework (AHRCF).
+
+You span all six AHRCF domains:
+1. **Business Strategist** — Business acumen, people strategy, executive influence, data and metrics
+2. **Workforce & Workplace Designer** — Workforce planning, talent management, organisational design, future of work
+3. **Culture & Change Leader** — Culture activation, change management, stakeholder influence, employee experience
+4. **Organisational Enabler** — HR operations, compliance and governance, HR technology and analytics, continuous improvement
+5. **Trusted Partner** — Ethical practice, coaching and advisory, stakeholder management, difficult conversations
+6. **Expert Practitioner** (Overarching) — Integration of all domains, strategic HR leadership, professional judgment
+
+## AHRCF Career Stages
+
+Practitioners identify their career stage at the start of each session. You calibrate EVERYTHING — language, complexity, challenge level, feedback depth — to their stated stage:
+
+**Early Career** — Still building foundational HR knowledge. Needs scaffolding, explanation, encouragement. Scenarios: first role situations, unfamiliar legislation, standard HR processes. Language: accessible, encouraging, educational.
+
+**Professional (PAHRI)** — Competent practitioner, applied skills. Expects challenge without constant hand-holding. Scenarios: stakeholder management, policy application, moderate complexity ER. Language: peer-to-peer, professional, direct.
+
+**Certified (CPHR)** — Strategic thinker, leads HR initiatives. You play devil's advocate, introduce ambiguity, stress-test decisions. Scenarios: people strategy, complex ER, leadership influence, business cases. Language: strategic, commercially aware.
+
+**Fellow / Fellow Certified (FAHRI)** — Senior HR leader. You operate as a true peer — debate, challenge assumptions, surface ethical and systemic complexity. Scenarios: board-level HR, ethical dilemmas, legacy and societal impact. Language: sophisticated, nuanced.
+
+## The Four-Phase Learning Loop
+
+**Phase 1: Orient** — Welcome the practitioner. Confirm career stage and context. Set the scenario clearly.
+**Phase 2: Engage** — The practitioner makes decisions, advises stakeholders, navigates conflict. Play the counterpart role as needed.
+**Phase 3: Challenge** — Introduce complications. Push back. Add new information. Calibrate intensity to career stage.
+**Phase 4: Reflect** — Step out of role. Provide honest feedback. Map to AHRCF capability descriptors. Give a concrete next step.
+
+## Key Behaviours
+
+- **Direct and honest.** Do not inflate praise. If the answer was weak, say so — and help them improve it.
+- **Ask one powerful question at a time** unless structuring a debrief.
+- **Stay in role** during Engage and Challenge phases.
+- **Use Australian context.** Fair Work Act, NES, Modern Awards, Safe Work Australia, Australian Privacy Act.
+- **Never give legal advice.** Coach the practitioner to identify when to escalate to legal counsel.
+- **End every session** with AHRCF capability descriptors touched and a specific, practical next step.
+
+Get them into the practice quickly. Make it real. Make it matter.`;
+
+const QUICK_STARTERS = {
+  'Early Career': ['I have an unfamiliar ER situation','Help me understand the Fair Work Act','Practice a difficult conversation','What should I focus on for PAHRI?'],
+  'Professional (PAHRI)': ['Challenge me on stakeholder influence','Run a workforce planning scenario','I need to present to a skeptical manager','What does CPHR require vs where I am?'],
+  'Certified (CPHR)': ['Run a people strategy scenario','Play a resistant CFO — I need to convince you','Complex ER situation with legal risk','What separates CPHR from FAHRI?'],
+  'Fellow / Fellow Certified (FAHRI)': ['Board-level HR challenge','Ethical dilemma — multiple right answers','Organisational complexity scenario','Challenge my thinking on HR strategy'],
+};
+
+const STAGE_DESCRIPTIONS = {
+  'Early Career': "I'll guide you through scenarios with plenty of context and support.",
+  'Professional (PAHRI)': "I'll give you real challenge and direct feedback.",
+  'Certified (CPHR)': "I'll push you strategically and stress-test your thinking.",
+  'Fellow / Fellow Certified (FAHRI)': "I'll engage you as a peer — expect debate and edge cases.",
+};
+
+let selectedStage = null;
+let conversationHistory = [];
+let isLoading = false;
+
+function selectStage(btn) {
+  document.querySelectorAll('.stage-btn').forEach(b => b.classList.remove('selected'));
+  btn.classList.add('selected');
+  selectedStage = btn.dataset.stage;
+  document.getElementById('start-btn').disabled = false;
+}
+
+function startSession() {
+  if (!selectedStage) return;
+  document.getElementById('role-screen').style.display = 'none';
+  document.getElementById('chat-screen').style.display = 'flex';
+  document.getElementById('stage-badge').textContent = selectedStage;
+  populateQuickStarters();
+  showWelcome();
+  document.getElementById('chat-input').focus();
+}
+
+function populateQuickStarters() {
+  const qs = document.getElementById('quick-starters');
+  qs.innerHTML = '';
+  (QUICK_STARTERS[selectedStage] || []).forEach(s => {
+    const btn = document.createElement('button');
+    btn.className = 'qs-btn';
+    btn.textContent = s;
+    btn.onclick = () => { sendText(s); qs.innerHTML = ''; };
+    qs.appendChild(btn);
+  });
+}
+
+function showWelcome() {
+  const desc = STAGE_DESCRIPTIONS[selectedStage] || '';
+  const text = `Welcome. I am your **Expert Practitioner** — your thinking partner across all six AHRCF domains.\n\nYou have selected **${selectedStage}**. ${desc}\n\nWhat would you like to work on today? Describe a situation you are facing, pick one of the quick starters below, or just tell me where you are at.`;
+  addAgentMessage(text);
+  conversationHistory.push({ role: 'assistant', content: text });
+}
+
+function resetToRoleScreen() {
+  if (isLoading) return;
+  conversationHistory = [];
+  document.getElementById('messages').innerHTML = '';
+  document.getElementById('draftBanner').classList.remove('visible');
+  document.getElementById('chat-screen').style.display = 'none';
+  document.getElementById('role-screen').style.display = 'flex';
+  document.querySelectorAll('.stage-btn').forEach(b => b.classList.remove('selected'));
+  document.getElementById('start-btn').disabled = true;
+  selectedStage = null;
+}
+
+function clearChat() {
+  if (isLoading) return;
+  conversationHistory = [];
+  document.getElementById('messages').innerHTML = '';
+  document.getElementById('draftBanner').classList.remove('visible');
+  populateQuickStarters();
+  showWelcome();
+}
+
+function handleKey(e) {
+  if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendMessage(); }
+}
+
+function autoResize(el) {
+  el.style.height = 'auto';
+  el.style.height = Math.min(el.scrollHeight, 140) + 'px';
+}
+
+function sendMessage() {
+  const input = document.getElementById('chat-input');
+  const text = input.value.trim();
+  if (!text || isLoading) return;
+  input.value = ''; input.style.height = 'auto';
+  document.getElementById('quick-starters').innerHTML = '';
+  sendText(text);
+}
+
+async function sendText(text) {
+  if (isLoading) return;
+  addUserMessage(text);
+  conversationHistory.push({ role: 'user', content: text });
+  isLoading = true;
+  document.getElementById('send-btn').disabled = true;
+
+  const typingId = addTypingIndicator();
+  try {
+    const systemWithStage = SYSTEM_PROMPT + `\n\n---\n**Current practitioner career stage: ${selectedStage}**\nCalibrate all responses accordingly.`;
+    const res = await fetch(API_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${API_TOKEN}` },
+      body: JSON.stringify({ model: MODEL, max_tokens: MAX_TOKENS, system: systemWithStage, messages: conversationHistory })
+    });
+    removeTypingIndicator(typingId);
+    if (!res.ok) throw new Error('API error ' + res.status);
+    const data = await res.json();
+    const reply = (data.content.find(b => b.type === 'text') || {}).text || '';
+    conversationHistory.push({ role: 'assistant', content: reply });
+    addAgentMessage(reply);
+    document.getElementById('draftBanner').classList.add('visible');
+  } catch(err) {
+    removeTypingIndicator(typingId);
+    addAgentMessage('Something went wrong — please try again.');
+  }
+
+  isLoading = false;
+  document.getElementById('send-btn').disabled = false;
+  document.getElementById('chat-input').focus();
+}
+
+function addUserMessage(text) {
+  const wrap = document.getElementById('messages');
+  const div = document.createElement('div');
+  div.className = 'message user';
+  div.innerHTML = `<div class="msg-avatar">You</div><div class="msg-bubble">${escapeHtml(text)}</div>`;
+  wrap.appendChild(div); scrollBottom();
+}
+
+function addAgentMessage(text) {
+  const wrap = document.getElementById('messages');
+  const div = document.createElement('div');
+  div.className = 'message agent';
+  div.innerHTML = `<div class="msg-avatar">EP</div><div class="msg-bubble">${renderMarkdown(text)}</div>`;
+  wrap.appendChild(div); scrollBottom();
+}
+
+function addTypingIndicator() {
+  const wrap = document.getElementById('messages');
+  const id = 'typing-' + Date.now();
+  const div = document.createElement('div');
+  div.className = 'message agent'; div.id = id;
+  div.innerHTML = `<div class="msg-avatar">EP</div><div class="msg-bubble"><div class="typing-indicator"><div class="typing-dot"></div><div class="typing-dot"></div><div class="typing-dot"></div></div></div>`;
+  wrap.appendChild(div); scrollBottom();
+  return id;
+}
+
+function removeTypingIndicator(id) { const el = document.getElementById(id); if (el) el.remove(); }
+
+function renderMarkdown(text) {
+  let h = escapeHtml(text);
+  h = h.replace(/^### (.+)$/gm,'<h3>$1</h3>').replace(/^## (.+)$/gm,'<h3>$1</h3>');
+  h = h.replace(/\*\*(.+?)\*\*/g,'<strong>$1</strong>').replace(/\*(.+?)\*/g,'<em>$1</em>');
+  h = h.replace(/^[-•] (.+)$/gm,'<li>$1</li>').replace(/^(\d+)\. (.+)$/gm,'<li>$2</li>');
+  h = h.replace(/(<li>[\s\S]*?<\/li>(\n|$))+/g, m => '<ul>' + m + '</ul>');
+  h = h.replace(/\n\n/g,'</p><p>');
+  h = '<p>' + h + '</p>';
+  h = h.replace(/<p><\/p>/g,'').replace(/<p>(<[uh][l3])/g,'$1').replace(/(<\/[uh][l3]>)<\/p>/g,'$1').replace(/\n/g,'<br>');
+  return h;
+}
+
+function escapeHtml(t) {
+  if (!t) return '';
+  return String(t).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#039;');
+}
+
+function scrollBottom() { const m = document.getElementById('messages'); m.scrollTop = m.scrollHeight; }
+
+function copyTranscript() {
+  if (!conversationHistory.length) return;
+  const text = conversationHistory.map(m => `${m.role === 'user' ? 'You' : 'Expert Practitioner'}: ${m.content}`).join('\n\n');
+  navigator.clipboard.writeText(text).then(() => {
+    const btn = document.getElementById('btn-copy');
+    btn.textContent = '✓ Copied';
+    setTimeout(() => btn.textContent = '⬇ Copy transcript', 2000);
+  });
+}
+</script>
+</body>
+</html>
