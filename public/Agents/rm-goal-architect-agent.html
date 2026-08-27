@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Goal Architect | RockMouse</title>
+  <title>Goal Architect | RockMouse Labs</title>
   <style>
     :root {
       --teal-dark:   #0a4a4a;
@@ -90,7 +90,7 @@
     .welcome-icon {
       width: 52px;
       height: 52px;
-      background: var(--teal-light);
+      background: var(--teal);
       border-radius: 50%;
       display: flex;
       align-items: center;
@@ -498,7 +498,7 @@
 <!-- ── Header ──────────────────────────────────────────────────────────── -->
 <header class="rm-header">
   <div style="display:flex;align-items:center;gap:12px;">
-    <img src="https://rockmouse.live/assets/rockmouse-logo-wide.svg" alt="RockMouse" onerror="this.style.display='none'" style="height:26px;width:auto;filter:brightness(0) invert(1);">
+    <img src="https://rockmouse.live/assets/rockmouse-logo-wide.svg" alt="RockMouse Labs" onerror="this.style.display='none'" style="height:26px;width:auto;filter:brightness(0) invert(1);">
     <span style="border-left:1px solid rgba(255,255,255,0.25);padding-left:12px;font-size:13px;color:rgba(255,255,255,0.9);font-weight:600;">Goal Architect</span>
   </div>
 </header>
@@ -509,7 +509,7 @@
   <!-- Welcome screen -->
   <div id="welcome">
     <div class="welcome-hero">
-      <div class="welcome-icon">🎯</div>
+      <div class="welcome-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:26px;height:26px;"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1" fill="#fff" stroke="none"/></svg></div>
       <h1>Goal Architect</h1>
       <p>Turn a rough ambition into a goal that survives contact with reality. Through a short coaching conversation, we'll shape something specific, achievable, and connected to what your organisation actually cares about.</p>
 
@@ -555,7 +555,7 @@
     <div id="messages"></div>
     <div id="typing" style="display:none;">
       <div class="msg ai">
-        <div class="msg-avatar">🎯</div>
+        <div class="msg-avatar"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:18px;height:18px;"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1" fill="#fff" stroke="none"/></svg></div>
         <div class="typing-indicator">
           <div class="typing-dot"></div>
           <div class="typing-dot"></div>
@@ -602,7 +602,7 @@
         </div>
       </div>
       <div class="card-actions">
-        <button class="btn-action primary" id="copy-btn" onclick="copyCard()">📋 Copy Goal Card</button>
+        <button class="btn-action primary" id="copy-btn" onclick="copyCard()">Copy Goal Card</button>
         <button class="btn-action" id="download-btn" onclick="downloadCard()">⬇️ Download as .txt</button>
         <button class="new-goal-btn" onclick="resetSession()">↩ Start a new goal</button>
       </div>
@@ -622,7 +622,7 @@
 
 <script>
 // ── System prompt ────────────────────────────────────────────────────────────
-const SYSTEM_PROMPT = `You are Goal Architect — a workplace coaching AI built by RockMouse. Your role is to help employees turn rough ambitions into goals that survive contact with reality.
+const SYSTEM_PROMPT = `You are Goal Architect — a workplace coaching AI built by RockMouse Labs. Your role is to help employees turn rough ambitions into goals that survive contact with reality.
 
 You work through three phases. Move through them naturally — do not announce the phase names to the user.
 
@@ -738,7 +738,7 @@ function addUserMessage(text) {
   const div = document.createElement('div');
   div.className = 'msg user';
   div.innerHTML = `
-    <div class="msg-avatar">👤</div>
+    <div class="msg-avatar"><svg viewBox="0 0 24 24" fill="none" stroke="var(--teal-dark)" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="width:18px;height:18px;"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.5-7 8-7s8 3 8 7"/></svg></div>
     <div class="msg-bubble">${escapeHtml(text)}</div>
   `;
   container.appendChild(div);
@@ -756,7 +756,7 @@ function addAIMessage(text) {
     const div = document.createElement('div');
     div.className = 'msg ai';
     div.innerHTML = `
-      <div class="msg-avatar">🎯</div>
+      <div class="msg-avatar"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:18px;height:18px;"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1" fill="#fff" stroke="none"/></svg></div>
       <div class="msg-bubble">${formatAIText(display)}</div>
     `;
     container.appendChild(div);
@@ -891,7 +891,7 @@ function copyCard() {
     btn.textContent = '✓ Copied!';
     btn.classList.add('copied');
     setTimeout(() => {
-      btn.textContent = '📋 Copy Goal Card';
+      btn.textContent = 'Copy Goal Card';
       btn.classList.remove('copied');
     }, 2500);
   });
@@ -942,7 +942,7 @@ function buildCardText(data) {
     JSON.stringify(data, null, 2),
     '',
     '══════════════════════════════════════════════',
-    'Powered by RockMouse · rockmouse.com.au',
+    'Powered by RockMouse Labs · rockmouse.com.au',
   ];
   return lines.join('\n');
 }

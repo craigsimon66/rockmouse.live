@@ -95,6 +95,11 @@
     .tab:hover { color: var(--teal); background: var(--teal-light); border-radius: 6px 6px 0 0; }
     .tab.active { color: var(--teal); border-bottom-color: var(--teal); font-weight: 600; }
     .tab .icon { font-size: 15px; }
+    .tab .icon-badge{ width:20px; height:20px; border-radius:50%; display:inline-flex; align-items:center; justify-content:center; background: var(--grey); flex-shrink:0; transition: background 0.15s; }
+    .tab .icon-badge svg{ width:11px; height:11px; display:block; }
+    .tab:hover .icon-badge, .tab.active .icon-badge{ background: var(--teal-accent); }
+    .card-title .icon-badge.lg{ width:26px; height:26px; border-radius:50%; display:inline-flex; align-items:center; justify-content:center; background: var(--teal); flex-shrink:0; margin-right:4px; vertical-align:middle; }
+    .card-title .icon-badge.lg svg{ width:14px; height:14px; display:block; }
 
     /* MAIN LAYOUT */
     .main { max-width: 960px; margin: 0 auto; padding: 24px 16px 40px; }
@@ -310,7 +315,7 @@
 <!-- HEADER -->
 <div class="header">
   <div class="header-top">
-    <img class="header-logo" src="https://images.squarespace-cdn.com/content/v1/6822d1b5b766c4290ea84e02/7d67e4f6-5c93-4fd4-b1f6-6a4263c5c29e/RockMouse+Hero+logo+website.png?format=300w" alt="RockMouse">
+    <img class="header-logo" src="https://rockmouse.live/assets/rockmouse-logo-wide.svg" alt="RockMouse Labs">
     <div class="header-brand">
       <div class="rm">Cybernetic Teammate</div>
       <h1>Executive Cohesion Agent</h1>
@@ -323,19 +328,19 @@
 <!-- MODE TABS -->
 <div class="tabs">
   <button class="tab active" onclick="switchMode('diagnostic')">
-    <span class="icon">🔍</span> Diagnostic Intake
+    <span class="icon-badge"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><circle cx="10.5" cy="10.5" r="6.5"/><line x1="20" y1="20" x2="15.5" y2="15.5"/></svg></span> Diagnostic Intake
   </button>
   <button class="tab" onclick="switchMode('session')">
-    <span class="icon">📋</span> Session Design
+    <span class="icon-badge"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="4" width="14" height="17" rx="2"/><path d="M9 4V3a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v1"/><line x1="8.5" y1="11" x2="15.5" y2="11"/><line x1="8.5" y1="15" x2="15.5" y2="15"/></svg></span> Session Design
   </button>
   <button class="tab" onclick="switchMode('prompts')">
-    <span class="icon">💬</span> Facilitation Prompts
+    <span class="icon-badge"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5h16v11H8l-4 4V5z"/></svg></span> Facilitation Prompts
   </button>
   <button class="tab" onclick="switchMode('snapshot')">
-    <span class="icon">📊</span> Cohesion Snapshot
+    <span class="icon-badge"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="20" x2="19" y2="20"/><rect x="7" y="12" width="3" height="8"/><rect x="14" y="7" width="3" height="13"/></svg></span> Cohesion Snapshot
   </button>
   <button class="tab" onclick="switchMode('synthesis')">
-    <span class="icon">📝</span> Post-Session Synthesis
+    <span class="icon-badge"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20h4l10.5-10.5a2 2 0 0 0 0-2.8l-1.2-1.2a2 2 0 0 0-2.8 0L4 16v4z"/><line x1="13" y1="6" x2="18" y2="11"/></svg></span> Post-Session Synthesis
   </button>
 </div>
 
@@ -345,7 +350,7 @@
   <!-- ══════════════════ MODE 1: DIAGNOSTIC INTAKE ══════════════════ -->
   <div id="mode-diagnostic" class="mode-panel active">
     <div class="card">
-      <div class="card-title">🔍 Pre-Session Diagnostic Intake</div>
+      <div class="card-title" style="display:flex;align-items:center;"><span class="icon-badge lg"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="10.5" cy="10.5" r="6.5"/><line x1="20" y1="20" x2="15.5" y2="15.5"/></svg></span>Pre-Session Diagnostic Intake</div>
       <div class="card-desc">Gather client context to anchor the session design. Complete the fields below and the agent will produce a structured diagnostic summary for your review.</div>
       <div class="aps-badge">🏛 APS ILS Framework Active (EL2 · SES1 · SES2)</div>
 
@@ -422,7 +427,7 @@
   <!-- ══════════════════ MODE 2: SESSION DESIGN ══════════════════ -->
   <div id="mode-session" class="mode-panel">
     <div class="card">
-      <div class="card-title">📋 Session Design Generator</div>
+      <div class="card-title" style="display:flex;align-items:center;"><span class="icon-badge lg"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="4" width="14" height="17" rx="2"/><path d="M9 4V3a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v1"/><line x1="8.5" y1="11" x2="15.5" y2="11"/><line x1="8.5" y1="15" x2="15.5" y2="15"/></svg></span>Session Design Generator</div>
       <div class="card-desc">Paste your approved diagnostic summary and session parameters. The agent will produce a tailored discussion guide with sequenced questions, activities, and timing.</div>
       <div class="aps-badge">🏛 APS ILS Framework Active (EL2 · SES1 · SES2)</div>
 
@@ -480,7 +485,7 @@
   <!-- ══════════════════ MODE 3: FACILITATION PROMPTS ══════════════════ -->
   <div id="mode-prompts" class="mode-panel">
     <div class="card">
-      <div class="card-title">💬 Facilitation Prompt Bank</div>
+      <div class="card-title" style="display:flex;align-items:center;"><span class="icon-badge lg"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5h16v11H8l-4 4V5z"/></svg></span>Facilitation Prompt Bank</div>
       <div class="card-desc">Use this in real time during a session. Describe what's happening in the room and get targeted probes, reframes, and closing questions to keep the conversation productive.</div>
 
       <div class="field">
@@ -532,7 +537,7 @@
   <!-- ══════════════════ MODE 4: COHESION SNAPSHOT ══════════════════ -->
   <div id="mode-snapshot" class="mode-panel">
     <div class="card">
-      <div class="card-title">📊 Cohesion Health Snapshot</div>
+      <div class="card-title" style="display:flex;align-items:center;"><span class="icon-badge lg"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="20" x2="19" y2="20"/><rect x="7" y="12" width="3" height="8"/><rect x="14" y="7" width="3" height="13"/></svg></span>Cohesion Health Snapshot</div>
       <div class="card-desc">Based on what you've observed or gathered in your diagnostic, the agent will produce a structured narrative profile of this team's current cohesion health across key dimensions. This is an interpretive tool — not a scored assessment.</div>
       <div class="aps-badge">🏛 APS ILS Framework Active (EL2 · SES1 · SES2)</div>
 
@@ -580,7 +585,7 @@
   <!-- ══════════════════ MODE 5: POST-SESSION SYNTHESIS ══════════════════ -->
   <div id="mode-synthesis" class="mode-panel">
     <div class="card">
-      <div class="card-title">📝 Post-Session Synthesis Report</div>
+      <div class="card-title" style="display:flex;align-items:center;"><span class="icon-badge lg"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20h4l10.5-10.5a2 2 0 0 0 0-2.8l-1.2-1.2a2 2 0 0 0-2.8 0L4 16v4z"/><line x1="13" y1="6" x2="18" y2="11"/></svg></span>Post-Session Synthesis Report</div>
       <div class="card-desc">After the session, enter your facilitator notes. The agent will produce a polished debrief report with themes, insights, and next steps — ready for your review before sharing with the client.</div>
 
       <div class="field-row">
@@ -641,7 +646,7 @@
 </div><!-- /main -->
 
 <div class="footer">
-  Built by <a href="https://rockmouse.com.au" target="_blank">RockMouse</a> · All outputs are AI-generated drafts requiring human review · Data is not stored or retained
+  Built by <a href="https://rockmouse.com.au" target="_blank">RockMouse Labs</a> · All outputs are AI-generated drafts requiring human review · Data is not stored or retained
 </div>
 
 <script>
@@ -784,7 +789,7 @@ SES2: Pitches messages to facilitate desired outcomes; uses persuasive technique
 // ─────────────────────────────────────────────
 // SYSTEM PROMPT
 // ─────────────────────────────────────────────
-const SYSTEM_PROMPT = `You are the Executive Cohesion Cybernetic Teammate, a specialist AI facilitator support tool built by RockMouse for Yellow Edge — Performance Architects (www.yellowedge.com.au), based in Canberra, Australia.
+const SYSTEM_PROMPT = `You are the Executive Cohesion Cybernetic Teammate, a specialist AI facilitator support tool built by RockMouse Labs for Yellow Edge — Performance Architects (www.yellowedge.com.au), based in Canberra, Australia.
 
 Yellow Edge's Executive Cohesion service is designed to forge stronger bonds among top executives, including Boards, facilitating a deeper understanding and alignment of organisational goals, ensuring a united front in strategy and decision-making. Your role is to support Yellow Edge facilitators across five functions of an executive cohesion engagement.
 

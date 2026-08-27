@@ -144,7 +144,9 @@
   }
   .mode-btn:hover { border-color: var(--teal); background: var(--teal-light); }
   .mode-btn.active { border-color: var(--teal); background: var(--teal-light); }
-  .mode-btn .mode-icon { font-size: 1.1rem; flex-shrink: 0; margin-top: 1px; }
+  .mode-btn .mode-icon { width: 24px; height: 24px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; background: var(--grey-mid); flex-shrink: 0; transition: background 0.15s; }
+  .mode-btn .mode-icon svg { width: 13px; height: 13px; display: block; }
+  .mode-btn:hover .mode-icon, .mode-btn.active .mode-icon { background: var(--teal); }
   .mode-btn .mode-text { flex: 1; }
   .mode-btn .mode-title { font-size: 0.8rem; font-weight: 600; color: var(--teal-dark); display: block; }
   .mode-btn .mode-desc { font-size: 0.7rem; color: var(--grey-muted); display: block; margin-top: 1px; line-height: 1.35; }
@@ -389,7 +391,7 @@
 
 <header>
   <div class="logo">
-    <img src="https://images.squarespace-cdn.com/content/v1/6822d1b5b766c4290ea84e02/7d67e4f6-5c93-4fd4-b1f6-6a4263c5c29e/RockMouse+Hero+logo+website.png?format=300w" alt="RockMouse" />
+    <img src="https://rockmouse.live/assets/rockmouse-logo-wide.svg" alt="RockMouse Labs" />
   </div>
   <div class="header-divider"></div>
   <div class="header-title">
@@ -431,28 +433,28 @@
       <h3>What would you like to do?</h3>
       <div class="mode-grid">
         <button class="mode-btn active" data-mode="reflect" onclick="setMode(this)">
-          <span class="mode-icon">🔍</span>
+          <span class="mode-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="10.5" cy="10.5" r="6.5"/><line x1="20" y1="20" x2="15.5" y2="15.5"/></svg></span>
           <span class="mode-text">
             <span class="mode-title">Reflect on a situation</span>
             <span class="mode-desc">Unpack a recent leadership moment with guided questions</span>
           </span>
         </button>
         <button class="mode-btn" data-mode="ask" onclick="setMode(this)">
-          <span class="mode-icon">💡</span>
+          <span class="mode-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a5 5 0 0 1 5 5c0 2-1 3-2 4l-.5 2h-5L9 11c-1-1-2-2-2-4a5 5 0 0 1 5-5z"/><line x1="10" y1="17" x2="14" y2="17"/><line x1="10.5" y1="20" x2="13.5" y2="20"/></svg></span>
           <span class="mode-text">
             <span class="mode-title">Ask about a concept</span>
             <span class="mode-desc">Explore program ideas, models, or frameworks</span>
           </span>
         </button>
         <button class="mode-btn" data-mode="prepare" onclick="setMode(this)">
-          <span class="mode-icon">📋</span>
+          <span class="mode-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="4" width="14" height="17" rx="2"/><path d="M9 4V3a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v1"/><line x1="8.5" y1="11" x2="15.5" y2="11"/><line x1="8.5" y1="15" x2="15.5" y2="15"/></svg></span>
           <span class="mode-text">
             <span class="mode-title">Prepare for a session</span>
             <span class="mode-desc">Get ready for your next facilitated session</span>
           </span>
         </button>
         <button class="mode-btn" data-mode="consolidate" onclick="setMode(this)">
-          <span class="mode-icon">✅</span>
+          <span class="mode-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="5 13 9 17 19 7"/></svg></span>
           <span class="mode-text">
             <span class="mode-title">Consolidate learning</span>
             <span class="mode-desc">Turn session takeaways into on-the-job actions</span>
@@ -514,7 +516,7 @@
 //  KNOWLEDGE BASE — embedded system prompt
 // ─────────────────────────────────────────────
 const KNOWLEDGE_BASE = `
-You are the Transition to Leadership Insights Agent, built by RockMouse for use within the Transition to Leadership program. Your role is to act as a between-session learning partner for program participants — people who are moving from skilled managers or individual contributors into thinking, acting, and being leaders.
+You are the Transition to Leadership Insights Agent, built by RockMouse Labs for use within the Transition to Leadership program. Your role is to act as a between-session learning partner for program participants — people who are moving from skilled managers or individual contributors into thinking, acting, and being leaders.
 
 PROGRAM OVERVIEW
 The Transition to Leadership program equips aspiring leaders with what they need to know, do, and be in the initial and early stages of leadership. It runs across public, private, and not-for-profit sectors. It is not about positional authority — leadership is a mindset, a set of behaviours, and an identity that can be developed regardless of title or role.
@@ -776,7 +778,7 @@ function addAgentMessage(text) {
       <div class="draft-banner">⚠️ DRAFT — This output has been generated by AI and requires human review before use.</div>
       <div class="msg-bubble" id="${msgId}">${formatAgentText(text)}</div>
       <button class="copy-btn" onclick="copyText('${msgId}', this)">
-        📋 Copy output
+        Copy output
       </button>
     </div>
   `;
@@ -837,7 +839,7 @@ function copyText(bubbleId, btn) {
     btn.textContent = '✓ Copied';
     btn.classList.add('copied');
     setTimeout(() => {
-      btn.textContent = '📋 Copy output';
+      btn.textContent = 'Copy output';
       btn.classList.remove('copied');
     }, 2000);
   });

@@ -18,51 +18,51 @@ const PRINCIPLES = [
   { n:'P1', title:'Human-in-the-Loop Always',
     body:'Every AI output requires human review and explicit approval before it reaches learners, markers, or members. AI drafts; humans decide.' },
   { n:'P2', title:'Context Before Content',
-    body:"Every agent is anchored in the client's specific programs, rubrics, standards, and capability model — not generic AI outputs for a hypothetical learner." },
+    body:"Every agent is anchored in the client's specific programs, rubrics, standards, and capability model, not generic AI outputs for a hypothetical learner." },
   { n:'P3', title:'Additive, Not Disruptive',
     body:'Agents augment existing team workflows. They reduce the least rewarding manual work and redirect expert time to where judgement matters most.' },
   { n:'P4', title:'Data for Learning, Not Surveillance',
-    body:'Learner data informs personalised learning. It stays within the learning journey — never used for performance management or HR decisions.' },
+    body:'Learner data informs personalised learning. It stays within the learning journey, never used for performance management or HR decisions.' },
   { n:'P5', title:'Progressive Complexity',
-    body:'Pilots start narrow — one subject, one source, one use case. Confidence and governance frameworks are built before scaling. No big-bang deployments.' },
+    body:'Pilots start narrow: one subject, one source, one use case. Confidence and governance frameworks are built before scaling. No big-bang deployments.' },
   { n:'P6', title:'Easily Contextualised',
-    body:"Every agent is reshaped to the client's industry, tone, vocabulary, and evidence base. The same pattern drops into banking, health, education, or professional services — and feels local in each." }
+    body:"Every agent is reshaped to the client's industry, tone, vocabulary, and evidence base. The same pattern drops into banking, health, education, or professional services, and feels local in each." }
 ];
 
 /* ─── SIX AGENT TYPES ─── */
 const AGENT_TYPES = [
   { id:'content',    name:'Content Agent',        icon:'✦',  category:'content',
     blurb:'Monitors, drafts, updates, and maintains learning content so it stays current with regulatory, rubric, and subject-matter changes.',
-    detail:"Content agents act as the L&D team's editorial radar. They flag when a standard moves, when a rate table shifts, when an update lands — and draft revisions for human review. They also accelerate storyboarding from SME interviews and feedback.",
+    detail:"Content agents act as the L&D team's editorial radar. They flag when a standard moves, when a rate table shifts, when an update lands, then draft revisions for human review. They also accelerate storyboarding from SME interviews and feedback.",
     colour:'#5ca2d5' },
   { id:'insights',   name:'Insights Agent',       icon:'◉',  category:'learning',
-    blurb:'Clusters, analyses, and surfaces patterns from qualitative input — individual reflection, cohort data, or organisational signals.',
-    detail:'Insights agents take unstructured learner voice (surveys, verbatims, reflections, check-ins) and turn it into usable signal. They surface what a cohort is struggling with, where energy sits, which themes recur — without exposing individual PII.',
+    blurb:'Clusters, analyses, and surfaces patterns from qualitative input: individual reflection, cohort data, or organisational signals.',
+    detail:'Insights agents take unstructured learner voice (surveys, verbatims, reflections, check-ins) and turn it into usable signal. They surface what a cohort is struggling with, where energy sits, which themes recur, without exposing individual PII.',
     colour:'#5c3daa' },
   { id:'scenario',   name:'Scenario Coach',       icon:'▶',  category:'learning',
     blurb:'Delivers branching dilemmas, stress-tests positions, and gives personalised decision coaching in realistic workplace moments.',
-    detail:"Scenario agents simulate the tough conversations: the difficult stakeholder, the ethical edge case, the messy ambiguity. They generate branching choices, surface consequences, play devil's advocate — then debrief against the client's capability model.",
+    detail:"Scenario agents simulate the tough conversations: the difficult stakeholder, the ethical edge case, the messy ambiguity. They generate branching choices, surface consequences, play devil's advocate, then debrief against the client's capability model.",
     colour:'#0f7a8c' },
   { id:'mapper',     name:'Mapper / Connector',   icon:'◈',  category:'learning',
-    blurb:"Maps tasks, skills, people, and goals — connecting what a learner knows to what's possible next.",
-    detail:"Mappers take a collection of experiences and turn them into a developmental narrative. Placement primers, career compasses, capability maps, pathway recommenders — all work by linking the learner's state to the program's structure.",
+    blurb:"Maps tasks, skills, people, and goals, connecting what a learner knows to what's possible next.",
+    detail:"Mappers take a collection of experiences and turn them into a developmental narrative. Placement primers, career compasses, capability maps, pathway recommenders: all work by linking the learner's state to the program's structure.",
     colour:'#1a6b3c' },
   { id:'cyber',      name:'Cybernetic Teammate',  icon:'◆',  category:'learning',
     blurb:'A live collaborative partner inside group work, team formation, peer coaching, and workshop settings.',
     detail:"Unlike solo coaches, a teammate sits inside the team's own work. It pulls together what different people in the room already know, names the assumptions nobody's said out loud, and helps the group work through ambiguity together, in real time.",
     colour:'#8b3d10' },
   { id:'assessment', name:'Assessment Agent',     icon:'⬢',  category:'assessment',
-    blurb:'Marks learner work, drafts formative feedback, and calibrates scoring consistency — with human sign-off before release.',
-    detail:'Assessment agents produce draft feedback against a rubric (knowledge checks, case studies, essays) and flag calibration drift across markers. Humans remain the decision-makers — agents do the heavy drafting and consistency work.',
+    blurb:'Marks learner work, drafts formative feedback, and calibrates scoring consistency, with human sign-off before release.',
+    detail:'Assessment agents produce draft feedback against a rubric (knowledge checks, case studies, essays) and flag calibration drift across markers. Humans remain the decision-makers; agents do the heavy drafting and consistency work.',
     colour:'#d4681a' }
 ];
 
 /* ─── SOURCE METADATA (internal only — not displayed) ─── */
 const SOURCES = {
-  iag:       { name:'RockMouse', colour:'#075C83' },
-  deakinco:  { name:'RockMouse', colour:'#075C83' },
-  caanz:     { name:'RockMouse', colour:'#075C83' },
-  greatreset:{ name:'RockMouse', colour:'#075C83' }
+  iag:       { name:'RockMouse Labs', colour:'#075C83' },
+  deakinco:  { name:'RockMouse Labs', colour:'#075C83' },
+  caanz:     { name:'RockMouse Labs', colour:'#075C83' },
+  greatreset:{ name:'RockMouse Labs', colour:'#075C83' }
 };
 
 /* ─── AUDIENCE METADATA ─── */
@@ -97,21 +97,21 @@ const AGENTS = [
     file:        'Agents/rm-expert-practitioner-agent.html',
     tags:        'HR coaching AHRCF capability framework career stage professional',
     sampleInput: 'I am a PAHRI-certified HR professional. A senior leader is bypassing our recruitment process to bring in someone externally without going through proper channels. How should I handle this?',
-    sampleOutput: 'This is a classic Trusted Partner challenge — you are being asked to hold a standard that a senior leader finds inconvenient. The AHRCF would position this as a test of your professional integrity and your ability to influence upward without losing the relationship.\n\nThree things to consider:\n1. Separate the relationship from the position. You can push back on the process without making it personal.\n2. Name the risk explicitly — not to threaten, but to inform. "I want to flag the risk this creates for equity and legal exposure" lands differently than "you can\'t do this."\n3. Offer a path. Can the external candidate still be assessed through an expedited process? Giving the leader a way forward makes your pushback easier to accept.\n\nWhat is your relationship with this leader like — and has this happened before?'
+    sampleOutput: 'This is a classic Trusted Partner challenge: you are being asked to hold a standard that a senior leader finds inconvenient. The AHRCF would position this as a test of your professional integrity and your ability to influence upward without losing the relationship.\n\nThree things to consider:\n1. Separate the relationship from the position. You can push back on the process without making it personal.\n2. Name the risk explicitly, not to threaten, but to inform. "I want to flag the risk this creates for equity and legal exposure" lands differently than "you can\'t do this."\n3. Offer a path. Can the external candidate still be assessed through an expedited process? Giving the leader a way forward makes your pushback easier to accept.\n\nWhat is your relationship with this leader like, and has this happened before?'
   },
 
   {
     id:          'soft-skills-drill',
     name:        'Soft Skills Drill',
     tagline:     'Roleplay high-stakes professional conversations before they happen',
-    description: 'Choose a scenario — senior partner pressure, difficult client, ethical dilemma — and practise the conversation with a live AI coach. You receive a structured debrief on completion anchored to professional competencies.',
+    description: 'Choose a scenario (senior partner pressure, difficult client, ethical dilemma) and practise the conversation with a live AI coach. You receive a structured debrief on completion anchored to professional competencies.',
     category:    'learning',
     audience:    'professional',
     type:        'scenario',
     file:        'Agents/rm-soft-skills-drill-agent.html',
     tags:        'roleplay scenario practice conversation skills debrief ethics pressure',
     sampleInput: 'I need to practise pushing back on a senior stakeholder who wants me to fast-track an approval, skipping a standard compliance check.',
-    sampleOutput: 'Let\'s run the scenario. I\'ll play the senior stakeholder.\n\n"Look, I need this signed off by end of day. The client is waiting and we\'ve done this kind of deal a hundred times. Just process it — I\'ll take responsibility if anything comes up."\n\nYour move. How do you respond?'
+    sampleOutput: 'Let\'s run the scenario. I\'ll play the senior stakeholder.\n\n"Look, I need this signed off by end of day. The client is waiting and we\'ve done this kind of deal a hundred times. Just process it. I\'ll take responsibility if anything comes up."\n\nYour move. How do you respond?'
   },
 
   {
@@ -125,14 +125,14 @@ const AGENTS = [
     file:        'Agents/rm-debate-coach-agent.html',
     tags:        'debate challenge reasoning critical thinking dilemma argument',
     sampleInput: 'We should launch the new customer process next month even though testing is not complete. The business pressure is real and we can fix issues as they arise.',
-    sampleOutput: 'I\'ll take the opposing position.\n\n"Fix issues as they arise" is a strategy that transfers risk from the organisation to your customers — and you\'re making that decision without their knowledge or consent. That\'s not agility, it\'s externalising your quality problem.\n\nThe business pressure is real, but it\'s not new information. If testing isn\'t complete, one of two things is true: either the timeline was always unrealistic, or scope crept. Both of those are internal failures. Launching early doesn\'t fix either — it just adds a third failure on top.\n\nWhat specifically breaks if you delay by two weeks? I want a number, not a feeling.'
+    sampleOutput: 'I\'ll take the opposing position.\n\n"Fix issues as they arise" is a strategy that transfers risk from the organisation to your customers, and you\'re making that decision without their knowledge or consent. That\'s externalising your quality problem, not agility.\n\nThe business pressure is real, but it\'s not new information. If testing isn\'t complete, one of two things is true: either the timeline was always unrealistic, or scope crept. Both of those are internal failures. Launching early doesn\'t fix either; it just adds a third failure on top.\n\nWhat specifically breaks if you delay by two weeks? I want a number, not a feeling.'
   },
 
   /* ── Mapper / Profile ── */
   {
     id:          'disc-coach',
     name:        'DISC Coach',
-    tagline:     'From profile to practice — what your working style means for you',
+    tagline:     'From profile to practice: what your working style means for you',
     description: 'Select your DISC style (or let the coach identify it through conversation) and work through four targeted coaching questions. Output is a personalised Working Style Brief you can share with a new manager on Day 1.',
     category:    'learning',
     audience:    'professional',
@@ -140,21 +140,21 @@ const AGENTS = [
     file:        'Agents/rm-disc-profiler-agent.html',
     tags:        'DISC profile working style self-awareness collaboration manager coaching',
     sampleInput: 'My primary DISC style is C — Conscientiousness. I am joining a fast-moving team and my new manager is a high-D. I want to understand how to make this work.',
-    sampleOutput: 'That C–D combination is one of the most productive — and most friction-prone — pairings in any team.\n\nHere is what your C style is likely to experience:\n— Your instinct is to get it right before you get it done. Your manager\'s instinct is to get it done and fix it later. Neither is wrong, but they will collide.\n— You will want more context before committing. They will read that as hesitation or lack of confidence.\n— Your thoroughness will sometimes be experienced as slowness, even when it\'s preventing expensive mistakes.\n\nFirst coaching question: When you think about the last time your C style caused friction with a faster-moving colleague — what was actually happening beneath the surface?'
+    sampleOutput: 'That C–D combination is one of the most productive (and most friction-prone) pairings in any team.\n\nHere is what your C style is likely to experience:\n— Your instinct is to get it right before you get it done. Your manager\'s instinct is to get it done and fix it later. Neither is wrong, but they will collide.\n— You will want more context before committing. They will read that as hesitation or lack of confidence.\n— Your thoroughness will sometimes be experienced as slowness, even when it\'s preventing expensive mistakes.\n\nFirst coaching question: When you think about the last time your C style caused friction with a faster-moving colleague — what was actually happening beneath the surface?'
   },
 
   {
     id:          'goal-architect',
     name:        'Goal Architect',
     tagline:     'Turn vague intentions into structured, measurable goals',
-    description: 'Works with the learner to transform fuzzy development intentions into well-formed goals with clear measures, milestones, and accountability — ready to drop into a development plan.',
+    description: 'Works with the learner to transform fuzzy development intentions into well-formed goals with clear measures, milestones, and accountability, ready to drop into a development plan.',
     category:    'learning',
     audience:    'leadership',
     type:        'mapper',
     file:        'Agents/rm-goal-architect-agent.html',
     tags:        'goals development planning milestones accountability leadership growth',
     sampleInput: 'I want to become a better communicator and improve how I present to the executive team.',
-    sampleOutput: 'Good starting point — but "better communicator" is doing a lot of work there. Let\'s get specific.\n\nWhen you say you want to improve how you present to the executive team, what is actually happening right now that you want to change? Are you losing the room? Getting too deep into detail? Struggling with questions? Not getting the decisions you need?\n\nThe goal we build will only be useful if it targets the real problem — so tell me: what happened in the last executive presentation that made you think "I need to get better at this"?'
+    sampleOutput: 'Good starting point, but "better communicator" is doing a lot of work there. Let\'s get specific.\n\nWhen you say you want to improve how you present to the executive team, what is actually happening right now that you want to change? Are you losing the room? Getting too deep into detail? Struggling with questions? Not getting the decisions you need?\n\nThe goal we build will only be useful if it targets the real problem, so tell me: what happened in the last executive presentation that made you think "I need to get better at this"?'
   },
 
   /* ── Insights ── */
@@ -169,7 +169,7 @@ const AGENTS = [
     file:        'Agents/rm-ttl-insights-agent.html',
     tags:        'leadership transition coaching reflection insights TTL know do be identity emerging leaders',
     sampleInput: 'I had a difficult situation this week. One of my team members came to me frustrated about a decision I made without consulting them. I explained my reasoning but they didn\'t seem satisfied. I\'m not sure what I should have done differently.',
-    sampleOutput: 'That\'s a really common early leadership moment — and the fact that it\'s sitting with you says something useful about your instincts.\n\nLet\'s look at it through the Know / Do / Be lens.\n\nWhat might be happening here (KNOW): When we move into leadership, our decisions start affecting other people\'s work and sense of autonomy. Even a well-reasoned decision can land poorly if the person affected didn\'t have a voice in it. This is often less about the decision itself and more about the process — people need to feel heard before they can feel informed.\n\nWhat you might explore (DO): The next time a decision affects someone directly, consider a brief conversation before you decide — not to hand over the decision, but to understand their perspective. "I\'m thinking about X — what am I not seeing from where you sit?" This builds trust over time, even when you still make the call.\n\nThe deeper shift (BE): This is the transition from being the expert who has the answers to being the leader who creates the conditions for good outcomes. That shift takes time — and discomfort like this is usually where it happens.\n\nWhat felt hardest about that conversation — the criticism itself, or not knowing how to respond to it?'
+    sampleOutput: 'That\'s a really common early leadership moment, and the fact that it\'s sitting with you says something useful about your instincts.\n\nLet\'s look at it through the Know / Do / Be lens.\n\nWhat might be happening here (KNOW): When we move into leadership, our decisions start affecting other people\'s work and sense of autonomy. Even a well-reasoned decision can land poorly if the person affected didn\'t have a voice in it. This is often less about the decision itself and more about the process; people need to feel heard before they can feel informed.\n\nWhat you might explore (DO): The next time a decision affects someone directly, consider a brief conversation before you decide — not to hand over the decision, but to understand their perspective. "I\'m thinking about X. What am I not seeing from where you sit?" This builds trust over time, even when you still make the call.\n\nThe deeper shift (BE): This is the transition from being the expert who has the answers to being the leader who creates the conditions for good outcomes. That shift takes time, and discomfort like this is usually where it happens.\n\nWhat felt hardest about that conversation: the criticism itself, or not knowing how to respond to it?'
   },
 
   /* ── Cybernetic Teammate ── */
@@ -184,51 +184,50 @@ const AGENTS = [
     file:        'Agents/rm-executive-cohesion-agent.html',
     tags:        'executive cohesion team dynamics trust facilitation Yellow Edge APS leadership board strategy',
     sampleInput: 'I am facilitating a half-day cohesion session next week with a 7-person SES Band 1 executive team in a federal agency. A recent restructure has created tension between two divisions. The team has not worked together formally as a group before. My goal is to build enough trust to have an honest conversation about strategic priorities.',
-    sampleOutput: 'Pre-Session Diagnostic Summary\n\nContext: Newly formed SES Band 1 executive team, 7 members, federal agency. Post-restructure tension between two divisional groups. No prior formal team engagement.\n\nCohesion risk factors to hold:\n— Identity fragmentation: members may still carry loyalty to previous structures rather than the new team\n— Asymmetric information: some members will know more about the restructure rationale than others — this creates a trust gap before the session begins\n— Authority ambiguity: without an established team contract, individuals may be unclear about decision rights and what "strategic priorities" actually means in their context\n\nSession design considerations:\n— Open with individual voice before group voice — give each person a low-stakes way to name what they are bringing into the room\n— Frame the session around the team\'s shared mandate, not the restructure — don\'t let the backstory become the main story\n— Use the ILS cluster "Cultivates Productive Working Relationships" as your reference point for the trust-building activities\n\n⚠️ DRAFT — Requires Yellow Edge facilitator review before use with any client.'
+    sampleOutput: 'Pre-Session Diagnostic Summary\n\nContext: Newly formed SES Band 1 executive team, 7 members, federal agency. Post-restructure tension between two divisional groups. No prior formal team engagement.\n\nCohesion risk factors to hold:\n— Identity fragmentation: members may still carry loyalty to previous structures rather than the new team\n— Asymmetric information: some members will know more about the restructure rationale than others; this creates a trust gap before the session begins\n— Authority ambiguity: without an established team contract, individuals may be unclear about decision rights and what "strategic priorities" actually means in their context\n\nSession design considerations:\n— Open with individual voice before group voice: give each person a low-stakes way to name what they are bringing into the room\n— Frame the session around the team\'s shared mandate, not the restructure; don\'t let the backstory become the main story\n— Use the ILS cluster "Cultivates Productive Working Relationships" as your reference point for the trust-building activities\n\n⚠️ DRAFT: Requires Yellow Edge facilitator review before use with any client.'
   },
 
   /* ── Assessment ── */
   {
     id:          'assessment-agent',
     name:        'Assessment Agent',
-    tagline:     'Knowledge check and readiness mapping before formal assessment',
-    description: 'Mode A: presents questions mapped to learning outcomes, analyses responses, and delivers an instant readiness report with a personalised study path. No PII required. Mode B: marker-assist generates draft feedback against a rubric for human review before release.',
+    tagline:     'Knowledge check and readiness mapping across Financial Services, Enterprise WHS, and public sector capability frameworks',
+    description: 'A framework selector on top of two assessment modes. Mode A: presents questions mapped to learning outcomes, analyses responses, and delivers an instant readiness report with a personalised study path. No PII required. Mode B: marker-assist generates draft feedback against a rubric for human review before release. Ships with three example frameworks: Financial Services, Enterprise WHS (including psychological safety), and a government capability model (ILS), each swapped in without touching the underlying logic.',
     category:    'assessment',
     audience:    'professional',
     type:        'assessment',
     file:        'Agents/rm-assessment-agent.html',
-    tags:        'assessment knowledge check readiness rubric feedback marking professional',
+    tags:        'assessment knowledge check readiness rubric feedback marking professional WHS work health and safety psychological safety government capability ILS public sector',
     sampleInput: 'I would like a knowledge check on professional ethics and independence standards before my upcoming assessment.',
-    sampleOutput: 'Let\'s check your readiness across three areas: independence requirements, conflict of interest identification, and ethical decision-making frameworks.\n\nQuestion 1 of 6:\n\nA client asks you to review a set of financial statements that were prepared by your firm\'s advisory division last year. You have no personal involvement in the advisory engagement. Identify the specific independence threat this creates and describe how you would respond.\n\nTake your time — I\'m looking for the threat type, the severity assessment, and your proposed safeguard.'
+    sampleOutput: 'Let\'s check your readiness across three areas: independence requirements, conflict of interest identification, and ethical decision-making frameworks.\n\nQuestion 1 of 6:\n\nA client asks you to review a set of financial statements that were prepared by your firm\'s advisory division last year. You have no personal involvement in the advisory engagement. Identify the specific independence threat this creates and describe how you would respond.\n\nTake your time. I\'m looking for the threat type, the severity assessment, and your proposed safeguard.'
   },
 
   /* ── Content ── */
+
   {
-    id:          'content-currency',
-    name:        'Content Currency Agent',
-    tagline:     'Monitor the world so your content team doesn\'t have to',
-    description: 'Paste a topic or content area and the agent scans for recent regulatory, standards, or research changes that may affect your content. Generates a structured change brief for the content owner to review and act on.',
+    id:          'compass-designer',
+    name:        'Compass Learning Designer',
+    tagline:     'Upload a unit of competency: get a complete learning design',
+    description: 'Upload a TGA unit PDF and training strategy document. Compass extracts the competency requirements and generates a structured learning design: session plan, activities, and assessment mapping, all aligned to ASQA standards.',
     category:    'content',
     audience:    'orgwide',
     type:        'content',
-    file:        'Agents/rm-content-currency-agent.html',
-    tags:        'content currency regulatory update standards monitoring brief L&D',
-    sampleInput: 'Check for recent changes to Australian independence and ethics standards in professional accounting that might affect our continuing professional development content.',
-    sampleOutput: 'Content Currency Brief — Professional Ethics & Independence\nGenerated: June 2026\n\nSources monitored: APES 110, APESB updates, ASIC regulatory releases, IFAC ethics board\n\nChanges detected requiring content review:\n\n1. APES 110 — Revised fee disclosure requirements (effective 1 Jan 2026)\nImpact: Any module covering client acceptance or engagement management needs updating. The new thresholds and disclosure triggers differ from the 2023 version.\nRecommended action: Update module 3.2, review assessment questions in section 4.\n\n2. ASIC guidance on independence in audit (March 2026 update)\nImpact: Low — guidance aligns with existing APES 110 content. No immediate update required.\n\nHuman gate: This brief requires content owner review before any changes are made to materials.'
+    file:        'Agents/rm-compass-learning-designer-agent.html',
+    tags:        'VET learning design unit competency TGA ASQA session plan assessment mapping',
+    sampleInput: 'Upload your TGA unit PDF and Training and Assessment Strategy to generate a full learning design.',
+    sampleOutput: 'Compass Design Output\n\nUnit: BSBCRT311 — Apply critical thinking skills in a team environment\n\nSession Plan (3 x 90-minute sessions):\n\nSession 1 — What is critical thinking?\nOpening activity: Assumption mapping (20 min)\nContent: Four critical thinking dispositions: clarity, accuracy, relevance, logic (30 min)\nPractice: Case analysis in pairs (30 min)\nClose: Reflection prompt (10 min)\n\nAssessment mapping:\nKE1 → Session 1 content activity\nKE2 → Session 2 group task\nPE1, PE2 → Session 3 workplace simulation\n\n⚠️ Compass disclaimer: Validate all content against current TGA requirements before use.'
   },
 
   {
-    id:          'spark-designer',
-    name:        'SPARK Learning Designer',
-    tagline:     'Upload a unit of competency — get a complete learning design',
-    description: 'Upload a TGA unit PDF and training strategy document. SPARK extracts the competency requirements and generates a structured learning design: session plan, activities, and assessment mapping — all aligned to ASQA standards.',
+    id:          'elsa',
+    name:        'ELSA',
+    tagline:     'Automated elearning content creation',
+    description: 'An automated elearning content creation tool. ELSA runs as its own workspace rather than an embedded chat demo; this card links straight through to it.',
     category:    'content',
     audience:    'orgwide',
     type:        'content',
-    file:        'Agents/rm-spark-learning-designer-agent.html',
-    tags:        'VET learning design unit competency TGA ASQA session plan assessment mapping',
-    sampleInput: 'Upload your TGA unit PDF and Training and Assessment Strategy to generate a full learning design.',
-    sampleOutput: 'SPARK Design Output\n\nUnit: BSBCRT311 — Apply critical thinking skills in a team environment\n\nSession Plan (3 x 90-minute sessions):\n\nSession 1 — What is critical thinking?\nOpening activity: Assumption mapping (20 min)\nContent: Four critical thinking dispositions — clarity, accuracy, relevance, logic (30 min)\nPractice: Case analysis in pairs (30 min)\nClose: Reflection prompt (10 min)\n\nAssessment mapping:\nKE1 → Session 1 content activity\nKE2 → Session 2 group task\nPE1, PE2 → Session 3 workplace simulation\n\n⚠️ SPARK disclaimer: Validate all content against current TGA requirements before use.'
+    file:        'https://elsa.rockmouse.live',
+    tags:        'elearning content creation automation authoring'
   },
 
   /* ── Scenario ── */
@@ -236,14 +235,14 @@ const AGENTS = [
     id:          'speakup-scenario',
     name:        'SpeakUp Scenario Coach',
     tagline:     'Practise speaking up in difficult workplace situations',
-    description: 'The agent presents realistic workplace scenarios where the right move is to say something — to a peer, manager, or client. Practise the conversation with the AI, then debrief on what worked and what to sharpen.',
+    description: 'The agent presents realistic workplace scenarios where the right move is to say something: to a peer, manager, or client. Practise the conversation with the AI, then debrief on what worked and what to sharpen.',
     category:    'learning',
     audience:    'grad',
     type:        'scenario',
     file:        'Agents/rm-rockmouse-speakup-scenario-agent.html',
     tags:        'speak up voice graduate workplace courage conversation practice',
     sampleInput: 'A colleague made a comment in a team meeting that I found inappropriate. I am not sure whether to say something or let it go.',
-    sampleOutput: 'This is exactly the kind of moment that matters — and the fact that you\'re unsure whether to act is completely normal. Let\'s work through it.\n\nFirst: what makes you hesitate? Is it uncertainty about whether the comment was actually inappropriate, concern about the relationship, worry about how it\'ll land, or something else?\n\nThat answer shapes everything about how — and whether — you speak up.'
+    sampleOutput: 'This is exactly the kind of moment that matters, and the fact that you\'re unsure whether to act is completely normal. Let\'s work through it.\n\nFirst: what makes you hesitate? Is it uncertainty about whether the comment was actually inappropriate, concern about the relationship, worry about how it\'ll land, or something else?\n\nThat answer shapes everything about how, and whether, you speak up.'
   },
 
 ];
@@ -455,7 +454,7 @@ function buildSystemPrompt(a){
   const aud = AUDIENCES[a.audience];
   const cat = CATEGORIES[a.category];
   return [
-    "You are a RockMouse AI agent operating inside a workplace learning program.",
+    "You are a RockMouse Labs AI agent operating inside a workplace learning program.",
     `AGENT: ${a.name}`,
     `PATTERN: ${t.name} — ${t.blurb}`,
     `CATEGORY: ${cat.name} — ${cat.blurb}`,
@@ -490,7 +489,7 @@ async function runAgent(id){
     await new Promise(r=>setTimeout(r,700));
     const fallback = a.sampleOutput || 'This agent would produce a structured response based on the input above, anchored to the program context, learner history, and rubric.';
     window._lastAgentResult.output = fallback;
-    output.innerHTML = `<div class="demo-banner">⚠ Demo mode — proxy not configured. Showing canned sample output. See <code>proxy/DEPLOY.md</code> to enable live Claude responses.</div>` +
+    output.innerHTML = `<div class="demo-banner">⚠ Demo mode: proxy not configured. Showing canned sample output. See <code>proxy/DEPLOY.md</code> to enable live Claude responses.</div>` +
                        fallback.replace(/\n/g,'<br>');
     return;
   }
@@ -549,7 +548,7 @@ async function downloadDocx(id){
   if(!d){ alert('Docx library still loading. Try again in a second.'); return; }
 
   const t = AGENT_TYPES.find(x=>x.id===a.type);
-  const s = SOURCES[a.source] || { name: 'RockMouse' }; // no agent sets a.source today — this fallback stops the download crashing
+  const s = SOURCES[a.source] || { name: 'RockMouse Labs' }; // no agent sets a.source today — this fallback stops the download crashing
   const cat = CATEGORIES[a.category];
   const aud = AUDIENCES[a.audience];
 
@@ -643,7 +642,7 @@ async function downloadDocx(id){
     new d.Paragraph({
       spacing:{ before:80 },
       children:[ new d.TextRun({
-        text:'Generated by the RockMouse AI Agents showcase — hello@rockmouse.com.au · rockmouse.com.au',
+        text:'Generated by the RockMouse Labs AI Agents showcase — hello@rockmouse.com.au · rockmouse.com.au',
         size:16, color:GREY
       }) ]
     })
@@ -657,7 +656,7 @@ async function downloadDocx(id){
   }
 
   const doc = new d.Document({
-    creator:'RockMouse',
+    creator:'RockMouse Labs',
     title:a.name,
     styles:{ default:{ document:{ run:{ font:'DM Sans', size:22, color:INK } } } },
     sections:[{
@@ -689,8 +688,28 @@ function closeGate(){
   const g = document.getElementById('rm-gate');
   if(g){ g.classList.remove('open'); g.setAttribute('aria-hidden','true'); document.body.style.overflow=''; }
 }
+/* Shared login state across all *.rockmouse.live subdomains (e.g. elsa.rockmouse.live).
+   localStorage is per-origin and can't cross subdomains, so once a visitor is
+   known we also mirror the email into a cookie scoped to the whole domain. */
+function setSharedCookie(name, value, days){
+  try {
+    const maxAge = days * 24 * 60 * 60;
+    document.cookie = `${name}=${encodeURIComponent(value)}; domain=.rockmouse.live; path=/; max-age=${maxAge}; Secure; SameSite=Lax`;
+  } catch(e){}
+}
+function getCookie(name){
+  try {
+    const safe = name.replace(/[.$?*|{}()[\]\\/+^]/g, '\\$&');
+    const match = document.cookie.match(new RegExp('(?:^|; )' + safe + '=([^;]*)'));
+    return match ? decodeURIComponent(match[1]) : '';
+  } catch(e){ return ''; }
+}
 function getVisitorEmail(){
-  try { return localStorage.getItem('rm_visitor_email') || ''; } catch(e){ return ''; }
+  try {
+    const ls = localStorage.getItem('rm_visitor_email');
+    if(ls) return ls;
+  } catch(e){}
+  return getCookie('rm_visitor_email');
 }
 async function handleGateSubmit(e){
   if(e && e.preventDefault) e.preventDefault();
@@ -715,6 +734,7 @@ async function handleGateSubmit(e){
 
   // Save first so the visitor is not blocked if the notification fails.
   try { localStorage.setItem('rm_visitor_email', email); if(name) localStorage.setItem('rm_visitor_name', name); } catch(e){}
+  setSharedCookie('rm_visitor_email', email, 180);
 
   // Fire-and-forget notification. Deliberately not awaited: this must never hold up
   // the visitor, and a slow or unreachable proxy (offline, blocked by a network
@@ -734,12 +754,40 @@ async function handleGateSubmit(e){
   btn.textContent = origLabel;
   btn.disabled = false;
   closeGate();
+  goToReturnUrlIfPresent();
   return false;
+}
+/* If a subdomain (e.g. ELSA) bounced a visitor here to get gated, send them
+   back once they're done. Only ever redirects to another *.rockmouse.live
+   page, so a crafted `return` value can't be used as an open redirect. */
+function getSafeReturnUrl(){
+  try {
+    const raw = new URLSearchParams(window.location.search).get('return');
+    if(!raw) return '';
+    const u = new URL(raw);
+    if(u.protocol !== 'https:') return '';
+    if(u.hostname !== 'rockmouse.live' && !u.hostname.endsWith('.rockmouse.live')) return '';
+    return u.href;
+  } catch(e){ return ''; }
+}
+function goToReturnUrlIfPresent(){
+  const dest = getSafeReturnUrl();
+  if(dest) window.location.href = dest;
 }
 function initGate(){
   const form = document.getElementById('rm-gate-form');
   if(form){ form.addEventListener('submit', handleGateSubmit); }
-  if(!getVisitorEmail()) openGate();
+  const email = getVisitorEmail();
+  if(!email){
+    openGate();
+  } else {
+    // Backfill/refresh the shared cookie for visitors who were gated before
+    // subdomain sharing existed, or whose cookie has since expired.
+    setSharedCookie('rm_visitor_email', email, 180);
+    // Already gated but arrived here via a subdomain bounce — send them back
+    // immediately instead of showing them the main site.
+    goToReturnUrlIfPresent();
+  }
 }
 
 /* ═════ INIT ═════ */

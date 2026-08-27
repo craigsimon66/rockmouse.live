@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>DISC Coach | RockMouse AI Agents</title>
+<title>DISC Coach | RockMouse Labs AI Agents</title>
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
 :root{
@@ -145,7 +145,7 @@ footer a{color:var(--teal);text-decoration:none;}
 
 <header class="site-header">
   <div style="display:flex;align-items:center;gap:12px;">
-    <img src="https://rockmouse.live/assets/rockmouse-logo-wide.svg" alt="RockMouse" onerror="this.style.display='none'">
+    <img src="https://rockmouse.live/assets/rockmouse-logo-wide.svg" alt="RockMouse Labs" onerror="this.style.display='none'">
     <span style="border-left:1px solid #d0d5e0;padding-left:12px;font-size:13px;color:#1e3a8a;font-weight:600;">DISC Coach</span>
   </div>
 </header>
@@ -218,7 +218,7 @@ footer a{color:var(--teal);text-decoration:none;}
 </div>
 
 <footer>
-  RockMouse AI Agents · DISC Coach · <a href="https://rockmouse.com.au" target="_blank">rockmouse.com.au</a> · For demonstration purposes
+  RockMouse Labs AI Agents · DISC Coach · <a href="https://rockmouse.com.au" target="_blank">rockmouse.com.au</a> · For demonstration purposes
 </footer>
 
 <script>
@@ -251,9 +251,9 @@ function selectUnsure() {
 
 function buildSystem() {
   const n = name || 'the participant';
-  if (unsureMode) return `You are a warm DISC coaching facilitator for RockMouse. ${n} is unsure of their DISC style. Ask 2–3 short practical questions to identify their primary style (D, I, S, or C), then move into coaching mode. In coaching mode, ask 4 coaching questions (one at a time) about: (1) how their style shapes their day-to-day work, (2) how it shows up with different colleagues, (3) where it might create blind spots, (4) what they'd want a new manager to know about them. After Q4, generate a Working Style Brief. Keep responses under 180 words except the brief. Tone: warm, direct, coaching.`;
+  if (unsureMode) return `You are a warm DISC coaching facilitator for RockMouse Labs. ${n} is unsure of their DISC style. Ask 2–3 short practical questions to identify their primary style (D, I, S, or C), then move into coaching mode. In coaching mode, ask 4 coaching questions (one at a time) about: (1) how their style shapes their day-to-day work, (2) how it shows up with different colleagues, (3) where it might create blind spots, (4) what they'd want a new manager to know about them. After Q4, generate a Working Style Brief. Keep responses under 180 words except the brief. Tone: warm, direct, coaching.`;
   const s = DISC_INFO[style];
-  return `You are a warm DISC coaching facilitator for RockMouse. ${n}'s primary DISC style is ${style} — ${s.name}. Traits: ${s.traits}. Ask exactly 4 coaching questions (one at a time), acknowledging each answer before moving on: (1) What does their ${style} style mean for how they work best day-to-day? (2) How might it show up with people who have very different styles — especially friction points? (3) Where might their ${style} style create blind spots they'll need to manage? (4) What would they want a new manager to know about getting the best out of them? After Q4, generate a Working Style Brief:\n\n---\n**Working Style Brief — ${n}**\n*DISC Style: ${style} — ${s.name}*\n\n**How I work best:**\n[2 sentences]\n\n**When working with others:**\n[2 sentences]\n\n**Watch out for:**\n[1–2 sentences]\n\n**What my manager should know:**\n[2 sentences]\n---\n\nKeep responses under 180 words except the brief. Tone: warm, direct, a little challenging.`;
+  return `You are a warm DISC coaching facilitator for RockMouse Labs. ${n}'s primary DISC style is ${style} — ${s.name}. Traits: ${s.traits}. Ask exactly 4 coaching questions (one at a time), acknowledging each answer before moving on: (1) What does their ${style} style mean for how they work best day-to-day? (2) How might it show up with people who have very different styles — especially friction points? (3) Where might their ${style} style create blind spots they'll need to manage? (4) What would they want a new manager to know about getting the best out of them? After Q4, generate a Working Style Brief:\n\n---\n**Working Style Brief — ${n}**\n*DISC Style: ${style} — ${s.name}*\n\n**How I work best:**\n[2 sentences]\n\n**When working with others:**\n[2 sentences]\n\n**Watch out for:**\n[1–2 sentences]\n\n**What my manager should know:**\n[2 sentences]\n---\n\nKeep responses under 180 words except the brief. Tone: warm, direct, a little challenging.`;
 }
 
 async function startSession() {

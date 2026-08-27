@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>SPARK Learning Designer | RockMouse AI Agents</title>
+<title>Compass Learning Designer | RockMouse Labs AI Agents</title>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
 <style>
 /* ===== TAFE GIPPSLAND BRAND TOKENS ===== */
@@ -656,13 +656,13 @@ footer {
 <header>
   <div class="header-inner">
     <div class="tafe-logo">
-      <img src="https://rockmouse.live/assets/rockmouse-logo-wide.svg" alt="RockMouse" style="height:38px;width:auto;filter:brightness(0) invert(1);">
+      <img src="https://rockmouse.live/assets/rockmouse-logo-wide.svg" alt="RockMouse Labs" style="height:38px;width:auto;filter:brightness(0) invert(1);">
     </div>
     <div class="spark-brand">
-      <span class="spark-name">SPARK</span>
+      <span class="spark-name">Compass</span>
       <span class="spark-sub">Learning Designer</span>
     </div>
-    <span class="header-badge" id="userGreeting">RockMouse VET Design Tool</span>
+    <span class="header-badge" id="userGreeting">RockMouse Labs VET Design Tool</span>
   </div>
 </header>
 
@@ -683,10 +683,10 @@ footer {
   <!-- ============ STEP 1: SETUP ============ -->
   <div class="screen active" id="screen-1">
     <div class="card">
-      <div class="card-title">👋 Hello, I'm SPARK</div>
+      <div class="card-title">👋 Hello, I'm Compass</div>
       <div class="card-sub">Your next generation Learning Resource Design Assistant</div>
       <p style="margin-bottom:20px;font-size:14px;color:var(--tg-muted);">
-        SPARK helps educators design learning resources for Units of Competency, aligned with TGA, ASQA, and TAFE Gippsland requirements.
+        Compass helps educators design learning resources for Units of Competency, aligned with TGA, ASQA, and TAFE Gippsland requirements.
       </p>
       <hr class="section-divider">
       <div class="form-group">
@@ -769,7 +769,7 @@ footer {
   <div class="screen" id="screen-3">
     <div class="card">
       <div class="card-title">Delivery Context</div>
-      <div class="card-sub">Help SPARK understand how this unit will be delivered so the learning design fits your context</div>
+      <div class="card-sub">Help Compass understand how this unit will be delivered so the learning design fits your context</div>
 
       <div class="form-row">
         <div class="form-group">
@@ -850,12 +850,12 @@ footer {
   <div class="screen" id="screen-5">
     <div class="card">
       <div class="doc-header">
-        <div class="doc-header-title">SPARK Design Output</div>
+        <div class="doc-header-title">Compass Design Output</div>
         <div class="doc-header-meta" id="resultsHeaderMeta"></div>
       </div>
 
       <div class="disclaimer">
-        ⚠️ <strong>SPARK AI Disclaimer:</strong> This document was generated with AI assistance and may contain errors or omissions. The educator/assessor must validate all content against current TGA unit requirements, your organisation's policies, and applicable legislation before use.
+        ⚠️ <strong>Compass AI Disclaimer:</strong> This document was generated with AI assistance and may contain errors or omissions. The educator/assessor must validate all content against current TGA unit requirements, your organisation's policies, and applicable legislation before use.
       </div>
 
       <div class="results-tabs" id="resultsTabs"></div>
@@ -872,7 +872,7 @@ footer {
 
 <!-- ===== FOOTER ===== -->
 <footer>
-  SPARK — Learning Designer | RockMouse AI Agents &nbsp;|&nbsp; Always validate AI output against current requirements
+  Compass — Learning Designer | RockMouse Labs AI Agents &nbsp;|&nbsp; Always validate AI output against current requirements
 </footer>
 
 <!-- ===== JAVASCRIPT ===== -->
@@ -1150,7 +1150,7 @@ async function callClaude(systemPrompt, userMessage, maxTok) {
 // ===== PROMPTS (split into focused calls to avoid token overflow) =====
 
 // -- Assessment Phase 1: Extract unit structure verbatim --
-const ASSESS_EXTRACT_SYSTEM = `You are SPARK, a VET assessment expert at TAFE Gippsland, Australia.
+const ASSESS_EXTRACT_SYSTEM = `You are Compass, a VET assessment expert at TAFE Gippsland, Australia.
 Your only job here is to extract key sections from a TGA unit of competency document VERBATIM.
 
 RULES:
@@ -1176,7 +1176,7 @@ Return exactly:
 }`;
 
 // -- Assessment Phase 2: Design tasks + mapping + compliance using extracted structure --
-const ASSESS_DESIGN_SYSTEM = `You are SPARK, a VET assessment designer at TAFE Gippsland, Australia.
+const ASSESS_DESIGN_SYSTEM = `You are Compass, a VET assessment designer at TAFE Gippsland, Australia.
 You have been given a pre-extracted unit structure. Design the assessment strategy, tasks, mapping, and compliance check.
 
 RULES:
@@ -1237,7 +1237,7 @@ Return exactly:
 }`;
 
 // -- Learning Phase 3a: Structure only (outcomes + module list, NO activity content) --
-const LEARNING_STRUCTURE_SYSTEM = `You are SPARK, a VET learning designer at TAFE Gippsland, Australia.
+const LEARNING_STRUCTURE_SYSTEM = `You are Compass, a VET learning designer at TAFE Gippsland, Australia.
 Analyse the unit and delivery context. Produce the LEARNING STRUCTURE ONLY — do NOT write any activity content.
 
 RULES:
@@ -1259,7 +1259,7 @@ RESPOND WITH VALID JSON ONLY — no markdown, no code fences:
 }`;
 
 // -- Learning Phase 3b: One activity per module (called once per module in a loop) --
-const LEARNING_ACTIVITY_SYSTEM = `You are SPARK, a VET learning designer at TAFE Gippsland, Australia.
+const LEARNING_ACTIVITY_SYSTEM = `You are Compass, a VET learning designer at TAFE Gippsland, Australia.
 Design teacher-ready session content for ONE module of a Unit of Competency.
 
 FORMATTING RULES — follow exactly:
@@ -1287,7 +1287,7 @@ RESPOND WITH VALID JSON ONLY — a single activity object, no markdown, no code 
 }`;
 
 // -- Learning Phase 2: Session Plan + Learning-Assessment Mapping --
-const LEARNING_MAP_SYSTEM = `You are SPARK, a VET learning designer at TAFE Gippsland, Australia.
+const LEARNING_MAP_SYSTEM = `You are Compass, a VET learning designer at TAFE Gippsland, Australia.
 Given a completed learning design and assessment design, produce the session plan and learning-assessment mapping.
 
 RULES:
@@ -1326,7 +1326,7 @@ Return exactly:
 }`;
 
 // -- Learning Phase 1b: Recommended Resources (separate focused call) --
-const RECOMMENDED_RESOURCES_SYSTEM = `You are SPARK, a VET learning resource specialist at TAFE Gippsland, Australia.
+const RECOMMENDED_RESOURCES_SYSTEM = `You are Compass, a VET learning resource specialist at TAFE Gippsland, Australia.
 For each module provided, suggest real, freely available media-rich teaching resources relevant to the module topic and the Australian VET context.
 
 RULES:
@@ -2013,7 +2013,7 @@ function wordDocHeader(r, title, fileType, today) {
   const code = r?.unitCode || state.unitCode;
   const name = r?.unitName || state.unitName;
   return `<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:w="urn:schemas-microsoft-com:office:word" xmlns="http://www.w3.org/TR/REC-html40">
-<head><meta charset="utf-8"><title>SPARK Learning Designer | RockMouse AI Agents</title>
+<head><meta charset="utf-8"><title>Compass Learning Designer | RockMouse Labs AI Agents</title>
 <!--[if gte mso 9]><xml><w:WordDocument><w:View>Print</w:View><w:Zoom>90</w:Zoom><w:DoNotOptimizeForBrowser/></w:WordDocument></xml><![endif]-->
 <style>
   @page { margin: 2cm 2.5cm 2cm 2.5cm; }

@@ -11,5 +11,17 @@
     "ALLOWED_ORIGIN": "https://rockmouse.live",
     "DEFAULT_MODEL": "claude-sonnet-4-6",
     "MAX_TOKENS": "1024"
+  },
+  "d1_databases": [
+    {
+      "binding": "rockmouse_logins",
+      "database_name": "rockmouse-logins",
+      "database_id": "c0c852ba-029f-4f23-bde3-342c8773d6b6"
+    }
+  ],
+  "triggers": {
+    "crons": [
+      "0 21 * * *"
+    ]
   }
 }

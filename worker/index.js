@@ -15,6 +15,10 @@
  * Optional secrets (email notification on signup — silently skipped if unset):
  *   RESEND_API_KEY, NOTIFY_TO, NOTIFY_FROM
  *
+ * Optional secret (Gmail-based daily digest, see /api/digest-data above):
+ *   DIGEST_API_TOKEN   — random bearer token; the scheduled digest task sends
+ *                        it as "Authorization: Bearer <token>". Unset = route returns 500.
+ *
  * Plain vars (see wrangler.jsonc):
  *   ALLOWED_ORIGIN, DEFAULT_MODEL, MAX_TOKENS
  */
@@ -121,6 +125,17 @@ async function handleAgentApi(request, env) {
     if (!payload.email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(payload.email)) {
       return json({ error: "Valid email required" }, 400, cors);
     }
+    if (env.rockmouse_logins) {
+      try {
+        await env.rockmouse_logins
+          .prepare("INSERT INTO logins (email, name, user_agent) VALUES (?, ?, ?)")
+          .bind(payload.email, payload.name || null, payload.userAgent || null)
+          .run();
+      } catch (err) {
+        // Never block a visitor over a logging failure.
+        console.warn("D1 insert failed:", err);
+      }
+    }
     const result = await sendSignupNotification(env, payload);
     return json({ ok: true, notified: !!result.ok, detail: result }, 200, cors);
   }
@@ -193,14 +208,147 @@ async function handleAgentApi(request, env) {
   }
 }
 
+// Cloudflare Access sits in front of /admin/* at the edge (configured in the
+// dashboard, not here) — only you can reach this route at all. This handler
+// doesn't re-check auth; it just renders what Access has already let through.
+async function handleAdminLogins(request, env) {
+  if (!env.rockmouse_logins) {
+    return new Response("No database configured.", { status: 500 });
+  }
+  const { results } = await env.rockmouse_logins
+    .prepare("SELECT email, name, user_agent, created_at FROM logins ORDER BY created_at DESC LIMIT 500")
+    .all();
+
+  const rows = results.map(r => `
+    <tr>
+      <td>${escapeHtml(r.created_at)}</td>
+      <td>${escapeHtml(r.email)}</td>
+      <td>${escapeHtml(r.name || "")}</td>
+      <td class="ua">${escapeHtml(r.user_agent || "")}</td>
+    </tr>`).join("");
+
+  const html = `<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>RockMouse AI Agents — Logins</title>
+<style>
+  body { font-family: -apple-system, sans-serif; margin: 2rem; color: #1a1a2e; }
+  h1 { font-size: 1.3rem; }
+  table { border-collapse: collapse; width: 100%; margin-top: 1rem; }
+  th, td { text-align: left; padding: 8px 12px; border-bottom: 1px solid #e5e5ea; font-size: 0.9rem; }
+  th { color: #666; font-weight: 600; }
+  .ua { color: #888; font-size: 0.78rem; max-width: 320px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .count { color: #666; font-size: 0.9rem; }
+</style>
+</head>
+<body>
+  <h1>RockMouse AI Agents — sign-ups</h1>
+  <div class="count">${results.length} record${results.length === 1 ? "" : "s"} (most recent 500)</div>
+  <table>
+    <thead><tr><th>When</th><th>Email</th><th>Name</th><th>Browser</th></tr></thead>
+    <tbody>${rows || '<tr><td colspan="4">No sign-ups yet.</td></tr>'}</tbody>
+  </table>
+</body>
+</html>`;
+
+  return new Response(html, { headers: { "Content-Type": "text/html; charset=utf-8" } });
+}
+
+function escapeHtml(s) {
+  return String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
+}
+
+// Lightweight JSON endpoint for the Gmail-based daily digest (see
+// craig's scheduled Claude task). Separate from /admin/* on purpose:
+// /admin/* sits behind Cloudflare Access at the edge, which a scheduled
+// automation can't complete an interactive login for. This route instead
+// checks a single shared-secret bearer token (DIGEST_API_TOKEN) so it can
+// be called unattended. Rotate DIGEST_API_TOKEN any time to revoke access.
+async function handleDigestData(request, env) {
+  if (!env.DIGEST_API_TOKEN) {
+    return json({ error: "DIGEST_API_TOKEN not configured" }, 500, {});
+  }
+  const auth = request.headers.get("Authorization") || "";
+  const provided = auth.replace(/^Bearer\s+/i, "");
+  if (provided !== env.DIGEST_API_TOKEN) {
+    return json({ error: "Unauthorized" }, 401, {});
+  }
+  if (!env.rockmouse_logins) {
+    return json({ error: "No database configured" }, 500, {});
+  }
+  const { results: last24h } = await env.rockmouse_logins
+    .prepare("SELECT email, name, created_at FROM logins WHERE created_at >= datetime('now', '-1 day') ORDER BY created_at DESC")
+    .all();
+  const { results: last7d } = await env.rockmouse_logins
+    .prepare("SELECT COUNT(DISTINCT email) as n FROM logins WHERE created_at >= datetime('now', '-7 day')")
+    .all();
+  const { results: allTime } = await env.rockmouse_logins
+    .prepare("SELECT COUNT(DISTINCT email) as n FROM logins")
+    .all();
+  return json({
+    generated_at: new Date().toISOString(),
+    last_24h_count: last24h.length,
+    last_24h: last24h,
+    unique_last_7d: last7d[0]?.n ?? null,
+    unique_all_time: allTime[0]?.n ?? null,
+  }, 200, {});
+}
+
+// Fires once a day (see wrangler.jsonc triggers.crons) — emails a summary of
+// the last 24 hours of sign-ups. Sends even on a zero-signup day on purpose:
+// a digest that only shows up when there's activity is indistinguishable
+// from a broken cron.
+async function sendDailyDigest(env) {
+  if (!env.rockmouse_logins || !env.RESEND_API_KEY || !env.NOTIFY_TO) return;
+
+  const { results } = await env.rockmouse_logins
+    .prepare("SELECT email, name, created_at FROM logins WHERE created_at >= datetime('now', '-1 day') ORDER BY created_at DESC")
+    .all();
+
+  const lines = results.length
+    ? results.map(r => `${r.created_at}  ${r.email}${r.name ? " (" + r.name + ")" : ""}`).join("\n")
+    : "(no sign-ups in the last 24 hours)";
+
+  const body = {
+    from:    env.NOTIFY_FROM || "onboarding@resend.dev",
+    to:      [env.NOTIFY_TO],
+    subject: `RockMouse AI Agents — daily sign-ups (${results.length})`,
+    text:    `${results.length} sign-up${results.length === 1 ? "" : "s"} in the last 24 hours:\n\n${lines}`,
+  };
+
+  try {
+    await fetch("https://api.resend.com/emails", {
+      method: "POST",
+      headers: {
+        "Content-Type":  "application/json",
+        "Authorization": "Bearer " + env.RESEND_API_KEY,
+      },
+      body: JSON.stringify(body),
+    });
+  } catch (err) {
+    console.warn("Daily digest send failed:", err);
+  }
+}
+
 export default {
   async fetch(request, env) {
     const url = new URL(request.url);
     if (url.pathname === "/api/agent") {
       return handleAgentApi(request, env);
     }
+    if (url.pathname === "/admin/logins") {
+      return handleAdminLogins(request, env);
+    }
+    if (url.pathname === "/api/digest-data") {
+      return handleDigestData(request, env);
+    }
     // Reaching here means the request matched no static file in public/ either —
     // a genuine 404, not something this Worker needs to route.
     return new Response("Not found", { status: 404 });
+  },
+
+  async scheduled(event, env, ctx) {
+    ctx.waitUntil(sendDailyDigest(env));
   },
 };

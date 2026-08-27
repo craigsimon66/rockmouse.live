@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Assessment Agent | RockMouse AI Agents</title>
+<title>Assessment Agent | RockMouse Labs AI Agents</title>
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
   :root {
@@ -72,6 +72,19 @@
   }
   .mode-label { font-size: 12px; font-weight: 700; color: var(--navy); line-height: 1.3; }
   .mode-sublabel { font-size: 11px; color: #777; margin-top: 1px; }
+  .framework-bar {
+    display: flex; gap: 8px; padding: 10px 16px; flex-wrap: wrap; align-items: center;
+    background: var(--off-white); border-bottom: 1px solid var(--grey-light);
+    position: sticky; top: 63px; z-index: 49;
+  }
+  .framework-bar .fw-label { font-size: 10px; font-weight: 700; color: #888; text-transform: uppercase; letter-spacing: 0.07em; margin-right: 2px; }
+  .fw-btn {
+    padding: 6px 13px; border-radius: 20px; border: 1.5px solid var(--grey-light);
+    background: #fff; font-size: 11.5px; font-weight: 600; color: var(--navy);
+    cursor: pointer; transition: all 0.15s; font-family: inherit;
+  }
+  .fw-btn:hover { border-color: var(--blue); }
+  .fw-btn.active { background: var(--navy); border-color: var(--navy); color: #fff; }
   .mode-badge {
     margin-left: auto; font-size: 9px; font-weight: 700;
     padding: 3px 8px; border-radius: 10px;
@@ -407,7 +420,7 @@
 <body>
 
 <header class="rm-header">
-  <img src="https://rockmouse.live/assets/rockmouse-logo-wide.svg" alt="RockMouse" onerror="this.style.display='none'">
+  <img src="https://rockmouse.live/assets/rockmouse-logo-wide.svg" alt="RockMouse Labs" onerror="this.style.display='none'">
   <div class="rm-header-divider"></div>
   <span class="rm-header-name">Assessment Agent</span>
 </header>
@@ -432,6 +445,12 @@
   </button>
 </div>
 
+<div class="framework-bar">
+  <span class="fw-label">Framework</span>
+  <button class="fw-btn active" id="fw-caanz" onclick="selectFramework('caanz')">Financial Services</button>
+  <button class="fw-btn" id="fw-whs" onclick="selectFramework('whs')">Enterprise WHS</button>
+  <button class="fw-btn" id="fw-gov" onclick="selectFramework('gov')">Government Capability (ILS)</button>
+</div>
 
 <!-- ═══════════════════════════════════════════
      MODE A — KNOWLEDGE CHECK
@@ -442,23 +461,7 @@
     <!-- Subject selection -->
     <div id="a-select">
       <div class="slabel" style="margin-bottom:14px;">Select a subject to begin your knowledge check</div>
-      <div class="subject-grid">
-        <div class="subject-card" id="s-core2" onclick="selectSubject('core2')">
-          <div class="subject-icon">📊</div>
-          <div class="subject-title">Core 2: Financial Accounting</div>
-          <div class="subject-sub">AASB 15 · AASB 16 · AASB 9 · Revenue, leases &amp; financial instruments</div>
-        </div>
-        <div class="subject-card" id="s-core4" onclick="selectSubject('core4')">
-          <div class="subject-icon">🧾</div>
-          <div class="subject-title">Core 4: Taxation (AU)</div>
-          <div class="subject-sub">Income tax · GST · CGT · FBT · Tax planning</div>
-        </div>
-        <div class="subject-card" id="s-electb" onclick="selectSubject('electb')">
-          <div class="subject-icon">🌿</div>
-          <div class="subject-title">Elective B: Sustainability</div>
-          <div class="subject-sub">ESG reporting · TCFD · ISSB standards · Integrated reporting</div>
-        </div>
-      </div>
+      <div class="subject-grid" id="subject-grid"></div>
       <button class="start-btn" id="start-btn" onclick="startCheck()" disabled>▶ Start Knowledge Check</button>
     </div>
 
@@ -605,7 +608,7 @@ async function callAPI(messages, maxTokens = 2000) {
     },
     body: JSON.stringify({
       agentId: 'rm-assessment-agent',
-      systemPrompt: 'You are an assessment agent for RockMouse AI Agents. Follow the user\'s instructions exactly, including any requested output format.',
+      systemPrompt: 'You are an assessment agent for RockMouse Labs AI Agents. Follow the user\'s instructions exactly, including any requested output format.',
       messages,
       model: 'claude-sonnet-4-6',
       maxTokens
@@ -649,42 +652,161 @@ function switchMode(m) {
 // ═════════════════════════════════════════
 // MODE A — KNOWLEDGE CHECK
 // ═════════════════════════════════════════
-const SUBJECTS = {
-  core2: {
-    name: 'Core 2: Financial Accounting',
-    desc: 'AASB 15 (Revenue), AASB 16 (Leases), AASB 9 (Financial Instruments)',
-    outcomes: [
-      'Apply the AASB 15 five-step model to recognise revenue from contracts with customers',
-      'Account for right-of-use assets and lease liabilities under AASB 16',
-      'Classify and measure financial assets and liabilities under AASB 9',
-      'Prepare and interpret financial statements in accordance with AASB standards',
-      'Apply professional judgement to resolve ambiguous or complex accounting scenarios'
-    ]
+const FRAMEWORKS = {
+  caanz: {
+    label: 'Financial Services',
+    programName: 'a financial services technical assessment program',
+    candidateNoun: 'candidate',
+    subjects: {
+      core2: {
+        name: 'Core 2: Financial Accounting',
+        desc: 'AASB 15 \u00b7 AASB 16 \u00b7 AASB 9 \u00b7 Revenue, leases & financial instruments',
+        icon: '\ud83d\udcca',
+        outcomes: [
+          'Apply the AASB 15 five-step model to recognise revenue from contracts with customers',
+          'Account for right-of-use assets and lease liabilities under AASB 16',
+          'Classify and measure financial assets and liabilities under AASB 9',
+          'Prepare and interpret financial statements in accordance with AASB standards',
+          'Apply professional judgement to resolve ambiguous or complex accounting scenarios'
+        ]
+      },
+      core4: {
+        name: 'Core 4: Taxation (AU)',
+        desc: 'Income tax \u00b7 GST \u00b7 CGT \u00b7 FBT \u00b7 Tax planning',
+        icon: '\ud83e\uddfe',
+        outcomes: [
+          'Calculate taxable income for individuals and entities, applying correct tax rates',
+          'Determine GST obligations and calculate GST payable or refundable',
+          'Apply CGT provisions to asset disposals and calculate net capital gain or loss',
+          'Calculate FBT liability including grossed-up taxable values',
+          'Identify lawful tax minimisation strategies and their ethical and legal limits'
+        ]
+      },
+      electb: {
+        name: 'Elective B: Sustainability',
+        desc: 'ESG reporting \u00b7 TCFD \u00b7 ISSB standards \u00b7 Integrated reporting',
+        icon: '\ud83c\udf3f',
+        outcomes: [
+          'Explain the ISSB framework (IFRS S1/S2) and its disclosure requirements',
+          'Apply TCFD recommendations to identify and disclose climate-related risks and opportunities',
+          'Prepare an integrated report using the <IR> Framework',
+          'Identify and measure material ESG risks relevant to financial reporting',
+          'Critically evaluate the quality, completeness, and credibility of sustainability disclosures'
+        ]
+      }
+    },
+    demoSubmission: `The five-step model under AASB 15 requires the entity to: (1) identify the contract with the customer, (2) identify the performance obligations in the contract, (3) determine the transaction price, (4) allocate the transaction price to the performance obligations, and (5) recognise revenue when (or as) each performance obligation is satisfied.`,
+    demoRubric: `Subject: Core 2 Financial Accounting \u2014 Assessment Task 2\nCriterion 1 (5 marks): Correctly states all five steps of the AASB 15 model in order.\nCriterion 2 (5 marks): Applies the model to the scenario provided, not just recites the steps.\nCriterion 3 (5 marks): Identifies the correct transaction price and allocation basis.\nCriterion 4 (5 marks): Uses correct accounting terminology throughout.`
   },
-  core4: {
-    name: 'Core 4: Taxation (AU)',
-    desc: 'Income tax, GST, CGT, FBT, tax planning',
-    outcomes: [
-      'Calculate taxable income for individuals and entities, applying correct tax rates',
-      'Determine GST obligations and calculate GST payable or refundable',
-      'Apply CGT provisions to asset disposals and calculate net capital gain or loss',
-      'Calculate FBT liability including grossed-up taxable values',
-      'Identify lawful tax minimisation strategies and their ethical and legal limits'
-    ]
+
+  whs: {
+    label: 'Enterprise WHS',
+    programName: 'an enterprise Work Health and Safety program',
+    candidateNoun: 'employee',
+    subjects: {
+      'whs-core': {
+        name: 'WHS Fundamentals',
+        desc: 'Hazard identification \u00b7 hierarchy of control \u00b7 consultation duties',
+        icon: '\u26a0\ufe0f',
+        outcomes: [
+          'Identify common workplace hazards across physical, chemical, biological, and ergonomic categories',
+          'Apply the hierarchy of risk control \u2014 elimination through to PPE \u2014 to a described hazard',
+          "Explain the WHS duties of a PCBU, an officer, and a worker under the model Work Health and Safety Act",
+          'Describe consultation duties when a WHS decision affects workers',
+          'Identify what makes an incident \u201cnotifiable\u201d and the immediate duties that follow'
+        ]
+      },
+      'whs-psych': {
+        name: 'Psychological Safety & Psychosocial Hazards',
+        desc: 'Psychosocial hazards \u00b7 psychological safety \u00b7 early intervention',
+        icon: '\ud83e\udde0',
+        outcomes: [
+          'Identify psychosocial hazards recognised under the model WHS Regulations \u2014 high job demands, poor support, workplace bullying, harassment, poor organisational justice',
+          "Distinguish a psychosocial hazard in the work system from an individual employee's personal mental health issue",
+          'Explain psychological safety and its link to error reporting, speaking up, and team performance',
+          "Describe a manager's consultation and early-intervention duties when a psychosocial risk is identified",
+          'Apply the hierarchy of control to a psychosocial risk, not only a physical one'
+        ]
+      },
+      'whs-incident': {
+        name: 'Incident & Emergency Response',
+        desc: 'Incident reporting \u00b7 notifiable incidents \u00b7 emergency procedures',
+        icon: '\ud83d\udea8',
+        outcomes: [
+          'Describe the immediate steps required at an incident scene, including preserving it for investigation',
+          'Distinguish a notifiable incident from one that only requires internal reporting',
+          'Explain who must be notified, how, and within what timeframe for a notifiable incident',
+          'Identify the role of a Health and Safety Representative (HSR) after an incident',
+          'Describe the elements of a basic emergency response procedure \u2014 evacuation, lockdown, medical'
+        ]
+      }
+    },
+    demoSubmission: `A subcontractor is using a straight ladder rated below their combined body and tool weight, positioned near the edge of an unshored 1.8m trench. I would stop the work immediately \u2014 this is an imminent fall risk with a secondary trench-collapse hazard. Elimination isn't practical since the task still needs doing, so I'd look first at substitution, such as a fall-rated step platform instead of the ladder, and engineering controls like trench shoring or benching. If neither is available immediately, I'd isolate the area and use administrative controls \u2014 a spotter and a documented safe work method statement \u2014 with a harness and anchor point as the last line of defence. I'd log the hazard in the site register and notify the supervisor before work resumes.`,
+    demoRubric: `Subject: WHS Fundamentals \u2014 Scenario Response Task\nCriterion 1 (5 marks): Correctly identifies both hazards in the scenario \u2014 the fall hazard and the trench-collapse hazard.\nCriterion 2 (5 marks): Applies the hierarchy of control in the correct order rather than naming controls at random.\nCriterion 3 (5 marks): Justifies why elimination isn't the first practical option here, rather than jumping straight to PPE.\nCriterion 4 (5 marks): Identifies the correct escalation and reporting action.`
   },
-  electb: {
-    name: 'Elective B: Sustainability for Accountants',
-    desc: 'ESG reporting, TCFD, ISSB standards, integrated reporting',
-    outcomes: [
-      'Explain the ISSB framework (IFRS S1/S2) and its disclosure requirements',
-      'Apply TCFD recommendations to identify and disclose climate-related risks and opportunities',
-      'Prepare an integrated report using the <IR> Framework',
-      'Identify and measure material ESG risks relevant to financial reporting',
-      'Critically evaluate the quality, completeness, and credibility of sustainability disclosures'
-    ]
+
+  gov: {
+    label: 'Government Capability (ILS)',
+    programName: 'a public sector capability program anchored to the Integrated Leadership System (ILS)',
+    candidateNoun: 'public sector employee',
+    subjects: {
+      'ils-strategic': {
+        name: 'Shapes Strategic Thinking',
+        desc: 'Systems thinking \u00b7 innovation \u00b7 strategic judgement',
+        icon: '\ud83e\udded',
+        outcomes: [
+          'Connect a day-to-day decision to the broader strategic or policy context it sits within',
+          'Identify assumptions in a plan and test them before committing resources',
+          'Weigh competing priorities and explain the trade-off, not just the choice made'
+        ]
+      },
+      'ils-results': {
+        name: 'Achieves Results',
+        desc: 'Prioritisation \u00b7 delivery \u00b7 risk management',
+        icon: '\ud83c\udfaf',
+        outcomes: [
+          'Reprioritise a body of work under a hard constraint without simply working longer hours',
+          'Identify and escalate a delivery risk before it becomes a missed deadline',
+          'Describe a concrete, verifiable outcome rather than a vague description of effort'
+        ]
+      },
+      'ils-relationships': {
+        name: 'Cultivates Productive Working Relationships',
+        desc: 'Collaboration \u00b7 valuing diversity \u00b7 negotiation',
+        icon: '\ud83e\udd1d',
+        outcomes: [
+          'Involve the people affected by a decision in shaping it, not just informing them after',
+          'Describe how a disagreement with a colleague or stakeholder was resolved constructively',
+          'Explain how differing perspectives improved, rather than delayed, a piece of work'
+        ]
+      },
+      'ils-integrity': {
+        name: 'Exemplifies Personal Drive & Integrity',
+        desc: 'Self-awareness \u00b7 resilience \u00b7 ethical judgement',
+        icon: '\ud83e\uddf1',
+        outcomes: [
+          'Describe a situation requiring an ethical judgement call and the reasoning behind the decision made',
+          'Give an honest account of a setback and what was learned from it',
+          'Explain how personal accountability was maintained under pressure or scrutiny'
+        ]
+      },
+      'ils-influence': {
+        name: 'Communicates with Influence',
+        desc: 'Clear communication \u00b7 negotiation \u00b7 representing the organisation',
+        icon: '\ud83d\udcac',
+        outcomes: [
+          'Adapt a message for a specific audience without losing its substance',
+          'Describe how a sceptical stakeholder was brought around to a position',
+          'Give a concise account of a complex issue that a non-specialist could act on'
+        ]
+      }
+    },
+    demoSubmission: `My team was given a ministerial deadline two weeks earlier than usual, while already short two analysts on secondment. I called a short team meeting to reset priorities together rather than deciding alone \u2014 we agreed to pause one lower-priority piece of work with the director's sign-off, and I redistributed the time-critical tasks based on who had capacity, not just who normally owned them. I checked in daily rather than waiting for the usual status meeting, and flagged early to my director that the original scope might need to shrink, rather than raising it only at the deadline. We delivered the core brief on time; the secondary analysis went out two days late with the director's agreement.`,
+    demoRubric: `Cluster: Achieves Results \u2014 Capability Statement Task\nCriterion 1 (5 marks): Demonstrates deliberate reprioritisation under constraint, not just working harder.\nCriterion 2 (5 marks): Shows genuine team involvement in the decision, not a unilateral call presented as consultative.\nCriterion 3 (5 marks): Demonstrates proactive escalation of risk before it became a problem.\nCriterion 4 (5 marks): Names a concrete, verifiable outcome \u2014 what was delivered, what slipped, and with whose agreement.`
   }
 };
 
+let selFramework = 'caanz';
 let selSubject = null;
 let questions = [];
 let qIndex = 0;
@@ -698,9 +820,31 @@ function selectSubject(s) {
   document.getElementById('start-btn').disabled = false;
 }
 
+function renderSubjectGrid() {
+  const fw = FRAMEWORKS[selFramework];
+  const grid = document.getElementById('subject-grid');
+  grid.innerHTML = Object.keys(fw.subjects).map(key => {
+    const s = fw.subjects[key];
+    return `<div class="subject-card" id="s-${key}" onclick="selectSubject('${key}')">
+      <div class="subject-icon">${s.icon}</div>
+      <div class="subject-title">${esc(s.name)}</div>
+      <div class="subject-sub">${esc(s.desc)}</div>
+    </div>`;
+  }).join('');
+}
+
+function selectFramework(fw) {
+  selFramework = fw;
+  document.querySelectorAll('.fw-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('fw-' + fw).classList.add('active');
+  renderSubjectGrid();
+  resetCheck();
+  resetMark();
+}
+
 async function startCheck() {
   if (!selSubject) return;
-  const subj = SUBJECTS[selSubject];
+  const subj = FRAMEWORKS[selFramework].subjects[selSubject];
 
   // Switch to chat view
   document.getElementById('a-select').style.display = 'none';
@@ -715,7 +859,7 @@ async function startCheck() {
   questions = []; qIndex = 0; qaLog = [];
   setProgress(0); setBusy(true);
 
-  const prompt = `You are a knowledge check agent for the CA ANZ GradDipCA program.
+  const prompt = `You are a knowledge check agent for ${FRAMEWORKS[selFramework].programName}.
 
 Generate exactly 5 knowledge check questions for: ${subj.name} (${subj.desc}).
 
@@ -723,7 +867,7 @@ Learning outcomes:
 ${subj.outcomes.map((o,i) => `${i+1}. ${o}`).join('\n')}
 
 Mix question types across: concept explanation, application to a scenario, professional judgement, compare & contrast, identify & classify.
-Each question should be 2–3 sentences. Appropriate difficulty for a GradDipCA candidate.
+Each question should be 2–3 sentences. Appropriate difficulty for a ${FRAMEWORKS[selFramework].candidateNoun}.
 
 Return ONLY a JSON array — no other text:
 [{"id":1,"type":"concept","question":"...","outcome":1},...]
@@ -773,10 +917,10 @@ async function submitAnswer() {
   document.getElementById('chat-input').classList.add('hidden');
   setBusy(true);
 
-  const subj = SUBJECTS[selSubject];
+  const subj = FRAMEWORKS[selFramework].subjects[selSubject];
   const q = questions[qIndex];
 
-  const prompt = `GradDipCA knowledge check evaluation — ${subj.name}.
+  const prompt = `${FRAMEWORKS[selFramework].label} knowledge check evaluation — ${subj.name}.
 
 Question: "${q.question}"
 Question type: ${q.type}
@@ -830,8 +974,8 @@ async function generateReport() {
   addAIMsg('All 5 questions answered. Generating your personalised readiness report…');
   setBusy(true);
 
-  const subj = SUBJECTS[selSubject];
-  const prompt = `Generate a readiness report for a GradDipCA candidate who just completed a ${subj.name} knowledge check.
+  const subj = FRAMEWORKS[selFramework].subjects[selSubject];
+  const prompt = `Generate a readiness report for a ${FRAMEWORKS[selFramework].candidateNoun} who just completed a ${subj.name} knowledge check.
 
 Results:
 ${qaLog.map((r,i) => `Q${i+1} [${r.question.type}]: ${r.question.question}\nAnswer: ${r.answer}\nScore: ${r.score}/3\nFeedback: ${r.feedback}`).join('\n\n')}
@@ -989,43 +1133,8 @@ let criteria = [];
 let cStates = [];  // 'pending' | 'approved' | 'editing' | 'rejected'
 let cTexts = [];
 
-const DEMO_SUB = `The five-step model under AASB 15 requires the entity to: (1) identify the contract with the customer, (2) identify the performance obligations in the contract, (3) determine the transaction price, (4) allocate the transaction price to the performance obligations, and (5) recognise revenue when (or as) each performance obligation is satisfied.
-
-In the scenario presented, Buildcorp has entered into a contract with a customer to construct a commercial building for $2.4 million. The contract includes a performance bonus of $200,000 if the building is completed by 31 March 2026. I would identify this as a single performance obligation — the construction of the building — because the construction activities are highly interrelated and cannot be separated.
-
-The transaction price is $2.4 million plus the variable consideration. Under AASB 15.50, variable consideration should be included in the transaction price only to the extent that it is highly probable that a significant revenue reversal will not occur. Given the construction is on schedule as at 31 December 2025, I would include 50% of the bonus ($100,000) using the expected value method, giving a transaction price of $2.5 million.
-
-Revenue would be recognised over time because the customer simultaneously receives and consumes the benefits of Buildcorp's performance. The stage of completion as at 31 December 2025 is 60%, determined using the cost-to-cost method (costs to date $720,000 / total estimated costs $1,200,000). Therefore, cumulative revenue recognised = 60% × $2.5 million = $1,500,000.`;
-
-const DEMO_RUB = `Subject: Core 2 Financial Accounting — Assessment Task 2
-Candidate: James Chen | Term 2, 2026 | Total marks: 25
-
-CRITERION 1 — Identification of performance obligations (5 marks)
-High Pass (5): Correctly identifies the performance obligation(s) with clear reference to AASB 15 criteria and explains why obligations are or are not separable.
-Pass (4): Correctly identifies the performance obligation(s) with adequate reasoning.
-Fail (2–3): Partially correct identification; minimal reasoning.
-Fail (0–1): Incorrect or no identification.
-
-CRITERION 2 — Variable consideration and constraint (8 marks)
-High Pass (7–8): Correctly identifies the bonus as variable consideration; applies the constraint with reference to AASB 15.50; uses expected value or most likely amount method and justifies the choice.
-Pass (5–6): Correct identification; adequate constraint treatment; minor errors.
-Fail (2–4): Partial treatment — e.g. recognises the bonus but fails to apply the constraint.
-Fail (0–1): Missing or fundamentally incorrect.
-
-CRITERION 3 — Revenue recognition over time (7 marks)
-High Pass (6–7): Correctly determines over-time recognition with reference to AASB 15.35(b); applies cost-to-cost method correctly; accurate calculation.
-Pass (4–5): Correct method; reasonable application with minor errors.
-Fail (2–3): Applies point-in-time recognition or incorrect method.
-Fail (0–1): No attempt or fundamentally incorrect.
-
-CRITERION 4 — Professional presentation and technical accuracy (5 marks)
-High Pass (5): Clear structure; technical language correct and consistent; calculations shown with working.
-Pass (3–4): Acceptable structure; generally correct use of technical terms.
-Fail (1–2): Disorganised or significant imprecision.
-Fail (0): Not demonstrated.`;
-
-function loadDemoSubmission() { document.getElementById('submission-ta').value = DEMO_SUB; }
-function loadDemoRubric() { document.getElementById('rubric-ta').value = DEMO_RUB; }
+function loadDemoSubmission() { document.getElementById('submission-ta').value = FRAMEWORKS[selFramework].demoSubmission; }
+function loadDemoRubric() { document.getElementById('rubric-ta').value = FRAMEWORKS[selFramework].demoRubric; }
 
 async function analyseSubmission() {
   const sub = document.getElementById('submission-ta').value.trim();
@@ -1037,7 +1146,7 @@ async function analyseSubmission() {
   btn.disabled = true;
   btn.innerHTML = '<div class="spinner" style="width:20px;height:20px;margin:0;border-width:2px;border-top-color:#fff;display:inline-block;vertical-align:middle;margin-right:8px;"></div> Analysing…';
 
-  const prompt = `You are a marking assistant for the CA ANZ GradDipCA program. A human marker will review all output before it reaches the candidate.
+  const prompt = `You are a marking assistant for ${FRAMEWORKS[selFramework].programName}. A human marker will review all output before it reaches the candidate.
 
 CANDIDATE SUBMISSION:
 ${sub}
@@ -1179,6 +1288,7 @@ function showPhase(id) {
   document.querySelectorAll('#panel-mark .phase').forEach(p => p.classList.remove('active'));
   document.getElementById(id).classList.add('active');
 }
+renderSubjectGrid();
 </script>
 </body>
 </html>
