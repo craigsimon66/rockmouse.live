@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Human-AI Division of Labour Mapper | RockMouse Labs AI Agents</title>
+<link rel="icon" type="image/png" href="https://rockmouse.live/assets/rockmouse-icon.png">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=DM+Serif+Display&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{--navy:#0a4a4a;--teal:#0d7b7b;--teal-l:#e6f4f4;--green:#05DE92;--bg:#f5f7f5;--white:#fff;--text:#1a2e2e;--muted:#5a7070;--border:#c8dede;--amber-bg:#fff7e6;--amber:#8a5a00;--font:'DM Sans',system-ui,sans-serif}
+html,body{min-height:100%;font-family:var(--font);background:var(--bg);color:var(--text);line-height:1.55}
+.hdr{background:var(--navy);padding:12px 20px;display:flex;align-items:center;justify-content:space-between;gap:16px;border-bottom:3px solid var(--green)}
+.hdr-left{display:flex;align-items:center;gap:12px}
+.hdr img{height:28px;width:auto;filter:brightness(0) invert(1)}
+.hdr-name{border-left:1px solid rgba(255,255,255,.35);padding-left:12px;font-size:14px;color:#fff;font-weight:600}
+.hdr-tag{font-size:11px;color:rgba(255,255,255,.7);text-transform:uppercase;letter-spacing:.08em}
+.wrap{max-width:900px;margin:0 auto;padding:24px 20px 60px}
+.intro{background:var(--white);border:1px solid var(--border);border-radius:12px;padding:20px 22px;margin-bottom:20px}
+.intro h1{font-family:'DM Serif Display',Georgia,serif;font-weight:400;font-size:26px;color:var(--navy);margin-bottom:6px}
+.intro p{color:var(--muted);font-size:14.5px;max-width:64ch}
+.steps{display:flex;gap:6px;margin-bottom:18px}
+.seg{flex:1;height:5px;border-radius:3px;background:var(--border)}
+.seg.done{background:var(--teal)} .seg.active{background:var(--green)}
+.step-label{font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--teal);margin-bottom:6px}
+.card{background:var(--white);border:1px solid var(--border);border-radius:12px;padding:22px}
+.card h2{font-family:'DM Serif Display',Georgia,serif;font-weight:400;font-size:22px;color:var(--navy);margin-bottom:6px}
+.guide{color:var(--muted);font-size:14px;margin-bottom:16px;max-width:66ch}
+.note{background:var(--teal-l);border-left:3px solid var(--teal);padding:10px 12px;border-radius:6px;font-size:13.5px;color:var(--text);margin-bottom:16px}
+.field{margin-bottom:16px}
+.field label{display:block;font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);margin-bottom:6px}
+.field label .req{color:#b53d1a}
+textarea,select{width:100%;border:1.5px solid var(--border);border-radius:8px;padding:10px 12px;font-family:var(--font);font-size:14px;color:var(--text);background:#fafcfb}
+textarea{min-height:110px;resize:vertical} textarea:focus,select:focus{outline:none;border-color:var(--teal);background:#fff}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chip{border:1.5px solid var(--border);background:#fff;border-radius:999px;padding:7px 14px;font-size:13.5px;font-family:var(--font);cursor:pointer;color:var(--text)}
+.chip.on{background:var(--navy);border-color:var(--navy);color:#fff}
+.row{display:flex;gap:10px;flex-wrap:wrap;justify-content:space-between;align-items:center;margin-top:18px}
+.btn{border:0;border-radius:8px;padding:11px 18px;font-size:14px;font-weight:700;font-family:var(--font);cursor:pointer;background:var(--teal);color:#fff}
+.btn:hover{background:var(--navy)} .btn:disabled{background:var(--muted);cursor:not-allowed}
+.btn-ghost{background:transparent;color:var(--teal);border:1.5px solid var(--border)} .btn-ghost:hover{background:var(--teal-l);color:var(--navy)}
+.btn-sm{padding:7px 12px;font-size:13px}
+.err{display:none;background:#fdecea;color:#8a1c0f;border-radius:8px;padding:10px 12px;font-size:13.5px;margin-bottom:12px}
+.draft{background:var(--amber-bg);color:var(--amber);border:1px solid #f0d9a8;border-radius:8px;padding:10px 12px;font-size:13.5px;font-weight:600;margin-bottom:14px}
+.out{font-size:14.5px;line-height:1.65}
+.out h1,.out h2,.out h3{font-family:var(--font);color:var(--navy);margin:16px 0 6px;font-size:15px;text-transform:uppercase;letter-spacing:.05em}
+.out p{margin:0 0 10px} .out ul,.out ol{margin:0 0 10px 1.2rem} .out li{margin-bottom:4px}
+.out strong{font-weight:700}
+.prev{border:1px dashed var(--border);border-radius:8px;padding:12px 14px;margin-bottom:16px;background:#fafcfb;max-height:320px;overflow:auto}
+.prev .pl{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);margin-bottom:6px}
+.spin{display:flex;align-items:center;gap:10px;color:var(--muted);font-size:14px;padding:12px 0}
+.dots span{display:inline-block;width:7px;height:7px;background:var(--teal);border-radius:50%;margin:0 2px;animation:b 1.2s infinite}
+.dots span:nth-child(2){animation-delay:.2s}.dots span:nth-child(3){animation-delay:.4s}
+@keyframes b{0%,80%,100%{transform:translateY(0)}40%{transform:translateY(-6px)}}
+.foot{text-align:center;color:var(--muted);font-size:12px;margin-top:28px}
+@media (max-width:600px){.hdr-tag{display:none}.wrap{padding:16px 16px 40px}}
+</style>
+</head>
+<body>
+<div class="hdr">
+  <div class="hdr-left">
+    <img src="https://rockmouse.live/assets/rockmouse-logo-wide.svg" alt="RockMouse Labs" onerror="this.style.display='none'">
+    <span class="hdr-name">Human-AI Division of Labour Mapper</span>
+  </div>
+  <span class="hdr-tag">Pathway mapper &middot; Draft outputs for human review</span>
+</div>
+<div class="wrap">
+  <div class="intro">
+    <h1>Decide who does what, before it decides itself.</h1>
+    <p>The split between people and AI is forming in every team right now, task by task, without anyone choosing it. Run this with an intact team that already uses AI in its work. The agent produces a deliberately opinionated first sort for the team to argue with, analyses what the contested work would cost to hand over, and drafts a division of labour agreement with a trigger for revisiting it.</p>
+  </div>
+  <div class="steps" id="steps"></div>
+  <div id="stage"></div>
+  <p class="foot">Nothing you enter is stored. Outputs are drafts: a person reviews and decides before anything is acted on.</p>
+</div>
+<script>
+const CONFIG = {"id": "rm-division-of-labour-mapper-agent", "name": "Human-AI Division of Labour Mapper", "steps": [{"type": "form", "title": "What this team actually does", "guidance": "List the recurring work of this team, the things you do weekly or monthly. Aim for 12 to 20 items and include the small and unglamorous ones.", "note": "Prerequisite: the team already uses AI somewhere in its work. If the answer below is \"not at all\", the sort will be hypothetical and the session will not be worth the team's time yet.", "button": "Get the first sort →", "fields": [{"key": "work", "label": "Recurring work, one per line", "type": "textarea", "placeholder": "e.g. Weekly client status reports", "required": true}, {"key": "aiuse", "label": "Where is AI already used?", "type": "chip", "options": ["Not at all", "A few individuals, informally", "Some tasks, routinely", "Widely across the team"], "required": true}]}, {"type": "ai", "key": "sort", "title": "A provocation, not a verdict", "guidance": "This sort is deliberately opinionated. The team's job is to disagree with it. Where it is wrong, that tells you something.", "working": "Sorting the work…", "maxTokens": 2200, "button": "The team has argued. Continue →", "prompt": "Human-AI division of labour: first sort.\n\nTHE TEAM'S RECURRING WORK:\n{work}\n\nCURRENT AI USE: {aiuse}\n\nSort every item into exactly one of three categories. Be opinionated and be willing to be wrong; this sort exists to be argued with.\n\nMACHINE: work where handing over to AI costs the team nothing they need. One-line reason each.\n\nHUMAN: work that should stay with people. One-line reason each, and make the reason about judgement, relationship or accountability rather than capability limits, because capability limits move.\n\nCONTESTED: work where the answer genuinely depends on things you cannot see from this description. For each, state the specific question the team needs to answer to place it.\n\nTHE ITEM I AM LEAST SURE ABOUT: name one and say why. Do not skip this; it tells the team where to start arguing.\n\nDo not leave any item unsorted."}, {"type": "form", "title": "Move what is wrong", "guidance": "Work through the sort together. Move anything you disagree with, and put anything the team splits on into contested.", "note": "Facilitator: when the team splits on an item, ask the person who wants to keep it human what they would lose. That answer is the useful part of this session.", "showOutput": "sort", "fields": [{"key": "moves", "label": "What did you move, and to where?", "type": "textarea", "required": true}, {"key": "stakes", "label": "Contested items: what is genuinely at stake in each?", "type": "textarea", "required": true}]}, {"type": "form", "title": "The contested pile", "guidance": "For the contested items, which of these is the concern? Choose all that apply.", "button": "Analyse the judgement risk →", "fields": [{"key": "concerns", "label": "What is the team worried about losing?", "type": "chips", "options": ["We would stop being able to do it", "The judgement is not visible enough to hand over", "It is how new people learn", "Getting it wrong is expensive", "It is the interesting part of the job", "We are not sure the machine can"], "required": true}]}, {"type": "ai", "key": "risk", "title": "Judgement-risk analysis", "guidance": "The question is not what AI can do. It is what this team would lose the ability to do.", "working": "Analysing the contested pile…", "maxTokens": 2400, "button": "Draft the agreement →", "prompt": "Judgement-risk analysis.\n\nFIRST SORT:\n{sort}\n\nWHAT THE TEAM MOVED: {moves}\nWHAT IS AT STAKE IN CONTESTED ITEMS: {stakes}\nTHE TEAM'S STATED CONCERNS: {concerns}\n\nAnalyse the contested pile. The question is not what AI can do; it is what this team would lose the ability to do.\n\nCAPABILITY AT RISK: which contested items, if handed over, would erode judgement this team needs. Name the specific judgement in each case, not the task.\n\nWHERE THE TEAM IS PROTECTING THE WRONG THING: items the team wants to keep for reasons of interest, habit or status rather than capability. Say this plainly; it is the harder half of the analysis and the team will not reach it alone.\n\nTHE LEARNING PATHWAY: which contested work is how people new to this team learn the job. Handing that over is the most expensive mistake available here, and the cost arrives years later.\n\nWHAT THE TEAM MOVED, AND WHETHER IT WAS RIGHT: comment on the changes they made to the first sort. Agree where they were right.\n\nTHE SIGNAL TO WATCH: one observable sign that would indicate capability is starting to erode in this team."}, {"type": "ai", "key": "agreement", "title": "The division of labour agreement", "guidance": "A working agreement the team can adopt today, and revisit when the trigger fires. Download it and add the names of those present.", "working": "Drafting the agreement…", "maxTokens": 2800, "prompt": "Division of labour agreement.\n\nTHE TEAM'S RECURRING WORK:\n{work}\n\nFIRST SORT:\n{sort}\n\nWHAT THE TEAM MOVED: {moves}\n\nJUDGEMENT-RISK ANALYSIS:\n{risk}\n\nDraft a working agreement this team can adopt today, with these sections:\n\nMACHINE, WITHOUT DISCUSSION: the settled list.\n\nHUMAN, DELIBERATELY: the settled list, each with the one-line reason the team gave. The reason matters more than the item; in a year nobody will remember why.\n\nCONTESTED, WITH A DECISION RULE: for each remaining contested item, a rule for when it moves rather than a resolution now.\n\nPRESERVED PRACTICE: the work the team will deliberately keep doing by hand in order to stay able to do it, even where AI could do it faster. Name the capability each one preserves.\n\nHOW NEW PEOPLE LEARN HERE: given everything above, how someone joining this team in two years will acquire the judgement the team currently has. Answer concretely.\n\nREVIEW TRIGGER: the event that should bring this agreement back to the table, not a date. Dates get missed; triggers get noticed.\n\nTHE EROSION SIGNAL TO WATCH: one observable sign, carried over from the analysis.\n\nPRESENT: a blank line for the names of those in the room."}], "sample": {"work": "Weekly client status reports\nFirst draft of proposals\nScoping calls with new clients\nEstimating effort on new work\nQA review of deliverables before they go out\nOnboarding a new team member\nWriting up meeting notes and actions\nChoosing which client issues to escalate\nMonthly invoicing reconciliation\nDrafting responses to client complaints\nResearching a new industry before a pitch\nGiving feedback on a junior's work\nUpdating the risk register\nDeciding what to say when a project is slipping", "aiuse": "Some tasks, routinely", "moves": "We moved 'Drafting responses to client complaints' from machine to contested: the words are easy, deciding what we are actually prepared to offer is not. We moved 'Writing up meeting notes' from contested to machine, nobody could name what we would lose. 'Estimating effort' stays contested, three people think the AI estimates are better than ours and two think that is exactly the problem.", "stakes": "Complaints: getting the offer wrong is expensive and the judgement about what to concede is not written down anywhere. Estimating: it is how our mid-level people learn what work actually costs. Feedback on juniors: it is how the seniors stay close to the work.", "concerns": ["The judgement is not visible enough to hand over", "It is how new people learn", "Getting it wrong is expensive"]}};
+const SYSTEM = "You are Human-AI Division of Labour Mapper, one of the RockMouse Labs AI agents for workplace learning. You facilitate a team through deciding, deliberately, which of its recurring work goes to AI, which stays with people, and which is contested. Your first sort is a provocation for the team to argue with, not a verdict. Everything you produce is a DRAFT for a human to review and decide on; never present anything as final or as a decision. Work only from what the user provides; where information is missing, say so rather than inventing it. Never speculate about, label or diagnose an individual's mental health, performance or employment; keep any observations about named people at the level of what they said and what a manager might sensibly follow up in conversation. Use Australian English spelling. Write plainly in short paragraphs and lists with the section headings requested, and do not use em dashes.";
+const inputs = {}; const outputs = {}; let cur = 0;
+function visitorEmail(){ try{ const ls=localStorage.getItem('rm_visitor_email'); if(ls) return ls; }catch(e){} const m=document.cookie.match(/(?:^|; )rm_visitor_email=([^;]*)/); return m?decodeURIComponent(m[1]):''; }
+async function callAgent(userMessage, maxTokens){
+  const res = await fetch('/api/agent',{method:'POST',headers:{'Content-Type':'application/json','X-Visitor-Email':visitorEmail()},
+    body:JSON.stringify({agentId:CONFIG.id,systemPrompt:SYSTEM,userInput:userMessage,model:'claude-sonnet-4-6',maxTokens:maxTokens||2000})});
+  if(!res.ok){ const e=await res.json().catch(()=>({})); throw new Error(e.error?.message||e.error||('Request failed ('+res.status+')')); }
+  const d=await res.json(); return d.output||'';
+}
+function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+function md(t){
+  const lines=esc(t||'').split('\n'); let h='',inUl=false,inOl=false;
+  const close=()=>{ if(inUl){h+='</ul>';inUl=false;} if(inOl){h+='</ol>';inOl=false;} };
+  for(let l of lines){
+    const inl=s=>s.replace(/\*\*(.+?)\*\*/g,'<strong>$1</strong>').replace(/(^|[^*])\*([^*]+)\*/g,'$1<em>$2</em>');
+    let m;
+    if((m=l.match(/^#{1,3}\s+(.*)/))){close();h+='<h3>'+inl(m[1])+'</h3>';}
+    else if((m=l.match(/^\s*(?:\d+[.)]\s+)?\**([A-Z][A-Z0-9 ,&'/()-]{3,}):?\**\s*$/))){close();h+='<h3>'+inl(m[1])+'</h3>';}
+    else if((m=l.match(/^\s*[-*•]\s+(.*)/))){ if(inOl)close(); if(!inUl){h+='<ul>';inUl=true;} h+='<li>'+inl(m[1])+'</li>'; }
+    else if((m=l.match(/^\s*\d+[.)]\s+(.*)/))){ if(inUl)close(); if(!inOl){h+='<ol>';inOl=true;} h+='<li>'+inl(m[1])+'</li>'; }
+    else if(!l.trim()){close();}
+    else if(/^[A-Z][A-Z0-9 ,&'/()-]{3,}:?$/.test(l.trim())){close();h+='<h3>'+inl(l.trim())+'</h3>';}
+    else {close();h+='<p>'+inl(l)+'</p>';}
+  }
+  close(); return h;
+}
+function renderSteps(){ document.getElementById('steps').innerHTML=CONFIG.steps.map((s,i)=>'<div class="seg '+(i<cur?'done':i===cur?'active':'')+'" title="'+esc(s.title)+'"></div>').join(''); }
+function fill(t){ return t.replace(/\{(\w+)\}/g,(m,k)=> k in inputs?fmt(inputs[k]) : k in outputs?outputs[k] : m); }
+function fmt(v){ return Array.isArray(v)?(v.length?v.join('; '):'none selected'):(v||'not provided'); }
+function render(){
+  renderSteps(); const s=CONFIG.steps[cur]; const st=document.getElementById('stage'); window.scrollTo({top:0});
+  let h='<div class="step-label">Step '+(cur+1)+' of '+CONFIG.steps.length+'</div><div class="card"><h2>'+esc(s.title)+'</h2><p class="guide">'+esc(s.guidance)+'</p>';
+  if(s.note) h+='<div class="note">'+esc(s.note)+'</div>';
+  if(s.showOutput && outputs[s.showOutput]) h+='<div class="prev"><div class="pl">From the previous step</div><div class="out">'+md(outputs[s.showOutput])+'</div></div>';
+  h+='<div class="err" id="err"></div>';
+  if(s.type==='form'){
+    for(const f of s.fields){
+      h+='<div class="field"><label>'+esc(f.label)+(f.required?' <span class="req">*</span>':'')+'</label>';
+      const v=inputs[f.key];
+      if(f.type==='textarea') h+='<textarea id="f_'+f.key+'" placeholder="'+esc(f.placeholder||'')+'">'+esc(v||'')+'</textarea>';
+      else if(f.type==='select') h+='<select id="f_'+f.key+'"><option value="">Select…</option>'+f.options.map(o=>'<option'+(v===o?' selected':'')+'>'+esc(o)+'</option>').join('')+'</select>';
+      else if(f.type==='chips'||f.type==='chip'){ const sel=Array.isArray(v)?v:(v?[v]:[]); h+='<div class="chips" id="f_'+f.key+'" data-multi="'+(f.type==='chips')+'">'+f.options.map(o=>'<button type="button" class="chip'+(sel.includes(o)?' on':'')+'" onclick="chip(this)">'+esc(o)+'</button>').join('')+'</div>'; }
+      h+='</div>';
+    }
+    h+='<div class="row"><div>'+(cur>0?'<button class="btn btn-ghost" onclick="back()">&larr; Back</button> ':'')+(CONFIG.sample&&cur===0?'<button class="btn btn-ghost" onclick="loadSample()">Load sample data</button>':'')+'</div><button class="btn" onclick="next()">'+esc(s.button||'Continue →')+'</button></div>';
+  } else {
+    h+='<div id="ai"></div>';
+  }
+  h+='</div>'; st.innerHTML=h;
+  if(s.type==='ai') runAi(s);
+}
+function chip(b){ const g=b.parentElement; if(g.dataset.multi!=='true') g.querySelectorAll('.chip').forEach(x=>{if(x!==b)x.classList.remove('on');}); b.classList.toggle('on'); }
+function collect(){ const s=CONFIG.steps[cur]; for(const f of s.fields){ const el=document.getElementById('f_'+f.key); if(!el) continue; if(f.type==='chips'||f.type==='chip'){ const on=[...el.querySelectorAll('.chip.on')].map(x=>x.textContent); inputs[f.key]=f.type==='chips'?on:(on[0]||''); } else inputs[f.key]=el.value.trim(); } }
+function next(){ collect(); const s=CONFIG.steps[cur]; const miss=s.fields.filter(f=>f.required&&!(Array.isArray(inputs[f.key])?inputs[f.key].length:inputs[f.key])); const e=document.getElementById('err'); if(miss.length){ e.style.display='block'; e.textContent='Please complete: '+miss.map(f=>f.label).join(', '); return; } cur++; render(); }
+function back(){ if(CONFIG.steps[cur].type==='form') collect(); cur--; render(); }
+function loadSample(){ Object.assign(inputs, CONFIG.sample); render(); }
+async function runAi(s){
+  const box=document.getElementById('ai');
+  box.innerHTML='<div class="spin"><span class="dots"><span></span><span></span><span></span></span>'+esc(s.working||'Working on it…')+'</div>';
+  try{
+    const text=await callAgent(fill(s.prompt), s.maxTokens||2000);
+    outputs[s.key]=text;
+    box.innerHTML='<div class="draft">&#9888;&#65039; DRAFT &mdash; This output has been generated by AI and requires human review before use.</div>'
+      +'<div class="out" id="out_'+s.key+'">'+md(text)+'</div>'
+      +'<div class="row"><div><button class="btn btn-ghost btn-sm" onclick="copyOut(\''+s.key+'\')">Copy output</button> <button class="btn btn-ghost btn-sm" onclick="dl(\''+s.key+'\')">Download .md</button></div>'
+      +'<div>'+'<button class="btn btn-ghost" onclick="back()">&larr; Back</button> '+(cur<CONFIG.steps.length-1?'<button class="btn" onclick="cur++;render()">'+esc(s.button||'Continue →')+'</button>':'<button class="btn" onclick="restart()">Start again</button>')+'</div></div>';
+  }catch(e){ box.innerHTML='<div class="err" style="display:block">'+esc(e.message)+' If you have not signed in on rockmouse.live in this browser, do that first and try again.</div><div class="row"><button class="btn btn-ghost" onclick="back()">&larr; Back</button><button class="btn" onclick="render()">Try again</button></div>'; }
+}
+function copyOut(k){ const t='DRAFT - generated by AI, requires human review before use.\n\n'+outputs[k]; navigator.clipboard.writeText(t).then(()=>{ const b=document.querySelector('#out_'+k).parentElement.querySelector('.btn-sm'); const o=b.textContent; b.textContent='Copied'; setTimeout(()=>b.textContent=o,1500); }); }
+function dl(k){ const t='# '+CONFIG.name+' (DRAFT, requires human review)\n\n'+outputs[k]; const a=document.createElement('a'); a.href=URL.createObjectURL(new Blob([t],{type:'text/markdown'})); a.download=CONFIG.id+'-'+k+'.md'; a.click(); }
+function restart(){ for(const k in outputs) delete outputs[k]; cur=0; render(); }
+render();
+</script>
+</body>
+</html>

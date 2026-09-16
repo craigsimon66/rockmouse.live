@@ -317,12 +317,20 @@
   <div class="header-top">
     <img class="header-logo" src="https://rockmouse.live/assets/rockmouse-logo-wide.svg" alt="RockMouse Labs">
     <div class="header-brand">
-      <div class="rm">Cybernetic Teammate</div>
+      <div class="rm">Team Coach</div>
       <h1>Executive Cohesion Agent</h1>
       <div class="sub">Facilitator Support Tool — All outputs require human review</div>
     </div>
   </div>
   <div class="header-bar"></div>
+</div>
+
+<!-- FRAMEWORK SELECTOR -->
+<div class="fw-bar" style="background:#fff;border-bottom:1px solid #e1e8e6;padding:10px 28px;display:flex;flex-wrap:wrap;align-items:center;gap:10px;font-size:13px;">
+  <span style="font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#5a7070;">Capability framework</span>
+  <button type="button" class="fw-btn active" id="fw-general" onclick="selectFramework('general')" style="border:1px solid #c8dede;background:#0a4a4a;color:#fff;border-radius:999px;padding:6px 14px;font:inherit;cursor:pointer;">Executive team (general)</button>
+  <button type="button" class="fw-btn" id="fw-ils" onclick="selectFramework('ils')" style="border:1px solid #c8dede;background:#fff;color:#0a4a4a;border-radius:999px;padding:6px 14px;font:inherit;cursor:pointer;">Australian public sector (APS ILS)</button>
+  <span style="color:#5a7070;">Swap in a client's own leadership framework when you build their version.</span>
 </div>
 
 <!-- MODE TABS -->
@@ -352,11 +360,11 @@
     <div class="card">
       <div class="card-title" style="display:flex;align-items:center;"><span class="icon-badge lg"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="10.5" cy="10.5" r="6.5"/><line x1="20" y1="20" x2="15.5" y2="15.5"/></svg></span>Pre-Session Diagnostic Intake</div>
       <div class="card-desc">Gather client context to anchor the session design. Complete the fields below and the agent will produce a structured diagnostic summary for your review.</div>
-      <div class="aps-badge">🏛 APS ILS Framework Active (EL2 · SES1 · SES2)</div>
+      <div class="aps-badge fw-badge">Framework: Executive team (general)</div>
 
       <div class="field">
         <label>Organisation Name &amp; Sector</label>
-        <input type="text" id="d-org" placeholder="e.g. Department of Infrastructure — Federal Government">
+        <input type="text" id="d-org" placeholder="e.g. Regional bank, financial services">
       </div>
       <div class="field-row">
         <div class="field">
@@ -367,14 +375,14 @@
           <label>Participant Level(s)</label>
           <select id="d-level">
             <option value="">Select level(s)...</option>
-            <option>EL2 (Executive Level 2)</option>
-            <option>SES Band 1</option>
-            <option>SES Band 2</option>
-            <option>Board / Directors</option>
-            <option>Mixed EL2 &amp; SES</option>
-            <option>Mixed SES1 &amp; SES2</option>
-            <option>Private Sector Executive Team</option>
-            <option>Mixed Public/Private</option>
+            <option>C-suite / executive leadership team</option>
+            <option>Board / directors</option>
+            <option>Senior leadership team (GM / director level)</option>
+            <option>Mixed executive and board</option>
+            <option>Public sector: EL2 (Executive Level 2)</option>
+            <option>Public sector: SES Band 1</option>
+            <option>Public sector: SES Band 2</option>
+            <option>Public sector: mixed EL2 and SES</option>
           </select>
         </div>
       </div>
@@ -429,7 +437,7 @@
     <div class="card">
       <div class="card-title" style="display:flex;align-items:center;"><span class="icon-badge lg"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="4" width="14" height="17" rx="2"/><path d="M9 4V3a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v1"/><line x1="8.5" y1="11" x2="15.5" y2="11"/><line x1="8.5" y1="15" x2="15.5" y2="15"/></svg></span>Session Design Generator</div>
       <div class="card-desc">Paste your approved diagnostic summary and session parameters. The agent will produce a tailored discussion guide with sequenced questions, activities, and timing.</div>
-      <div class="aps-badge">🏛 APS ILS Framework Active (EL2 · SES1 · SES2)</div>
+      <div class="aps-badge fw-badge">Framework: Executive team (general)</div>
 
       <div class="field">
         <label>Approved Diagnostic Summary</label>
@@ -507,14 +515,15 @@
         </div>
       </div>
       <div class="field">
-        <label>Relevant APS Capability Area (optional)</label>
+        <label>Relevant capability area (optional)</label>
         <select id="p-capability">
           <option value="">Not applicable / don't specify</option>
-          <option>Shapes Strategic Thinking</option>
-          <option>Achieves Results</option>
-          <option>Cultivates Productive Working Relationships</option>
-          <option>Exemplifies Personal Drive and Integrity</option>
-          <option>Communicates with Influence</option>
+          <option>Shared purpose and strategic alignment</option>
+          <option>Trust and psychological safety</option>
+          <option>Decision rights and accountability</option>
+          <option>Productive conflict</option>
+          <option>Communication and influence</option>
+          <option>Collective delivery and follow-through</option>
         </select>
       </div>
 
@@ -539,11 +548,11 @@
     <div class="card">
       <div class="card-title" style="display:flex;align-items:center;"><span class="icon-badge lg"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="20" x2="19" y2="20"/><rect x="7" y="12" width="3" height="8"/><rect x="14" y="7" width="3" height="13"/></svg></span>Cohesion Health Snapshot</div>
       <div class="card-desc">Based on what you've observed or gathered in your diagnostic, the agent will produce a structured narrative profile of this team's current cohesion health across key dimensions. This is an interpretive tool — not a scored assessment.</div>
-      <div class="aps-badge">🏛 APS ILS Framework Active (EL2 · SES1 · SES2)</div>
+      <div class="aps-badge fw-badge">Framework: Executive team (general)</div>
 
       <div class="field">
         <label>Organisation &amp; Context</label>
-        <input type="text" id="sn-org" placeholder="e.g. Federal agency executive team, 12 members, SES Band 1 level">
+        <input type="text" id="sn-org" placeholder="e.g. Executive team of a mid-sized insurer, 9 members">
       </div>
       <div class="field">
         <label>Trust &amp; Psychological Safety</label>
@@ -789,23 +798,43 @@ SES2: Pitches messages to facilitate desired outcomes; uses persuasive technique
 // ─────────────────────────────────────────────
 // SYSTEM PROMPT
 // ─────────────────────────────────────────────
-const SYSTEM_PROMPT = `You are the Executive Cohesion Cybernetic Teammate, a specialist AI facilitator support tool built by RockMouse Labs for Yellow Edge — Performance Architects (www.yellowedge.com.au), based in Canberra, Australia.
+const GENERAL_KB = `
+EXECUTIVE TEAM COHESION: REFERENCE LENS (general)
+Use these six dimensions to frame observations, questions and recommendations for any executive or senior leadership team. Name the dimension you are drawing on.
 
-Yellow Edge's Executive Cohesion service is designed to forge stronger bonds among top executives, including Boards, facilitating a deeper understanding and alignment of organisational goals, ensuring a united front in strategy and decision-making. Your role is to support Yellow Edge facilitators across five functions of an executive cohesion engagement.
+1. SHARED PURPOSE AND STRATEGIC ALIGNMENT: the team can state, in the same words, what it exists to do this year and what it will not do; individual portfolios are held inside a whole-of-organisation view.
+2. TRUST AND PSYCHOLOGICAL SAFETY: members say what they think in the room rather than after it; mistakes and uncertainty can be admitted without cost; disagreement is with the idea, not the person.
+3. DECISION RIGHTS AND ACCOUNTABILITY: it is clear which decisions the team makes together, which sit with individuals, and which are escalated; decisions stick once made and are not relitigated outside the room.
+4. PRODUCTIVE CONFLICT: differences of view are surfaced early and argued on evidence; the hard conversations (performance, resourcing, priorities) happen with the people concerned present.
+5. COMMUNICATION AND INFLUENCE: the team speaks with one voice to the organisation and the board; members represent team decisions they argued against; information flows across portfolios without brokering.
+6. COLLECTIVE DELIVERY AND FOLLOW-THROUGH: commitments made in the room are tracked and honoured; the team reviews its own performance as a team, not only the organisation's results.
+`;
+
+const FRAMEWORKS = {
+  general: { label: 'Executive team (general)', kb: GENERAL_KB, context: 'Use the six-dimension executive cohesion lens below as the capability reference. If the client has its own leadership framework, the facilitator will paste it into the diagnostic context; prefer that where given.' },
+  ils:     { label: 'Australian public sector (APS ILS)', kb: null, context: 'This is an Australian public sector client. Use the APS Integrated Leadership System (ILS) below as the capability reference framework. Frame observations, questions and recommendations using ILS language and its five capability clusters: Shapes Strategic Thinking, Achieves Results, Cultivates Productive Working Relationships, Exemplifies Personal Drive and Integrity, and Communicates with Influence.' }
+};
+let selFramework = 'general';
+function selectFramework(k){ selFramework = k; document.querySelectorAll('.fw-btn').forEach(b=>{ const on=b.id==='fw-'+k; b.style.background=on?'#0a4a4a':'#fff'; b.style.color=on?'#fff':'#0a4a4a'; }); document.querySelectorAll('.fw-badge').forEach(b=>b.textContent='Framework: '+FRAMEWORKS[k].label); }
+function buildSystemPrompt(){ const f=FRAMEWORKS[selFramework]; return SYSTEM_PROMPT.replace('{{FRAMEWORK_CONTEXT}}', f.context).replace('{{FRAMEWORK_KB}}', f.kb || APS_ILS); }
+
+const SYSTEM_PROMPT = `You are the Executive Cohesion Agent, an AI facilitator support tool built by RockMouse Labs for consultants and facilitators who run executive team cohesion engagements.
+
+Executive cohesion work is designed to forge stronger bonds among top executives, including boards: a deeper shared understanding of organisational goals and a united front in strategy and decision-making. Your role is to support the facilitator across five functions of an engagement: diagnostic intake, session design, in-session facilitation prompts, a cohesion snapshot, and post-session synthesis.
 
 CRITICAL RULE — ALL OUTPUTS ARE DRAFTS:
 Every output you produce is clearly a draft that requires human review and approval by a facilitator before use with any client. Never present outputs as final. Never add recommendations to send anything directly to a client without facilitator review.
 
 YOUR ROLE:
-You are an expert in executive team dynamics, cohesion, trust, strategic alignment, and leadership development. You understand Australian public sector culture deeply. You use clear, professional, respectful language. You write in Australian English (use 'organisation', 'recognise', 'behaviour', 'programme' where appropriate).
+You are an expert in executive team dynamics, cohesion, trust, strategic alignment, and leadership development. You understand executive team dynamics across sectors, including Australian public sector culture. You use clear, professional, respectful language. You write in Australian English (use 'organisation', 'recognise', 'behaviour', 'programme' where appropriate).
 
-APS CONTEXT:
-For public sector clients, you always use the APS Integrated Leadership System (ILS) as your capability reference framework. Frame observations, questions, and recommendations using ILS language and capability clusters. The five ILS capability clusters are: Shapes Strategic Thinking, Achieves Results, Cultivates Productive Working Relationships, Exemplifies Personal Drive and Integrity, and Communicates with Influence.
+CAPABILITY FRAMEWORK:
+{{FRAMEWORK_CONTEXT}}
 
-${APS_ILS}
+{{FRAMEWORK_KB}}
 
 Our APPROACH:
-Our executive cohesion work facilitates practical discussions that enhance trust, communication, and collaboration — not through abstract theory, but through honest, purposeful engagement. Sessions are experiential and grounded in the client's real strategic context. Yellow Edge is known for depth, substance, and genuine challenge alongside support.
+Our executive cohesion work facilitates practical discussions that enhance trust, communication, and collaboration — not through abstract theory, but through honest, purposeful engagement. Sessions are experiential and grounded in the client's real strategic context. The facilitator brings depth, substance and real challenge alongside support; match that register.
 
 FORMATTING:
 Use clear structure with headers (##), bullet points where appropriate, and plain professional language. Avoid corporate jargon and AI clichés. Write as a seasoned human consultant would.`;
@@ -998,7 +1027,7 @@ async function runMode(mode) {
       body: JSON.stringify({
         model: 'claude-sonnet-4-6',
         max_tokens: 3000,
-        system: SYSTEM_PROMPT,
+        system: buildSystemPrompt(),
         messages: [{ role: 'user', content: userMessage }],
         stream: false
       })
