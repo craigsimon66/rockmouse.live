@@ -1001,6 +1001,18 @@ html, body { margin:0; padding:0; height:100%; overflow:hidden; }
 .chat-area { flex:1; min-height:0; overflow-y:auto; }
 .debrief-main { flex:1; min-height:0; overflow-y:auto !important; }
 </style>
+
+<style id="rm-header-spec">
+/* RockMouse Labs agent header spec v1.0 (Sep 2026) */
+:root{--rm-bar:#0E4C63;--rm-bar-alt:#0A7A74;--rm-accent:#0ED67F;--rm-accent-hover:#0BC172;--rm-on-bar:#FFFFFF;--rm-on-bar-dim:#D3E4EB;--rm-on-bar-meta:#8FB3C1}
+.app-header{background:var(--rm-bar)!important;background-image:none!important;border-bottom:3px solid var(--rm-accent)!important;min-height:68px;padding-left:28px!important;padding-right:28px!important;box-shadow:none!important;border-radius:0!important}
+.app-header .rm-home{display:inline-flex;align-items:center;gap:20px;text-decoration:none;flex-shrink:0}
+.app-header .rm-home img{height:30px!important;width:auto!important;display:block;filter:none!important;margin:0!important}
+.app-header .rm-home .rm-rule{width:1px;height:28px;background:rgba(255,255,255,.22);display:inline-block}
+.app-header .rm-home .rm-pill{font-family:"DM Sans",Helvetica,Arial,sans-serif;font-size:12px;font-weight:500;color:var(--rm-on-bar);border:1px solid rgba(255,255,255,.35);border-radius:999px;padding:5px 11px;white-space:nowrap;line-height:1.2}
+.app-header .rm-home:hover .rm-pill{background:rgba(255,255,255,.08)}
+.app-header button:disabled,.app-header button[disabled]{opacity:.45!important}
+</style>
 </head>
 <body>
 <div class="scenarios-wrapper">
@@ -1028,7 +1040,7 @@ html, body { margin:0; padding:0; height:100%; overflow:hidden; }
   <div class="app-header">
     <div class="header-brand">
       <div>
-        <div class="header-logo-text"><a href="https://rockmouse.live/#agents" title="All RockMouse Labs agents" class="rm-home" style="display:inline-flex;align-items:center;gap:12px;text-decoration:none;flex-shrink:0;"><img src="https://rockmouse.live/assets/rockmouse-labs-onnavy.svg" alt="RockMouse Labs" style="height:40px;width:auto;display:block;filter:none;"><span style="font-size:12px;font-weight:600;letter-spacing:.02em;color:#ffffff;border:1px solid rgba(255,255,255,.45);border-radius:999px;padding:5px 11px;white-space:nowrap;">&larr; All agents</span></a></div>
+        <div class="header-logo-text"><a href="https://rockmouse.live/#agents" title="All RockMouse Labs agents" class="rm-home"><img src="https://rockmouse.live/assets/rockmouse-labs-white.svg" alt="RockMouse Labs"><span class="rm-rule" aria-hidden="true"></span><span class="rm-pill">&larr; All agents</span></a></div>
         <div class="header-subtitle">Soft Skills Drill Agent</div>
       </div>
     </div>
@@ -1073,7 +1085,7 @@ html, body { margin:0; padding:0; height:100%; overflow:hidden; }
   <div class="app-header">
     <div class="header-brand">
       <div>
-        <div class="header-logo-text"><a href="https://rockmouse.live/#agents" title="All RockMouse Labs agents" class="rm-home" style="display:inline-flex;align-items:center;gap:12px;text-decoration:none;flex-shrink:0;"><img src="https://rockmouse.live/assets/rockmouse-labs-onnavy.svg" alt="RockMouse Labs" style="height:40px;width:auto;display:block;filter:none;"><span style="font-size:12px;font-weight:600;letter-spacing:.02em;color:#ffffff;border:1px solid rgba(255,255,255,.45);border-radius:999px;padding:5px 11px;white-space:nowrap;">&larr; All agents</span></a></div>
+        <div class="header-logo-text"><a href="https://rockmouse.live/#agents" title="All RockMouse Labs agents" class="rm-home"><img src="https://rockmouse.live/assets/rockmouse-labs-white.svg" alt="RockMouse Labs"><span class="rm-rule" aria-hidden="true"></span><span class="rm-pill">&larr; All agents</span></a></div>
         <div class="header-subtitle">Scenario Brief</div>
       </div>
     </div>
@@ -1099,7 +1111,7 @@ html, body { margin:0; padding:0; height:100%; overflow:hidden; }
   <div class="app-header">
     <div class="header-brand">
       <div>
-        <div class="header-logo-text"><a href="https://rockmouse.live/#agents" title="All RockMouse Labs agents" class="rm-home" style="display:inline-flex;align-items:center;gap:12px;text-decoration:none;flex-shrink:0;"><img src="https://rockmouse.live/assets/rockmouse-labs-onnavy.svg" alt="RockMouse Labs" style="height:40px;width:auto;display:block;filter:none;"><span style="font-size:12px;font-weight:600;letter-spacing:.02em;color:#ffffff;border:1px solid rgba(255,255,255,.45);border-radius:999px;padding:5px 11px;white-space:nowrap;">&larr; All agents</span></a></div>
+        <div class="header-logo-text"><a href="https://rockmouse.live/#agents" title="All RockMouse Labs agents" class="rm-home"><img src="https://rockmouse.live/assets/rockmouse-labs-white.svg" alt="RockMouse Labs"><span class="rm-rule" aria-hidden="true"></span><span class="rm-pill">&larr; All agents</span></a></div>
         <div class="header-subtitle" id="drill-subtitle">Drill in progress</div>
       </div>
     </div>
@@ -1147,7 +1159,7 @@ html, body { margin:0; padding:0; height:100%; overflow:hidden; }
   <div class="app-header">
     <div class="header-brand">
       <div>
-        <div class="header-logo-text"><a href="https://rockmouse.live/#agents" title="All RockMouse Labs agents" class="rm-home" style="display:inline-flex;align-items:center;gap:12px;text-decoration:none;flex-shrink:0;"><img src="https://rockmouse.live/assets/rockmouse-labs-onnavy.svg" alt="RockMouse Labs" style="height:40px;width:auto;display:block;filter:none;"><span style="font-size:12px;font-weight:600;letter-spacing:.02em;color:#ffffff;border:1px solid rgba(255,255,255,.45);border-radius:999px;padding:5px 11px;white-space:nowrap;">&larr; All agents</span></a></div>
+        <div class="header-logo-text"><a href="https://rockmouse.live/#agents" title="All RockMouse Labs agents" class="rm-home"><img src="https://rockmouse.live/assets/rockmouse-labs-white.svg" alt="RockMouse Labs"><span class="rm-rule" aria-hidden="true"></span><span class="rm-pill">&larr; All agents</span></a></div>
         <div class="header-subtitle">Drill Debrief</div>
       </div>
     </div>
@@ -1158,12 +1170,7 @@ html, body { margin:0; padding:0; height:100%; overflow:hidden; }
   <div class="debrief-main" id="debrief-main"></div>
 </div>
     </div>
-    <div class="agent-page-nav">
-      <button class="btn-agent-nav" onclick="goToAgent(5)">&#8592; Pitch Pressure Test</button>
-      <span class="agent-page-nav-center">7 of 7</span>
-      <button class="btn-agent-nav" disabled>Last &#8594;</button>
-    </div>
-  </div>
+</div>
 <script>
 
 function switchTab(id, btn) {
