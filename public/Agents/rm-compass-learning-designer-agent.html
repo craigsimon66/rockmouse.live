@@ -1067,7 +1067,7 @@ function repairJSON(str) {
 // ── Proxy config ──
 // PROXY_URL  : your Cloudflare Worker URL
 // PROXY_TOKEN: must match the PROXY_TOKEN secret set in the Worker
-const PROXY_URL   = 'https://spark-proxy.craig-3c4.workers.dev';
+const PROXY_URL   = '/api/messages';
 const PROXY_TOKEN = 'spark-gippsland-2026';   // change to match your Worker secret
 
 async function callClaude(systemPrompt, userMessage, maxTok) {

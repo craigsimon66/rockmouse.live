@@ -787,7 +787,7 @@ async function callAPI() {
   scrollBottom();
 
   try {
-    const res = await fetch('https://rockmouse-agent-proxy.craig-3c4.workers.dev', {
+    const res = await fetch('/api/messages', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({

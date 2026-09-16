@@ -14,7 +14,7 @@
   --bg:#f7faf9; --card:#ffffff; --border:#dfe8e4; --ink:#0e1f26; --ink-soft:#3e5560; --muted:#6d8592;
   --navy:#075C83; --navy-d:#054361; --green:#05DE92; --green-d:#04b778; --teal:#07AEAC;
   --tint:#e9f7f1; --tint-2:#eaf3f7;
-  --a-grad:#e0b400; --a-pro:#07AEAC; --a-lead:#075C83; --a-ld:#04b778; --btn-fg:#ffffff;
+  --a-grad:#e0b400; --a-pro:#07AEAC; --a-lead:#075C83; --a-ld:#04b778; --a-cc:#0F7A8C; --a-fl:#1A6B3C; --btn-fg:#ffffff;
   --rm-navy:#075C83; --rm-navy-d:#054361; --rm-green:#05DE92; --radius-lg:16px; --shadow-lg:0 24px 60px -24px rgba(7,92,131,.45);
 }
 *{box-sizing:border-box}
@@ -199,7 +199,7 @@ footer a{color:var(--navy)}
         <a class="btn" href="#agents">Try an agent</a>
         <a class="btn btn-ghost" href="#build">How we build them</a>
       </div>
-      <p class="note">Built for graduate programs, professional bodies, leadership pathways and the L&amp;D teams behind them.</p>
+      <p class="note">Built for graduate programs, professional bodies, leadership pathways, frontline teams and the L&amp;D teams behind them.</p>
     </div>
     <div class="demo" aria-label="Sample exchange with the Debate Coach">
       <div class="bar"><b>Debate Coach</b><span>live sample</span></div>
@@ -223,7 +223,7 @@ footer a{color:var(--navy)}
           <li><a href="https://rockmouse.live/Agents/rm-expert-practitioner-agent.html" target="_blank" rel="noopener"><span><span class="name">Expert Practitioner Coach</span><span class="what">Adaptive coaching anchored to the Australian HR Capability Framework.</span></span><span class="type">Scenario</span></a></li>
           <li><a href="https://rockmouse.live/Agents/rm-soft-skills-drill-agent.html" target="_blank" rel="noopener"><span><span class="name">Soft Skills Drill</span><span class="what">Roleplay a senior partner, a difficult client or an ethical dilemma, then debrief.</span></span><span class="type">Scenario</span></a></li>
           <li><a href="https://rockmouse.live/Agents/rm-debate-coach-agent.html" target="_blank" rel="noopener"><span><span class="name">Debate Coach</span><span class="what">A thinking partner that argues the other side, then reviews your reasoning.</span></span><span class="type">Scenario</span></a></li>
-          <li><a href="https://practice.rockmouse.live" target="_blank" rel="noopener"><span><span class="name">Compliance Conversation Coach</span><span class="what">Rehearse a regulated customer conversation and watch the obligations you cover tick off.</span></span><span class="type">Scenario</span></a></li>
+          <li><a href="https://compliance.rockmouse.live" target="_blank" rel="noopener"><span><span class="name">Compliance Conversation Coach</span><span class="what">Rehearse a regulated customer conversation and watch the obligations you cover tick off.</span></span><span class="type">Scenario</span></a></li>
           <li><a href="https://rockmouse.live/Agents/rm-assessment-agent.html" target="_blank" rel="noopener"><span><span class="name">Assessment Agent</span><span class="what">Knowledge checks and readiness maps for financial services, WHS and public sector frameworks.</span></span><span class="type">Assessment</span></a></li>
         </ul>
       </article>
@@ -236,16 +236,28 @@ footer a{color:var(--navy)}
           <li><a href="https://rockmouse.live/Agents/rm-teaming-partner-agent.html" target="_blank" rel="noopener"><span><span class="name">Teaming Partner</span><span class="what">Make sense of what a team is really saying, then find the one move.</span></span><span class="type">Team coach</span></a></li>
         </ul>
       </article>
+      <article class="band" style="--band:var(--a-fl)">
+        <div><h3>Frontline teams</h3><p class="moment">Retail floors and contact centres, where the conversation is the job.</p></div>
+        <ul class="agents">
+          <li><a href="https://retail.rockmouse.live" target="_blank" rel="noopener"><span><span class="name">Retail Skills Coach</span><span class="what">Roleplay a complaint, a difficult customer and the natural add-on, with a live customer and a rapport meter.</span></span><span class="type">Scenario</span></a></li>
+          <li class="soon"><a href="#agents" onclick="return false"><span><span class="name">Contact Centre Coach</span><span class="what">Rehearse the calls that decide whether a customer stays. In build.</span></span><span class="type">Scenario</span></a></li>
+        </ul>
+      </article>
       <article class="band" style="--band:var(--a-ld)">
-        <div><h3>The L&amp;D team</h3><p class="moment">Getting expertise out of people's heads and into content that stays current.</p></div>
+        <div><h3>The L&amp;D team</h3><p class="moment">Reading the cohort, checking what people really understand, and deciding what AI should and should not do.</p></div>
+        <ul class="agents">
+          <li><a href="https://rockmouse.live/Agents/rm-engagement-insights-agent.html" target="_blank" rel="noopener"><span><span class="name">Engagement Insights Agent</span><span class="what">Turn team check-ins into patterns a manager can act on.</span></span><span class="type">Insights</span></a></li>
+          <li><a href="https://rockmouse.live/Agents/rm-knowledge-validator-agent.html" target="_blank" rel="noopener"><span><span class="name">Foundational Knowledge Validator</span><span class="what">Find where AI-assisted task completion is masking a knowledge gap.</span></span><span class="type">Assessment</span></a></li>
+          <li><a href="https://rockmouse.live/Agents/rm-division-of-labour-mapper-agent.html" target="_blank" rel="noopener"><span><span class="name">Human-AI Division of Labour Mapper</span><span class="what">Decide with a team which work goes to AI, which stays human, and why.</span></span><span class="type">Pathway mapper</span></a></li>
+        </ul>
+      </article>
+      <article class="band" style="--band:var(--a-cc)">
+        <div><h3>Content creation</h3><p class="moment">Getting expertise out of people's heads and into content that stays current.</p></div>
         <ul class="agents">
           <li><a href="https://sme.rockmouse.live" target="_blank" rel="noopener"><span><span class="name">SME Interview Studio</span><span class="what">Interview a subject matter expert and leave with a structured session analysis.</span></span><span class="type">Content creation</span></a></li>
           <li><a href="https://storyboard.rockmouse.live" target="_blank" rel="noopener"><span><span class="name">Storyboard Design Assistant</span><span class="what">From a learning brief to page-by-page storyboards in four steps.</span></span><span class="type">Content creation</span></a></li>
           <li><a href="https://rockmouse.live/Agents/rm-compass-learning-designer-agent.html" target="_blank" rel="noopener"><span><span class="name">Compass Learning Designer</span><span class="what">Upload a unit of competency and get a complete learning design.</span></span><span class="type">Content creation</span></a></li>
           <li><a href="https://elsa.rockmouse.live" target="_blank" rel="noopener"><span><span class="name">ELSA</span><span class="what">Automated elearning content creation.</span></span><span class="type">Content creation</span></a></li>
-          <li><a href="https://rockmouse.live/Agents/rm-engagement-insights-agent.html" target="_blank" rel="noopener"><span><span class="name">Engagement Insights Agent</span><span class="what">Turn team check-ins into patterns a manager can act on.</span></span><span class="type">Insights</span></a></li>
-          <li><a href="https://rockmouse.live/Agents/rm-knowledge-validator-agent.html" target="_blank" rel="noopener"><span><span class="name">Foundational Knowledge Validator</span><span class="what">Find where AI-assisted task completion is masking a knowledge gap.</span></span><span class="type">Assessment</span></a></li>
-          <li><a href="https://rockmouse.live/Agents/rm-division-of-labour-mapper-agent.html" target="_blank" rel="noopener"><span><span class="name">Human-AI Division of Labour Mapper</span><span class="what">Decide with a team which work goes to AI, which stays human, and why.</span></span><span class="type">Pathway mapper</span></a></li>
         </ul>
       </article>
       <article class="band" style="--band:var(--a-grad)">

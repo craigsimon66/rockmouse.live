@@ -1397,7 +1397,7 @@ const state = {
    CLAUDE API
 ═══════════════════════════════════════════════════════ */
 async function callClaude(systemPrompt, messages, maxTokens = 1024) {
-  const res = await fetch('https://rockmouse-agent-proxy.craig-3c4.workers.dev', {
+  const res = await fetch('/api/messages', {
     method: 'POST',
     headers: { 'content-type': 'application/json', 'Authorization': 'Bearer EvcEETnK9mTErZ90CGguBccMdq2EbCV742tu5Gz4' },
     body: JSON.stringify({
@@ -2552,7 +2552,7 @@ async function sendMsg(agentId){
   showTyping(agentId);
 
   try {
-    const res = await fetch('https://rockmouse-agent-proxy.craig-3c4.workers.dev', {
+    const res = await fetch('/api/messages', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer EvcEETnK9mTErZ90CGguBccMdq2EbCV742tu5Gz4' },
       body: JSON.stringify({

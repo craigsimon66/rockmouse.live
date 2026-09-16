@@ -347,12 +347,48 @@ function redirectToGate(request) {
   return Response.redirect(`https://rockmouse.live/?return=${encodeURIComponent(back)}`, 302);
 }
 
+async function handleMessagesRelay(request, env) {
+  let body;
+  try { body = await request.json(); } catch { return json({ error: "Invalid JSON body" }, 400, {}); }
+  if (!body || !Array.isArray(body.messages) || !body.messages.length) {
+    return json({ error: "messages[] required" }, 400, {});
+  }
+  const payload = {
+    model: MODEL_ALIASES[body.model] || body.model || env.DEFAULT_MODEL || DEFAULT_MODEL,
+    max_tokens: Math.min(parseInt(body.max_tokens, 10) || 1024, 4096),
+    messages: body.messages,
+  };
+  if (body.system) payload.system = body.system;
+  if (typeof body.temperature === "number") payload.temperature = body.temperature;
+  const upstream = await fetch("https://api.anthropic.com/v1/messages", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      "x-api-key": env.ANTHROPIC_API_KEY,
+      "anthropic-version": "2023-06-01",
+    },
+    body: JSON.stringify(payload),
+  });
+  const text = await upstream.text();
+  return new Response(text, { status: upstream.status, headers: { "Content-Type": "application/json" } });
+}
+
 export default {
   async fetch(request, env) {
     const url = new URL(request.url);
     if (url.pathname.startsWith("/Agents/")) {
       if (!hasVisitorCookie(request)) return redirectToGate(request);
       return env.ASSETS.fetch(request);
+    }
+    if (url.pathname === "/api/messages") {
+      // Same-origin, cookie-gated relay in the Anthropic Messages shape, so the
+      // older agent pages (which post {model, max_tokens, system, messages} and
+      // read data.content[].text) can move off the open workers.dev proxy
+      // without changing their client code.
+      if (request.method === "OPTIONS") return new Response(null, { status: 204 });
+      if (request.method !== "POST") return json({ error: "Method not allowed" }, 405, {});
+      if (!hasVisitorCookie(request)) return json({ error: "Sign in on rockmouse.live first" }, 403, {});
+      return handleMessagesRelay(request, env);
     }
     if (url.pathname === "/api/agent") {
       if (request.method !== "OPTIONS" && !hasVisitorCookie(request)) {

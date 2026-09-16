@@ -746,7 +746,7 @@ Assertiveness spectrum position: ${choice.spectrum}
 Please write the coaching note.`;
 
     try {
-        const res = await fetch('https://rockmouse-agent-proxy.craig-3c4.workers.dev', {
+        const res = await fetch('/api/messages', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
@@ -825,7 +825,7 @@ Please write a full debrief of 300–350 words that:
 Write in flowing prose. No bullet points or numbered lists. No headers. Be specific, direct, and useful.`;
 
     try {
-        const res = await fetch('https://rockmouse-agent-proxy.craig-3c4.workers.dev', {
+        const res = await fetch('/api/messages', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
