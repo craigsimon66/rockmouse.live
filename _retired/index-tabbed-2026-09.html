@@ -1,0 +1,642 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>RockMouse Labs AI Agents Showcase</title>
+<meta name="description" content="RockMouse Labs AI Agents for workplace learning: content creation, learning and coaching, and assessment, built for your program.">
+<link rel="icon" type="image/png" href="assets/rockmouse-icon.png">
+<script src="https://unpkg.com/docx@8.5.0/build/index.umd.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js" async></script>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&family=DM+Serif+Display:ital@0;1&display=swap');
+
+:root{
+  --rm-green:   #05DE92;
+  --rm-green-d: #04b778;
+  --rm-navy:    #075C83;
+  --rm-navy-d:  #054361;
+  --rm-teal:    #07AEAC;
+  --rm-ink:     #212121;
+  --rm-white:   #FFFFFF;
+
+  --bg:         #f7faf9;
+  --card:       #ffffff;
+  --border:     #e4ece9;
+  --ink:        #0e1f26;
+  --ink-soft:   #3e5560;
+  --muted:      #6d8592;
+
+  --c-content:  #5ca2d5;
+  --c-learning: #05DE92;
+  --c-assess:   #075C83;
+
+  --radius-sm: 8px;
+  --radius:    14px;
+  --radius-lg: 22px;
+  --shadow-sm: 0 1px 3px rgba(7,92,131,0.06);
+  --shadow:    0 10px 30px rgba(7,92,131,0.10);
+  --shadow-lg: 0 24px 60px rgba(7,92,131,0.18);
+}
+
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{
+  font-family:"DM Sans",-apple-system,BlinkMacSystemFont,sans-serif;
+  font-size:15px; color:var(--ink); background:var(--bg); line-height:1.6;
+  -webkit-font-smoothing:antialiased;
+}
+img{max-width:100%;display:block;}
+button{font-family:inherit;cursor:pointer;border:none;background:none;color:inherit;}
+a{color:var(--rm-navy);text-decoration:none;}
+a:hover{text-decoration:underline;}
+
+/* ─── HEADER ─── */
+.rm-header{
+  position:sticky; top:0; z-index:500;
+  background:rgba(247,250,249,0.92);
+  backdrop-filter:blur(10px); -webkit-backdrop-filter:blur(10px);
+  border-bottom:1px solid var(--border);
+}
+.rm-header-inner{
+  max-width:1240px; margin:0 auto; padding:22px 28px;
+  display:flex; align-items:center; justify-content:space-between; gap:24px;
+}
+.rm-brand{display:flex;align-items:center;gap:18px;text-decoration:none;}
+.rm-brand img{height:115px;width:auto;}
+.rm-brand-text{display:none;}
+.rm-brand-name{font-family:"DM Serif Display",serif;font-size:17px;color:var(--rm-navy);letter-spacing:-0.01em;}
+.rm-brand-tag{font-size:10px;color:var(--muted);letter-spacing:0.14em;text-transform:uppercase;}
+@media (max-width:720px){
+  .rm-brand img{height:77px;}
+  .rm-header-inner{padding:14px 18px;}
+}
+.rm-nav{display:flex;align-items:center;gap:4px;}
+.rm-nav a{
+  font-size:13px; font-weight:500; color:var(--ink-soft);
+  padding:8px 12px; border-radius:20px; transition:all 0.15s;
+}
+.rm-nav a:hover{background:var(--card);color:var(--ink);text-decoration:none;}
+.rm-nav a.primary{ background:var(--rm-navy); color:white; }
+.rm-nav a.primary:hover{background:var(--rm-navy-d);color:white;}
+@media (max-width:720px){
+  .rm-nav a:not(.primary){display:none;}
+  .rm-brand-text{display:none;}
+}
+
+.wrap{max-width:1240px;margin:0 auto;padding:36px 24px 100px;}
+
+/* ─── HERO ─── */
+.hero{
+  position:relative;
+  background:linear-gradient(135deg, #f4fcf8 0%, #e6f8ef 50%, #d5f3e4 100%);
+  border-radius:var(--radius-lg);
+  padding:52px 48px 44px;
+  margin-bottom:36px;
+  overflow:hidden;
+}
+.hero::before{
+  content:""; position:absolute; right:-80px; top:-80px; width:360px; height:360px;
+  background:radial-gradient(circle, rgba(5,222,146,0.22) 0%, transparent 70%);
+  border-radius:50%;
+}
+.hero::after{
+  content:""; position:absolute; left:-60px; bottom:-120px; width:320px; height:320px;
+  background:radial-gradient(circle, rgba(7,92,131,0.12) 0%, transparent 70%);
+  border-radius:50%;
+}
+.hero-inner{position:relative; z-index:1;}
+.hero-tag{
+  display:inline-block; font-size:11px; font-weight:700; letter-spacing:2px;
+  text-transform:uppercase; color:var(--rm-green-d);
+  background:rgba(5,222,146,0.15); padding:6px 16px; border-radius:20px; margin-bottom:20px;
+}
+.hero h1{
+  font-family:"DM Serif Display",serif; font-size:54px; line-height:1.05;
+  color:var(--rm-navy); margin-bottom:18px; letter-spacing:-0.02em; max-width:820px;
+}
+.hero h1 em{color:var(--rm-green-d); font-style:italic;}
+.hero p{font-size:17px; color:var(--ink-soft); max-width:720px; margin-bottom:26px;}
+.hero-stats{
+  display:grid; grid-template-columns:repeat(4,1fr); gap:12px; max-width:760px;
+  background:rgba(255,255,255,0.78); padding:20px; border-radius:var(--radius);
+  border:1px solid rgba(7,92,131,0.06);
+}
+.stat-box{text-align:center;}
+.stat-num{font-family:"DM Serif Display",serif; font-size:32px; color:var(--rm-navy); line-height:1;}
+.stat-label{font-size:11px; color:var(--muted); letter-spacing:0.08em; text-transform:uppercase; margin-top:4px;}
+@media (max-width:720px){
+  .hero{padding:36px 24px 28px;}
+  .hero h1{font-size:36px;}
+  .hero-stats{grid-template-columns:repeat(2,1fr);}
+}
+
+/* ─── TABS ─── */
+.tabs{
+  display:flex; gap:4px; border-bottom:1px solid var(--border); margin-bottom:36px;
+  overflow-x:auto; -webkit-overflow-scrolling:touch;
+}
+.tab-btn{
+  padding:12px 18px; font-size:14px; font-weight:500; color:var(--muted);
+  border-bottom:2px solid transparent; transition:all 0.15s; white-space:nowrap;
+}
+.tab-btn:hover{color:var(--ink);}
+.tab-btn.active{color:var(--rm-navy); border-bottom-color:var(--rm-green); font-weight:600;}
+
+.tab-pane{display:none; animation:fade 0.2s ease;}
+.tab-pane.active{display:block;}
+@keyframes fade{from{opacity:0;transform:translateY(4px);}to{opacity:1;transform:none;}}
+
+/* ─── SECTIONS ─── */
+section.block{margin-bottom:60px;}
+.slabel{
+  font-size:11px; font-weight:700; letter-spacing:0.12em; text-transform:uppercase;
+  color:var(--rm-green-d); margin-bottom:12px;
+}
+.shead{
+  font-family:"DM Serif Display",serif; font-size:32px; line-height:1.15;
+  color:var(--rm-navy); margin-bottom:10px; letter-spacing:-0.01em;
+}
+.sintro{font-size:16px; color:var(--ink-soft); max-width:780px; margin-bottom:30px;}
+
+/* ─── PRINCIPLES GRID ─── */
+.principles-grid{display:grid; grid-template-columns:repeat(3,1fr); gap:16px; margin-bottom:36px;}
+.principle-card{
+  background:var(--card); border:1px solid var(--border); border-radius:var(--radius);
+  padding:24px; position:relative; transition:all 0.2s;
+}
+.principle-card:hover{transform:translateY(-2px); box-shadow:var(--shadow); border-color:var(--rm-green);}
+.p-num{
+  position:absolute; top:-14px; left:22px;
+  background:var(--rm-navy); color:white; font-weight:700; font-size:13px;
+  padding:4px 10px; border-radius:20px; letter-spacing:0.06em;
+}
+.p-title{font-family:"DM Serif Display",serif; font-size:20px; color:var(--rm-navy); margin:6px 0 10px; line-height:1.2;}
+.p-desc{font-size:14px; color:var(--ink-soft); line-height:1.55;}
+@media (max-width:900px){ .principles-grid{grid-template-columns:repeat(2,1fr);} }
+@media (max-width:600px){ .principles-grid{grid-template-columns:1fr;} }
+
+/* ─── TYPES GRID ─── */
+.types-grid{display:grid; grid-template-columns:repeat(3,1fr); gap:18px;}
+.type-card{
+  background:var(--card); border:1px solid var(--border); border-radius:var(--radius);
+  padding:24px; transition:all 0.2s;
+}
+.type-card:hover{transform:translateY(-2px); box-shadow:var(--shadow);}
+.type-icon{
+  display:inline-flex; width:44px; height:44px; border-radius:12px; align-items:center;
+  justify-content:center; font-size:22px; font-weight:bold; margin-bottom:16px;
+}
+.type-name{font-family:"DM Serif Display",serif; font-size:22px; color:var(--rm-navy); margin-bottom:8px;}
+.type-blurb{font-size:14px; color:var(--ink); line-height:1.5; margin-bottom:12px; font-weight:500;}
+.type-detail{font-size:13px; color:var(--ink-soft); line-height:1.55; margin-bottom:16px;}
+.type-count{font-size:12px; color:var(--muted); padding-top:12px; border-top:1px solid var(--border);}
+.type-count strong{color:var(--rm-navy); font-size:14px;}
+@media (max-width:900px){ .types-grid{grid-template-columns:repeat(2,1fr);} }
+@media (max-width:600px){ .types-grid{grid-template-columns:1fr;} }
+
+/* ─── CATEGORIES ROW ─── */
+.categories-row{display:grid; grid-template-columns:repeat(3,1fr); gap:16px; margin-bottom:36px;}
+.category-card{
+  background:white; border-radius:var(--radius); padding:22px 24px;
+  border-left:5px solid; position:relative;
+}
+.category-card.content{border-left-color:var(--c-content); background:linear-gradient(135deg,#eef6fd 0%,#ffffff 70%);}
+.category-card.learning{border-left-color:var(--c-learning); background:linear-gradient(135deg,#e8fcf3 0%,#ffffff 70%);}
+.category-card.assessment{border-left-color:var(--c-assess); background:linear-gradient(135deg,#eaf2f8 0%,#ffffff 70%);}
+.cat-name{font-family:"DM Serif Display",serif; font-size:22px; color:var(--rm-navy); margin-bottom:6px;}
+.cat-blurb{font-size:14px; color:var(--ink-soft); line-height:1.5;}
+.cat-count{font-size:12px; color:var(--muted); margin-top:10px; letter-spacing:0.05em; text-transform:uppercase;}
+@media (max-width:800px){ .categories-row{grid-template-columns:1fr;} }
+
+/* ─── FILTERS ─── */
+.filters{
+  background:var(--card); border:1px solid var(--border); border-radius:var(--radius);
+  padding:18px 20px; margin-bottom:24px;
+}
+.filter-row{display:flex; flex-wrap:wrap; gap:16px; margin-bottom:10px; align-items:center;}
+.filter-row:last-child{margin-bottom:0;}
+.filter-label{
+  font-size:11px; font-weight:700; letter-spacing:0.08em; text-transform:uppercase;
+  color:var(--muted); min-width:90px;
+}
+.filter-chips{display:flex; flex-wrap:wrap; gap:6px;}
+.filter-chip{
+  font-size:12px; font-weight:500; padding:5px 12px; border-radius:20px;
+  background:#f1f5f4; color:var(--ink-soft); border:1px solid transparent; transition:all 0.15s;
+}
+.filter-chip:hover{background:#e4ece9;}
+.filter-chip.active{background:var(--rm-navy); color:white; border-color:var(--rm-navy);}
+.search-input{
+  width:280px; max-width:100%;
+  padding:8px 14px; font-size:13px; font-family:inherit;
+  border:1px solid var(--border); border-radius:20px; background:white;
+  transition:border-color 0.15s;
+}
+.search-input:focus{outline:none; border-color:var(--rm-green);}
+
+.results-meta{font-size:12px; color:var(--muted); margin-bottom:16px; letter-spacing:0.04em;}
+.results-meta strong{color:var(--rm-navy); font-size:14px;}
+
+/* ─── AGENTS GRID ─── */
+.agents-grid{
+  display:grid; grid-template-columns:repeat(3,1fr); gap:16px;
+}
+.agent-card{
+  background:var(--card); border:1px solid var(--border); border-radius:var(--radius);
+  padding:18px 20px; cursor:pointer; transition:all 0.18s;
+  display:flex; flex-direction:column; gap:10px; min-height:180px;
+}
+.agent-card:hover{
+  transform:translateY(-3px); box-shadow:var(--shadow);
+  border-color:var(--rm-green);
+}
+.agent-card-top{display:flex; justify-content:space-between; align-items:center;}
+.agent-type-chip{
+  font-size:10px; font-weight:700; padding:3px 10px; border-radius:12px;
+  letter-spacing:0.04em;
+}
+.agent-aud-dot{font-size:14px;}
+.agent-name{
+  font-family:"DM Sans",sans-serif; font-weight:600; font-size:16px;
+  color:var(--rm-navy); line-height:1.25;
+}
+.agent-tagline{font-size:13px; color:var(--ink-soft); line-height:1.5; flex:1;}
+.agent-card-bot{
+  display:flex; justify-content:space-between; align-items:center;
+  padding-top:10px; border-top:1px solid var(--border);
+  font-size:11px; font-weight:500;
+}
+.agent-source{letter-spacing:0.03em;}
+.agent-try{color:var(--rm-navy); font-weight:600;}
+@media (max-width:1000px){ .agents-grid{grid-template-columns:repeat(2,1fr);} }
+@media (max-width:600px){ .agents-grid{grid-template-columns:1fr;} }
+
+.empty-state{
+  grid-column:1/-1; text-align:center; padding:60px 24px;
+  background:white; border-radius:var(--radius); border:1px dashed var(--border);
+  color:var(--muted); font-size:14px;
+}
+.link{
+  color:var(--rm-navy); font-weight:600; text-decoration:underline;
+  background:none; cursor:pointer; font-size:inherit;
+}
+
+/* ─── MODAL ─── */
+#agent-modal{
+  position:fixed; inset:0; z-index:2000; display:none;
+  align-items:center; justify-content:center;
+}
+#agent-modal.open{display:flex;}
+.modal-backdrop{
+  position:absolute; inset:0; background:rgba(7,92,131,0.45);
+  backdrop-filter:blur(4px);
+}
+.modal-panel{
+  position:relative; background:white; width:min(860px, 94vw);
+  max-height:92vh; overflow-y:auto; border-radius:var(--radius-lg);
+  box-shadow:var(--shadow-lg); animation:pop 0.2s ease;
+}
+@keyframes pop{from{opacity:0;transform:scale(0.96);}to{opacity:1;transform:scale(1);}}
+.modal-head{
+  padding:28px 36px 24px; position:relative;
+  border-top-left-radius:var(--radius-lg); border-top-right-radius:var(--radius-lg);
+}
+.modal-head-chips{display:flex; flex-wrap:wrap; gap:6px; margin-bottom:14px;}
+.chip{font-size:10px; font-weight:700; padding:3px 10px; border-radius:12px; letter-spacing:0.04em;}
+.modal-title{font-family:"DM Serif Display",serif; font-size:30px; color:var(--rm-navy); margin-bottom:4px; padding-right:40px;}
+.modal-tagline{font-size:15px; color:var(--ink-soft); font-style:italic;}
+.modal-close{
+  position:absolute; top:18px; right:18px; width:32px; height:32px;
+  border-radius:50%; font-size:24px; line-height:1; color:var(--muted);
+  background:rgba(255,255,255,0.8); transition:all 0.15s;
+}
+.modal-close:hover{background:white; color:var(--rm-navy); transform:scale(1.1);}
+.modal-body{padding:28px 36px 32px;}
+.modal-section{margin-bottom:28px;}
+.modal-section:last-child{margin-bottom:0;}
+.section-label{
+  font-size:11px; font-weight:700; letter-spacing:0.08em; text-transform:uppercase;
+  color:var(--rm-green-d); margin-bottom:10px;
+}
+.modal-section p{color:var(--ink); line-height:1.65;}
+
+/* Try it */
+.try-actions{display:flex; flex-wrap:wrap; gap:8px; margin-bottom:12px;}
+.btn{
+  font-family:inherit; font-size:13px; font-weight:600;
+  padding:9px 16px; border-radius:22px; transition:all 0.15s;
+  display:inline-flex; align-items:center; gap:6px; white-space:nowrap;
+}
+.btn-primary{background:var(--rm-navy); color:white;}
+.btn-primary:hover{background:var(--rm-navy-d);}
+.btn-secondary{background:var(--rm-green); color:var(--rm-navy-d);}
+.btn-secondary:hover{background:var(--rm-green-d); color:white;}
+.btn-tertiary{background:#f1f5f4; color:var(--rm-navy); border:1px solid var(--border);}
+.btn-tertiary:hover{background:#e4ece9;}
+
+#agent-input{
+  width:100%; min-height:120px; padding:12px 14px; margin-bottom:10px;
+  font-family:inherit; font-size:14px; line-height:1.55;
+  border:1px solid var(--border); border-radius:var(--radius-sm); resize:vertical;
+  color:var(--ink); background:#fafbfb;
+}
+#agent-input:focus{outline:none; border-color:var(--rm-green); background:white;}
+
+.run-row{display:flex; align-items:center; gap:12px; flex-wrap:wrap;}
+.run-note{font-size:12px; color:var(--muted); font-style:italic;}
+
+.agent-output{
+  background:linear-gradient(135deg,#f4fcf8 0%,#ffffff 100%);
+  border:1px solid #d5f3e4; border-left:4px solid var(--rm-green);
+  padding:18px 22px; border-radius:var(--radius-sm);
+  font-size:14px; line-height:1.7; color:var(--ink); margin-bottom:14px;
+  white-space:pre-wrap;
+}
+.output-actions{display:flex; gap:8px; flex-wrap:wrap;}
+.thinking{display:flex;align-items:center;gap:8px;color:var(--muted);font-size:13px;padding:10px 0;}
+.thinking span{
+  display:inline-block; width:6px; height:6px; border-radius:50%; background:var(--rm-green);
+  animation:pulse 1.2s infinite ease-in-out;
+}
+.thinking span:nth-child(2){animation-delay:0.2s;}
+.thinking span:nth-child(3){animation-delay:0.4s;}
+@keyframes pulse{0%,80%,100%{transform:scale(0.6);opacity:0.4;}40%{transform:scale(1.1);opacity:1;}}
+
+.demo-banner{
+  display:block; background:#fffbea; border:1px solid #f1d678; color:#7a5900;
+  padding:10px 14px; border-radius:8px; font-size:13px; line-height:1.5;
+  margin-bottom:12px;
+}
+.demo-banner code{background:#fff3c4;padding:1px 5px;border-radius:4px;font-size:12px;}
+
+/* ─── AUDIENCE LEGEND ─── */
+.legend{
+  display:flex; flex-wrap:wrap; gap:16px; padding:14px 18px;
+  background:var(--card); border:1px solid var(--border); border-radius:var(--radius);
+  margin-bottom:20px; font-size:12px; color:var(--ink-soft);
+}
+.legend-item{display:flex; align-items:center; gap:6px;}
+.legend-dot{width:10px; height:10px; border-radius:50%;}
+
+/* ─── FOOTER ─── */
+.rm-footer{
+  margin-top:80px; padding:28px 24px; border-top:1px solid var(--border);
+  text-align:center; font-size:12px; color:var(--muted);
+}
+.rm-footer a{color:var(--rm-navy); font-weight:500;}
+
+/* ─── EMAIL GATE ─── */
+#rm-gate{
+  position:fixed; inset:0; z-index:9000;
+  display:none; align-items:center; justify-content:center;
+  background:rgba(7,92,131,0.78); backdrop-filter:blur(6px); -webkit-backdrop-filter:blur(6px);
+  padding:24px;
+}
+#rm-gate.open{display:flex;}
+#rm-gate-card{
+  background:#fff; border-radius:var(--radius-lg); max-width:460px; width:100%;
+  padding:36px 32px 30px; box-shadow:var(--shadow-lg);
+  font-family:"DM Sans", sans-serif;
+}
+#rm-gate-card img{height:56px; margin-bottom:20px;}
+#rm-gate-card h2{
+  font-family:"DM Serif Display", serif; font-size:26px; color:var(--rm-navy);
+  line-height:1.2; margin-bottom:10px; letter-spacing:-0.01em;
+}
+#rm-gate-card p.lead{color:var(--ink-soft); font-size:14px; line-height:1.55; margin-bottom:20px;}
+#rm-gate-card label{display:block; font-size:12px; font-weight:600; color:var(--ink-soft); text-transform:uppercase; letter-spacing:0.08em; margin:14px 0 6px;}
+#rm-gate-card input{
+  width:100%; padding:11px 14px; border:1px solid var(--border); border-radius:10px;
+  font-family:inherit; font-size:14px; color:var(--ink); background:#fafcfb;
+  transition:border 0.15s, background 0.15s;
+}
+#rm-gate-card input:focus{outline:none; border-color:var(--rm-green); background:#fff;}
+#rm-gate-card .gate-privacy{
+  font-size:12px; color:var(--muted); line-height:1.5; margin:18px 0 20px;
+  padding:12px 14px; background:#f4fcf8; border-left:3px solid var(--rm-green); border-radius:6px;
+}
+#rm-gate-card .gate-btn{
+  width:100%; padding:13px 18px; background:var(--rm-navy); color:#fff; border-radius:10px;
+  font-weight:600; font-size:14px; transition:background 0.15s;
+}
+#rm-gate-card .gate-btn:hover{background:var(--rm-navy-d);}
+#rm-gate-card .gate-btn:disabled{background:var(--muted); cursor:wait;}
+#rm-gate-card .gate-error{
+  color:#b53d1a; font-size:12px; margin-top:10px; display:none;
+}
+#rm-gate-card .gate-error.show{display:block;}
+#rm-gate-card .gate-footnote{
+  font-size:11px; color:var(--muted); text-align:center; margin-top:14px;
+}
+</style>
+</head>
+
+<body>
+
+<!-- Email gate — shown until the visitor provides an email, then hidden and their email stored in localStorage -->
+<div id="rm-gate" aria-hidden="true" role="dialog" aria-labelledby="rm-gate-title">
+  <div id="rm-gate-card">
+    <img src="assets/rockmouse-logo-wide.svg" alt="RockMouse Labs">
+    <h2 id="rm-gate-title">Try the RockMouse Labs AI Agents</h2>
+    <p class="lead">Enter your email to run any of the live agents. We'll use it to keep in touch about updates. No spam, no sharing.</p>
+    <form id="rm-gate-form" novalidate>
+      <label for="rm-gate-email">Work email</label>
+      <input id="rm-gate-email" name="email" type="email" autocomplete="email" required placeholder="you@yourcompany.com">
+      <label for="rm-gate-name">Name <span style="font-weight:400; text-transform:none; letter-spacing:0; color:var(--muted);">(optional)</span></label>
+      <input id="rm-gate-name" name="name" type="text" autocomplete="name" placeholder="Your name">
+      <div class="gate-privacy">By continuing you agree that RockMouse Labs may contact you about these agents. You can ask us to delete your details any time at <strong>hello@rockmouse.com.au</strong>.</div>
+      <div class="gate-error" id="rm-gate-error">Please enter a valid email address.</div>
+      <button class="gate-btn" type="submit" id="rm-gate-submit">Enter the showcase</button>
+      <div class="gate-footnote">Already entered? This only asks once per device.</div>
+    </form>
+  </div>
+</div>
+
+<header class="rm-header">
+  <div class="rm-header-inner">
+    <a class="rm-brand" href="index.html">
+      <img src="assets/rockmouse-logo-wide.svg" alt="RockMouse Labs">
+      <div class="rm-brand-text">
+        <div class="rm-brand-name">RockMouse Labs</div>
+        <div class="rm-brand-tag">AI Agents · Showcase</div>
+      </div>
+    </a>
+    <nav class="rm-nav">
+      <a href="#" onclick="switchTab('overview', document.querySelector('.tab-btn'));return false;">Overview</a>
+      <a href="#" onclick="switchTab('principles', document.querySelectorAll('.tab-btn')[1]);return false;">Principles</a>
+      <a href="#" onclick="switchTab('types', document.querySelectorAll('.tab-btn')[2]);return false;">Agent Types</a>
+      <a href="#" onclick="switchTab('agents', document.querySelectorAll('.tab-btn')[3]);return false;" class="primary">Browse Agents →</a>
+    </nav>
+  </div>
+</header>
+
+<div class="wrap">
+
+  <section class="hero">
+    <div class="hero-inner">
+      <div class="hero-tag">ROCKMOUSE AI AGENTS</div>
+      <h1>AI agents for workplace learning, built to fit <em>your program</em>.</h1>
+      <p>RockMouse Labs designs and builds AI agents that coach, map, assess, and maintain content inside real learning programs: for graduates, professionals, leaders, and whole organisations. Every agent is shaped to your capability framework, tone, and evidence base, so it reads as yours from the first response, not ours. This showcase collects our agent patterns in one place. Pick one below and run it: what you get back is a live response, not a mockup.</p>
+      <div class="hero-stats">
+        <div class="stat-box"><div class="stat-num" id="total-agents">—</div><div class="stat-label">Agents</div></div>
+        <div class="stat-box"><div class="stat-num">6</div><div class="stat-label">Agent Types</div></div>
+        <div class="stat-box"><div class="stat-num">4</div><div class="stat-label">Audience Bands</div></div>
+        <div class="stat-box"><div class="stat-num">6</div><div class="stat-label">Design Principles</div></div>
+      </div>
+    </div>
+  </section>
+
+  <nav class="tabs" style="display:none;">
+    <button class="tab-btn active" onclick="switchTab('overview',this)">Overview</button>
+    <button class="tab-btn" onclick="switchTab('principles',this)">Six Design Principles</button>
+    <button class="tab-btn" onclick="switchTab('types',this)">Agent Types</button>
+    <button class="tab-btn" onclick="switchTab('agents',this)">Browse Agents</button>
+  </nav>
+
+  <!-- TAB: OVERVIEW -->
+  <div id="tab-overview" class="tab-pane active">
+    <section class="block">
+      <div class="slabel">What you're looking at</div>
+      <h2 class="shead">One catalogue. Many patterns. Every agent built for a specific learner moment.</h2>
+      <p class="sintro">
+        Every agent RockMouse Labs designs is built for a specific program, cohort, and capability framework, not dropped-in generic AI. This showcase groups those patterns by what they actually do: where agents coach, where they assess, where they quietly maintain content so the L&amp;D team doesn't have to.
+      </p>
+
+      <div class="categories-row">
+        <div class="category-card content">
+          <div class="cat-name">Content Creation</div>
+          <div class="cat-blurb">Agents that draft, maintain, and evolve learning content: from SME interviews to regulatory updates to storyboards.</div>
+          <div class="cat-count" id="cat-content-count">Loading…</div>
+        </div>
+        <div class="category-card learning">
+          <div class="cat-name">Learning Agents</div>
+          <div class="cat-blurb">Agents that coach, simulate, reflect, and map, forming the core of a personalised learner journey.</div>
+          <div class="cat-count" id="cat-learning-count">Loading…</div>
+        </div>
+        <div class="category-card assessment">
+          <div class="cat-name">Assessment Agents</div>
+          <div class="cat-blurb">Agents that mark work, draft feedback, and surface cohort-level patterns, with humans always in the loop.</div>
+          <div class="cat-count" id="cat-assessment-count">Loading…</div>
+        </div>
+      </div>
+
+      <div class="slabel" style="margin-top:40px;">How to use this showcase</div>
+      <h2 class="shead" style="font-size:24px;">Browse, try, and take it home.</h2>
+      <p class="sintro">
+        Head to <strong>Browse Agents</strong>, filter by category or audience, and click any card to open it. Each agent lets you either paste your own input or load the sample data we've pre-populated. Run the agent to see an illustrative response, then download it as a document to share with your team.
+      </p>
+    </section>
+  </div>
+
+  <!-- TAB: PRINCIPLES -->
+  <div id="tab-principles" class="tab-pane">
+    <section class="block">
+      <div class="slabel">How we design these agents</div>
+      <h2 class="shead">Six design principles</h2>
+      <p class="sintro">
+        Every agent RockMouse Labs designs has to pass these six tests before it goes near a learner. They apply the same way whether we're building for graduates, senior leaders, or a whole organisation.
+      </p>
+      <div class="principles-grid" id="principles-grid"></div>
+    </section>
+  </div>
+
+  <!-- TAB: TYPES -->
+  <div id="tab-types" class="tab-pane">
+    <section class="block">
+      <div class="slabel">Agent types</div>
+      <h2 class="shead">Six patterns that power every program</h2>
+      <p class="sintro">
+        Every agent in this showcase fits one of six types. Knowing the pattern makes it easier to work out what to build next, and in what order.
+      </p>
+      <div class="types-grid" id="types-grid"></div>
+    </section>
+  </div>
+
+  <!-- TAB: AGENTS -->
+  <div id="tab-agents" class="tab-pane">
+    <section class="block">
+      <div class="slabel">Browse the agents</div>
+      <h2 class="shead">A sample of some of the types of agents we build.</h2>
+      <p class="sintro">
+        Filter by category, audience, or agent type, then click any card to try it with sample data or your own input. Responses are generated live by Claude.
+      </p>
+
+      <div class="legend">
+        <span style="font-weight:600;color:var(--ink);">Audience:</span>
+        <span class="legend-item"><span class="legend-dot" style="background:#f4d250"></span>Graduate</span>
+        <span class="legend-item"><span class="legend-dot" style="background:#07aeac"></span>Professional</span>
+        <span class="legend-item"><span class="legend-dot" style="background:#085c83"></span>Leadership</span>
+        <span class="legend-item"><span class="legend-dot" style="background:#05de92"></span>Org-wide / L&amp;D</span>
+      </div>
+
+      <div class="filters">
+        <div class="filter-row" data-filter="category">
+          <div class="filter-label">Category</div>
+          <div class="filter-chips">
+            <button class="filter-chip active" data-value="all" onclick="updateFilter('category','all')">All</button>
+            <button class="filter-chip" data-value="content" onclick="updateFilter('category','content')">Content Creation</button>
+            <button class="filter-chip" data-value="learning" onclick="updateFilter('category','learning')">Learning</button>
+            <button class="filter-chip" data-value="assessment" onclick="updateFilter('category','assessment')">Assessment</button>
+          </div>
+        </div>
+        <div class="filter-row" data-filter="audience">
+          <div class="filter-label">Audience</div>
+          <div class="filter-chips">
+            <button class="filter-chip active" data-value="all" onclick="updateFilter('audience','all')">All</button>
+            <button class="filter-chip" data-value="grad" onclick="updateFilter('audience','grad')">Graduate</button>
+            <button class="filter-chip" data-value="professional" onclick="updateFilter('audience','professional')">Professional</button>
+            <button class="filter-chip" data-value="leadership" onclick="updateFilter('audience','leadership')">Leadership</button>
+            <button class="filter-chip" data-value="orgwide" onclick="updateFilter('audience','orgwide')">Org-wide / L&amp;D</button>
+          </div>
+        </div>
+        <div class="filter-row" data-filter="type">
+          <div class="filter-label">Type</div>
+          <div class="filter-chips">
+            <button class="filter-chip active" data-value="all" onclick="updateFilter('type','all')">All</button>
+            <button class="filter-chip" data-value="content" onclick="updateFilter('type','content')">Content</button>
+            <button class="filter-chip" data-value="insights" onclick="updateFilter('type','insights')">Insights</button>
+            <button class="filter-chip" data-value="scenario" onclick="updateFilter('type','scenario')">Scenario</button>
+            <button class="filter-chip" data-value="mapper" onclick="updateFilter('type','mapper')">Mapper</button>
+            <button class="filter-chip" data-value="cyber" onclick="updateFilter('type','cyber')">Teammate</button>
+            <button class="filter-chip" data-value="assessment" onclick="updateFilter('type','assessment')">Assessment</button>
+          </div>
+        </div>
+        <div class="filter-row">
+          <div class="filter-label">Search</div>
+          <input type="text" id="search-input" class="search-input" placeholder="Search by name, tagline, or description…">
+        </div>
+      </div>
+
+      <div class="results-meta"><strong id="agents-count">—</strong> agents match your filters</div>
+      <div class="agents-grid" id="agents-grid"></div>
+    </section>
+  </div>
+</div>
+
+<!-- Agent modal -->
+<div id="agent-modal" role="dialog" aria-modal="true"></div>
+
+<footer class="rm-footer">
+  <p>© 2026 RockMouse Labs. AI agents for modern workplace learning. <a href="mailto:hello@rockmouse.com.au">hello@rockmouse.com.au</a> · <a href="https://rockmouse.com.au">rockmouse.com.au</a></p>
+</footer>
+
+<script src="rockmouse_showcase.js" defer></script>
+<script>
+  // Fix category counts on load (runs after DOMContentLoaded)
+  window.addEventListener('load', ()=>{
+    setTimeout(()=>{
+      if(typeof AGENTS==='undefined') return;
+      const counts = { content:0, learning:0, assessment:0 };
+      AGENTS.forEach(a=>{ if(counts[a.category]!==undefined) counts[a.category]++; });
+      const cc = document.getElementById('cat-content-count');
+      const cl = document.getElementById('cat-learning-count');
+      const ca = document.getElementById('cat-assessment-count');
+      if(cc) cc.textContent = counts.content + ' agents';
+      if(cl) cl.textContent = counts.learning + ' agents';
+      if(ca) ca.textContent = counts.assessment + ' agents';
+    }, 100);
+  });
+</script>
+</body>
+</html>

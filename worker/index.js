@@ -331,10 +331,33 @@ async function sendDailyDigest(env) {
   }
 }
 
+// ─── VISITOR GATE ───
+// The showcase's email gate sets an rm_visitor_email cookie scoped to
+// .rockmouse.live. Agent pages under /Agents/ are routed through this Worker
+// (see "run_worker_first" in wrangler.jsonc) so a direct link cannot bypass the
+// gate; the relay at /api/agent requires the same cookie. Visitors without it are
+// sent to the home page, which returns them here after the gate.
+function hasVisitorCookie(request) {
+  const cookie = request.headers.get("Cookie") || "";
+  return /(?:^|;\s*)rm_visitor_email=[^;]+/.test(cookie);
+}
+function redirectToGate(request) {
+  const url = new URL(request.url);
+  const back = `https://rockmouse.live${url.pathname}${url.search}`;
+  return Response.redirect(`https://rockmouse.live/?return=${encodeURIComponent(back)}`, 302);
+}
+
 export default {
   async fetch(request, env) {
     const url = new URL(request.url);
+    if (url.pathname.startsWith("/Agents/")) {
+      if (!hasVisitorCookie(request)) return redirectToGate(request);
+      return env.ASSETS.fetch(request);
+    }
     if (url.pathname === "/api/agent") {
+      if (request.method !== "OPTIONS" && !hasVisitorCookie(request)) {
+        return json({ error: "Sign in on rockmouse.live first" }, 403, {});
+      }
       return handleAgentApi(request, env);
     }
     if (url.pathname === "/admin/logins") {
