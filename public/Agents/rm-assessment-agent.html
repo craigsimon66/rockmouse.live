@@ -653,50 +653,53 @@ function switchMode(m) {
 // MODE A — KNOWLEDGE CHECK
 // ═════════════════════════════════════════
 const FRAMEWORKS = {
+  // Key kept as 'caanz' so nothing else changes; the content is now generic
+  // Australian financial services conduct, anchored to primary ASIC sources
+  // (Corporations Act s912A, RG 271, RG 274) rather than a single accounting program.
   caanz: {
     label: 'Financial Services',
-    programName: 'a financial services technical assessment program',
-    candidateNoun: 'candidate',
+    programName: 'a financial services conduct and compliance capability program (AFSL general obligations, complaints handling under ASIC RG 271, and the design and distribution obligations under RG 274)',
+    candidateNoun: 'financial services employee',
     subjects: {
-      core2: {
-        name: 'Core 2: Financial Accounting',
-        desc: 'AASB 15 \u00b7 AASB 16 \u00b7 AASB 9 \u00b7 Revenue, leases & financial instruments',
-        icon: '\ud83d\udcca',
+      complaints: {
+        name: 'Complaints Handling & IDR',
+        desc: 'RG 271 · recognising a complaint · timeframes · IDR responses · AFCA',
+        icon: '💬',
         outcomes: [
-          'Apply the AASB 15 five-step model to recognise revenue from contracts with customers',
-          'Account for right-of-use assets and lease liabilities under AASB 16',
-          'Classify and measure financial assets and liabilities under AASB 9',
-          'Prepare and interpret financial statements in accordance with AASB standards',
-          'Apply professional judgement to resolve ambiguous or complex accounting scenarios'
+          'Recognise an expression of dissatisfaction as a complaint even when the customer never uses the word',
+          'Apply the correct maximum IDR timeframe: 30 calendar days as the standard, 45 for superannuation, 21 for credit default notices',
+          'Set out a complete IDR response: the outcome, the reasons where a complaint is rejected, and the right to go to AFCA with its contact details',
+          'Explain when a complaint may be closed within five business days without a written IDR response, and when it may not',
+          'Recognise a matter that could affect more than one consumer as a possible systemic issue and escalate it'
         ]
       },
-      core4: {
-        name: 'Core 4: Taxation (AU)',
-        desc: 'Income tax \u00b7 GST \u00b7 CGT \u00b7 FBT \u00b7 Tax planning',
-        icon: '\ud83e\uddfe',
+      ddo: {
+        name: 'Design & Distribution Obligations',
+        desc: 'RG 274 · target market determinations · reasonable steps · significant dealings',
+        icon: '🎯',
         outcomes: [
-          'Calculate taxable income for individuals and entities, applying correct tax rates',
-          'Determine GST obligations and calculate GST payable or refundable',
-          'Apply CGT provisions to asset disposals and calculate net capital gain or loss',
-          'Calculate FBT liability including grossed-up taxable values',
-          'Identify lawful tax minimisation strategies and their ethical and legal limits'
+          'Explain the purpose of a target market determination and check whether a customer sits in the target market before proceeding',
+          'Describe reasonable steps that reduce the risk of distribution inconsistent with a TMD, rather than a general intention to be careful',
+          'Recognise a significant dealing inconsistent with a TMD and explain the obligation to notify the issuer within 10 business days',
+          'Identify the distribution records a distributor must keep, including complaint numbers about the product',
+          'Distinguish a customer choosing against advice from a distributor dealing outside a target market'
         ]
       },
-      electb: {
-        name: 'Elective B: Sustainability',
-        desc: 'ESG reporting \u00b7 TCFD \u00b7 ISSB standards \u00b7 Integrated reporting',
-        icon: '\ud83c\udf3f',
+      licensee: {
+        name: 'Licensee Obligations & Conflicts',
+        desc: 's912A · efficiently, honestly and fairly · conflicts of interest · escalation',
+        icon: '⚖️',
         outcomes: [
-          'Explain the ISSB framework (IFRS S1/S2) and its disclosure requirements',
-          'Apply TCFD recommendations to identify and disclose climate-related risks and opportunities',
-          'Prepare an integrated report using the <IR> Framework',
-          'Identify and measure material ESG risks relevant to financial reporting',
-          'Critically evaluate the quality, completeness, and credibility of sustainability disclosures'
+          'Explain the obligation to do all things necessary to provide financial services efficiently, honestly and fairly, and test a decision against it',
+          'Identify a conflict of interest and explain the three ways of managing it: avoid, control or disclose',
+          'Explain why disclosure alone does not settle a conflict',
+          'Describe how commercial pressure, such as referral arrangements or sales targets, can create conduct risk',
+          'Name the real escalation path inside a business for a conduct concern, not a general intention to escalate'
         ]
       }
     },
-    demoSubmission: `The five-step model under AASB 15 requires the entity to: (1) identify the contract with the customer, (2) identify the performance obligations in the contract, (3) determine the transaction price, (4) allocate the transaction price to the performance obligations, and (5) recognise revenue when (or as) each performance obligation is satisfied.`,
-    demoRubric: `Subject: Core 2 Financial Accounting \u2014 Assessment Task 2\nCriterion 1 (5 marks): Correctly states all five steps of the AASB 15 model in order.\nCriterion 2 (5 marks): Applies the model to the scenario provided, not just recites the steps.\nCriterion 3 (5 marks): Identifies the correct transaction price and allocation basis.\nCriterion 4 (5 marks): Uses correct accounting terminology throughout.`
+    demoSubmission: `The customer's email is a complaint even though she never used the word: RG 271 treats any expression of dissatisfaction where a response is expected as a complaint. I would log it in the register on the day it was received, which starts the 30 calendar day IDR clock. Because this is an insurance claim inside superannuation, the maximum timeframe is actually 45 calendar days, so I would correct the diary date. If we cannot resolve it to her satisfaction within five business days, she needs a written IDR response that gives the outcome, the reasons if we reject any part of it, and her right to take the matter to AFCA with AFCA's contact details. She also mentioned a colleague had the same problem with the same product, so I would flag it to compliance as a possible systemic issue rather than closing it as a one-off.`,
+    demoRubric: `Subject: Complaints Handling & IDR — Scenario Response Task\nCriterion 1 (5 marks): Correctly identifies the email as a complaint under RG 271 despite the absence of the word.\nCriterion 2 (5 marks): Applies the correct IDR timeframe for a superannuation complaint and explains why the standard 30 days does not apply.\nCriterion 3 (5 marks): Lists the required content of an IDR response, including the AFCA referral and contact details.\nCriterion 4 (5 marks): Recognises the possible systemic issue and identifies the correct escalation action.`
   },
 
   whs: {

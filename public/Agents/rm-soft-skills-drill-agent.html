@@ -11,11 +11,11 @@
 
 :root {
   /* the organisation brand purple palette */
-  --be-orange:      #FF8200;
-  --be-orange-dark: #FF6600;
-  --be-orange-mid:  #FF9933;
-  --be-orange-light:#FFF5E6;
-  --be-orange-pale: #FFFBF0;
+  --be-orange:      #075C83; /* RockMouse navy (was Be Learning orange) */
+  --be-orange-dark: #075C83;
+  --be-orange-mid:  #07AEAC;
+  --be-orange-light:#E6F7F2;
+  --be-orange-pale: #F5F9FA;
 
   /* Brand accents */
   --rm-green: #05DE92;
@@ -30,20 +30,20 @@
   --text-muted:     #8A7FA0;
 
   /* Agent type colours — purple-harmonised */
-  --insights-col:  #FF8200; --insights-bg: #FFF5E6; --insights-border: #FFB84D;
+  --insights-col:  #075C83; --insights-bg: #E6F7F2; --insights-border: #7FD3D2;
   --scenario-col:  #0F7A8C; --scenario-bg: #E4F6F9; --scenario-border: #8ED5DF;
   --mapper-col:    #1A6B3C; --mapper-bg:   #E6F5EE; --mapper-border:   #7ECDA0;
   --cyber-col:     #8B3D10; --cyber-bg:    #FBF0E8; --cyber-border:    #DDA878;
 
   /* Track colours */
-  --track-warm-bg:   #FFF5E6; --track-warm-text:   #FF8200;
+  --track-warm-bg:   #E6F7F2; --track-warm-text:   #075C83;
   --track-estab-bg:  #E8EEF8; --track-estab-text:  #1A3A6E;
   --track-skills-bg: #E6F5EE; --track-skills-text: #1A6B3C;
-  --track-cap-bg:    #FFF5E6; --track-cap-text:    #FF8200;
+  --track-cap-bg:    #E6F7F2; --track-cap-text:    #075C83;
 
   --radius-sm: 6px; --radius: 10px; --radius-lg: 14px;
-  --shadow-sm: 0 1px 3px rgba(255,130,0,0.07), 0 1px 2px rgba(255,130,0,0.05);
-  --shadow:    0 4px 16px rgba(255,130,0,0.12);
+  --shadow-sm: 0 1px 3px rgba(7,92,131,0.07), 0 1px 2px rgba(7,92,131,0.05);
+  --shadow:    0 4px 16px rgba(7,92,131,0.12);
 }
 
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
@@ -141,7 +141,7 @@ body{font-family:"DM Sans",sans-serif;font-size:15px;color:var(--text-primary);b
 
 /* BADGES */
 .track-badge{display:inline-block;font-size:9px;font-weight:700;letter-spacing:0.05em;padding:2px 7px;border-radius:10px;white-space:nowrap;}
-.track-warm{background:#FFF5E6;color:#FF6600;}
+.track-warm{background:#E6F7F2;color:#075C83;}
 .track-estab{background:var(--be-orange-light);color:var(--be-orange-dark);}
 .track-skills{background:#E6F5EE;color:#1A5C3C;}
 .track-cap{background:#F3EAF8;color:var(--be-orange-dark);}
@@ -166,7 +166,7 @@ body{font-family:"DM Sans",sans-serif;font-size:15px;color:var(--text-primary);b
 .adc-head.c2{background:var(--be-orange-dark);}
 .adc-head.c3{background:#0F7A8C;}
 .adc-head.c4{background:#1A5C3C;}
-.adc-head.c5{background:#FF6600;}
+.adc-head.c5{background:#075C83;}
 .adc-num{font-size:10px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;opacity:0.7;margin-bottom:4px;}
 .adc-title{font-family:"DM Serif Display",serif;font-size:20px;margin-bottom:4px;}
 .adc-tagline{font-size:12px;opacity:0.75;}
@@ -209,7 +209,7 @@ hr.div{border:none;border-top:0.5px solid var(--border);margin:18px 0;}
 .chat-messages{flex:1;overflow-y:auto;padding:20px;display:flex;flex-direction:column;gap:12px;}
 .chat-msg{max-width:84%;line-height:1.65;font-size:14px;word-break:break-word;}
 .chat-msg.ai{align-self:flex-start;background:#F3EAF8;border-radius:4px 14px 14px 14px;padding:13px 16px;color:#1A1A2E;}
-.chat-msg.user{align-self:flex-end;background:#FF8200;border-radius:14px 4px 14px 14px;padding:13px 16px;color:white;}
+.chat-msg.user{align-self:flex-end;background:#075C83;border-radius:14px 4px 14px 14px;padding:13px 16px;color:white;}
 .chat-msg.note{align-self:center;background:#F5F5FA;border:1px solid #E4DDF0;border-radius:20px;padding:7px 14px;color:#8A7FA0;font-size:12px;font-style:italic;max-width:94%;text-align:center;}
 .typing-wrap{align-self:flex-start;background:#F3EAF8;border-radius:4px 14px 14px 14px;padding:13px 16px;}
 .typing-dots{display:flex;gap:5px;}
@@ -219,8 +219,8 @@ hr.div{border:none;border-top:0.5px solid var(--border);margin:18px 0;}
 @keyframes tdot{0%,60%,100%{transform:translateY(0);}30%{transform:translateY(-5px);}}
 .chat-input-row{border-top:1px solid #E4DDF0;padding:12px 16px;display:flex;gap:10px;background:#FAFAFA;flex-shrink:0;}
 .chat-input-row textarea{flex:1;border:1.5px solid #E4DDF0;border-radius:10px;padding:10px 13px;font-family:"DM Sans",sans-serif;font-size:14px;resize:none;outline:none;transition:border-color .2s;color:#1A1A2E;background:white;line-height:1.5;}
-.chat-input-row textarea:focus{border-color:#FF8200;}
-.chat-send-btn{background:#FF8200;color:white;border:none;border-radius:10px;padding:0 22px;font-size:13px;font-weight:600;cursor:pointer;font-family:"DM Sans",sans-serif;transition:opacity .15s;flex-shrink:0;}
+.chat-input-row textarea:focus{border-color:#075C83;}
+.chat-send-btn{background:#075C83;color:white;border:none;border-radius:10px;padding:0 22px;font-size:13px;font-weight:600;cursor:pointer;font-family:"DM Sans",sans-serif;transition:opacity .15s;flex-shrink:0;}
 .chat-send-btn:hover{opacity:.85;}
 .chat-send-btn:disabled{opacity:.35;cursor:not-allowed;}
 .chat-msg strong{font-weight:600;}
@@ -270,7 +270,7 @@ hr.div{border:none;border-top:0.5px solid var(--border);margin:18px 0;}
 .dd-card-head-title {
   font-size: 13px;
   font-weight: 600;
-  color: #3d1e62;
+  color: #054361;
 }
 .dd-card-body { padding: 14px 16px; }
 .dd-setup-field { margin-bottom: 12px; }
@@ -295,7 +295,7 @@ hr.div{border:none;border-top:0.5px solid var(--border);margin:18px 0;}
   outline: none;
   transition: border-color 0.2s;
 }
-.dd-setup-field input[type="text"]:focus { border-color: #FF9933; }
+.dd-setup-field input[type="text"]:focus { border-color: #07AEAC; }
 .dd-upload-zone {
   border: 2px dashed #E4DDF0;
   border-radius: 10px;
@@ -307,7 +307,7 @@ hr.div{border:none;border-top:0.5px solid var(--border);margin:18px 0;}
   position: relative;
 }
 .dd-upload-zone:hover, .dd-upload-zone.drag-over {
-  border-color: #FF9933;
+  border-color: #07AEAC;
   background: #F0EAF8;
 }
 .dd-upload-zone input[type="file"] {
@@ -319,7 +319,7 @@ hr.div{border:none;border-top:0.5px solid var(--border);margin:18px 0;}
   height: 100%;
 }
 .dd-upload-icon { font-size: 22px; margin-bottom: 6px; }
-.dd-upload-text { font-size: 11px; font-weight: 500; color: #FF6600; margin-bottom: 2px; }
+.dd-upload-text { font-size: 11px; font-weight: 500; color: #075C83; margin-bottom: 2px; }
 .dd-upload-hint { font-size: 10px; color: #9a9ab5; }
 .dd-file-uploaded {
   display: flex;
@@ -334,7 +334,7 @@ hr.div{border:none;border-top:0.5px solid var(--border);margin:18px 0;}
 .dd-btn-start {
   width: 100%;
   padding: 11px;
-  background: #FF6600;
+  background: #075C83;
   color: white;
   border: none;
   border-radius: 10px;
@@ -345,7 +345,7 @@ hr.div{border:none;border-top:0.5px solid var(--border);margin:18px 0;}
   transition: all 0.2s;
   margin-top: 10px;
 }
-.dd-btn-start:hover:not(:disabled) { background: #3d1e62; }
+.dd-btn-start:hover:not(:disabled) { background: #054361; }
 .dd-btn-start:disabled { opacity: 0.45; cursor: not-allowed; }
 .dd-progress-steps { display: flex; flex-direction: column; }
 .dd-progress-step {
@@ -372,10 +372,10 @@ hr.div{border:none;border-top:0.5px solid var(--border);margin:18px 0;}
   transition: all 0.3s;
   margin-top: 1px;
 }
-.dd-step-dot.active { background: #FF6600; border-color: #FF6600; color: white; box-shadow: 0 0 0 3px rgba(91,45,142,0.15); }
+.dd-step-dot.active { background: #075C83; border-color: #075C83; color: white; box-shadow: 0 0 0 3px rgba(91,45,142,0.15); }
 .dd-step-dot.complete { background: #2d8b6e; border-color: #2d8b6e; color: white; }
 .dd-step-label { font-size: 11px; color: #5a5a7a; line-height: 1.4; padding-top: 1px; }
-.dd-step-label.active { color: #FF6600; font-weight: 500; }
+.dd-step-label.active { color: #075C83; font-weight: 500; }
 .dd-step-label.complete { color: #2d8b6e; }
 .dd-chat-wrap {
   flex: 1;
@@ -393,7 +393,7 @@ hr.div{border:none;border-top:0.5px solid var(--border);margin:18px 0;}
   border-bottom: 1px solid #E4DDF0;
 }
 .dd-chat-header {
-  background: linear-gradient(135deg, #FF6600 0%, #FF9933 100%);
+  background: linear-gradient(135deg, #075C83 0%, #07AEAC 100%);
   padding: 14px 20px;
   display: flex;
   align-items: center;
@@ -439,7 +439,7 @@ hr.div{border:none;border-top:0.5px solid var(--border);margin:18px 0;}
 .dd-empty-state h3 {
   font-family: 'DM Serif Display', serif;
   font-size: 18px;
-  color: #FF6600;
+  color: #075C83;
   margin-bottom: 6px;
   font-weight: 400;
 }
@@ -458,7 +458,7 @@ hr.div{border:none;border-top:0.5px solid var(--border);margin:18px 0;}
   flex-shrink: 0;
   margin-top: 2px;
 }
-.dd-msg.coach .dd-msg-avatar { background: #FF6600; color: white; }
+.dd-msg.coach .dd-msg-avatar { background: #075C83; color: white; }
 .dd-msg-bubble {
   max-width: 80%;
   padding: 12px 15px;
@@ -474,7 +474,7 @@ hr.div{border:none;border-top:0.5px solid var(--border);margin:18px 0;}
   box-shadow: 0 2px 6px rgba(91,45,142,0.05);
 }
 .dd-msg.user .dd-msg-bubble {
-  background: #FF6600;
+  background: #075C83;
   color: white;
   border-top-right-radius: 3px;
 }
@@ -482,7 +482,7 @@ hr.div{border:none;border-top:0.5px solid var(--border);margin:18px 0;}
 .dd-msg-bubble p:last-child { margin-bottom: 0; }
 .dd-msg-bubble strong { font-weight: 600; }
 .dd-typing { display: flex; align-items: center; gap: 4px; padding: 12px 15px; }
-.dd-typing-dot { width: 6px; height: 6px; border-radius: 50%; background: #FF9933; animation: typing 1.2s infinite; }
+.dd-typing-dot { width: 6px; height: 6px; border-radius: 50%; background: #07AEAC; animation: typing 1.2s infinite; }
 .dd-typing-dot:nth-child(2) { animation-delay: 0.2s; }
 .dd-typing-dot:nth-child(3) { animation-delay: 0.4s; }
 .dd-chat-input-area {
@@ -508,10 +508,10 @@ hr.div{border:none;border-top:0.5px solid var(--border);margin:18px 0;}
   min-height: 40px;
   max-height: 120px;
 }
-.dd-chat-textarea:focus { border-color: #FF6600; }
+.dd-chat-textarea:focus { border-color: #075C83; }
 .dd-chat-textarea:disabled { background: #f5f5f5; color: #9a9ab5; }
 .dd-btn-send {
-  background: #FF6600;
+  background: #075C83;
   color: white;
   border: none;
   border-radius: 10px;
@@ -529,27 +529,27 @@ hr.div{border:none;border-top:0.5px solid var(--border);margin:18px 0;}
 .dd-input-hint { font-size: 10px; color: #9a9ab5; margin-top: 6px; text-align: center; }
 .dd-continue-prompt {
   background: #F0EAF8;
-  border: 1.5px solid #FF6600;
+  border: 1.5px solid #075C83;
   border-radius: 10px;
   padding: 14px 16px;
   text-align: center;
   animation: msgIn 0.35s ease-out;
 }
-.dd-continue-prompt p { font-size: 13px; color: #3d1e62; margin-bottom: 12px; line-height: 1.5; }
+.dd-continue-prompt p { font-size: 13px; color: #054361; margin-bottom: 12px; line-height: 1.5; }
 .dd-continue-btns { display: flex; gap: 8px; justify-content: center; flex-wrap: wrap; }
-.dd-btn-yes { padding: 9px 18px; background: #FF6600; color: white; border: none; border-radius: 8px; font-family: inherit; font-size: 12px; font-weight: 600; cursor: pointer; transition: all 0.2s; }
-.dd-btn-yes:hover { background: #3d1e62; }
-.dd-btn-no { padding: 9px 18px; background: white; color: #FF6600; border: 2px solid #FF6600; border-radius: 8px; font-family: inherit; font-size: 12px; font-weight: 600; cursor: pointer; transition: all 0.2s; }
+.dd-btn-yes { padding: 9px 18px; background: #075C83; color: white; border: none; border-radius: 8px; font-family: inherit; font-size: 12px; font-weight: 600; cursor: pointer; transition: all 0.2s; }
+.dd-btn-yes:hover { background: #054361; }
+.dd-btn-no { padding: 9px 18px; background: white; color: #075C83; border: 2px solid #075C83; border-radius: 8px; font-family: inherit; font-size: 12px; font-weight: 600; cursor: pointer; transition: all 0.2s; }
 .dd-btn-no:hover { background: #F0EAF8; }
 .dd-brief-section {
   background: white;
-  border-top: 2px solid #FF6600;
+  border-top: 2px solid #075C83;
   overflow-y: auto;
   max-height: 400px;
   flex-shrink: 0;
 }
 .dd-brief-header {
-  background: #3d1e62;
+  background: #054361;
   padding: 14px 22px;
   display: flex;
   align-items: center;
@@ -561,7 +561,7 @@ hr.div{border:none;border-top:0.5px solid var(--border);margin:18px 0;}
 .dd-btn-download {
   padding: 8px 14px;
   background: white;
-  color: #FF6600;
+  color: #075C83;
   border: none;
   border-radius: 8px;
   font-family: inherit;
@@ -592,7 +592,7 @@ hr.div{border:none;border-top:0.5px solid var(--border);margin:18px 0;}
   width: 44px;
   height: 44px;
   border-radius: 50%;
-  background: #FF6600;
+  background: #075C83;
   color: white;
   font-family: 'DM Serif Display', serif;
   font-size: 20px;
@@ -601,14 +601,14 @@ hr.div{border:none;border-top:0.5px solid var(--border);margin:18px 0;}
   justify-content: center;
   flex-shrink: 0;
 }
-.dd-brief-name-block h3 { font-family: 'DM Serif Display', serif; font-size: 19px; color: #3d1e62; font-weight: 400; }
+.dd-brief-name-block h3 { font-family: 'DM Serif Display', serif; font-size: 19px; color: #054361; font-weight: 400; }
 .dd-brief-name-block p { font-size: 12px; color: #5a5a7a; margin-top: 2px; }
 .dd-brief-section-label {
   font-size: 9px;
   font-weight: 700;
   letter-spacing: 0.14em;
   text-transform: uppercase;
-  color: #FF6600;
+  color: #075C83;
   margin-bottom: 8px;
   padding-bottom: 5px;
   border-bottom: 1px solid #F0EAF8;
@@ -624,7 +624,7 @@ hr.div{border:none;border-top:0.5px solid var(--border);margin:18px 0;}
   bottom: 16px;
   left: 50%;
   transform: translateX(-50%);
-  background: #3d1e62;
+  background: #054361;
   color: white;
   padding: 9px 18px;
   border-radius: 20px;
@@ -949,7 +949,7 @@ input:checked + .toggle-slider::before { transform: translateX(17px); }
   background: var(--be-orange);
   border-color: var(--be-orange);
   color: white;
-  box-shadow: 0 2px 10px rgba(255,130,0,0.3);
+  box-shadow: 0 2px 10px rgba(7,92,131,0.3);
 }
 
 /* === AGENT PAGE === */
@@ -1187,7 +1187,7 @@ const SCENARIOS = [
     tagline: 'Coaching through resistance and disengagement',
     program: 'Coaching Skills',
     icon: '💬',
-    color: '#FF6600',
+    color: '#075C83',
     character: {
       name: 'Sarah Nguyen',
       role: 'Mid-level Analyst · 6 years tenure',
@@ -1302,7 +1302,7 @@ const SCENARIOS = [
     tagline: 'Navigating a career conversation with someone who wants your job',
     program: 'Impactful Career Conversations',
     icon: '🚀',
-    color: '#7B3FA0',
+    color: '#1A3A6E',
     character: {
       name: 'Daniel Kwan',
       role: 'High-performing Team Lead · 5 years tenure',
@@ -1341,7 +1341,7 @@ const SCENARIOS = [
     tagline: 'Leading change with a vocal resistor who influences the team',
     program: 'Leading Change',
     icon: '⚡',
-    color: '#8B3D10',
+    color: '#3E5560',
     character: {
       name: 'Marcus Reid',
       role: 'Operations Supervisor · 15 years tenure',
